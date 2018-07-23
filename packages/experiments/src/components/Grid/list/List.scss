@@ -1,0 +1,35 @@
+@import '../common/_mixins.scss';
+@import '../common/_fabric';
+
+.grid-list .grid-body {
+    .grid-row {
+        box-sizing: border-box;
+
+        .ms-Check {
+            opacity: 0
+        }
+
+        &.selected {
+            @include ms-bgColor-neutralTertiaryAlt;
+            border: 1px solid $ms-color-neutralTertiary;
+
+            .ms-Check {
+                opacity: 1
+            }
+
+        }
+
+        &:not(.selected) {
+            border: 1px solid transparent;
+            overflow: hidden;
+
+            &:hover {
+                @include ms-bgColor-neutralLighter;
+
+                .ms-Check {
+                    opacity: 1
+                }
+            }
+        }
+    }
+}

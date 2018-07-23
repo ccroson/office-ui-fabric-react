@@ -1,0 +1,20 @@
+@import '../../common/fabric';
+.tag-editor-container {
+    width: 100%;
+    padding: 0;
+
+    .ms-BasePicker-text {
+        flex-wrap: nowrap;
+        overflow: hidden;
+        border: none;
+    }
+    .ms-TagItem-text {
+        min-width: 15px;
+    }
+    .ms-TagItem-close {
+        width: 20px;
+    }
+    .ms-BasePicker-input {
+        height: inherit;
+    }
+}

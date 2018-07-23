@@ -1,0 +1,9 @@
+@import '../common/_fabric';
+.grid-link {
+    color: $ms-color-black;
+    &.ms-Link:not(.is-disabled):focus,
+    &.ms-Link:not(.is-disabled):hover {
+        color: $ms-color-themePrimary;
+        text-decoration: underline;
+    }
+}

@@ -1,0 +1,35 @@
+@import '../../common/_mixins.scss';
+@import '../../common/fabric';
+.inline-autocomplete-container {
+    width: 100%;
+    padding: 0;
+    @include flex-parent(row);
+    align-items: center;
+    position: relative;
+
+    > .inline-autocomplete, .inline-autocomplete-suggestions {
+        font-size: inherit;
+        font-weight: inherit;
+        font-family: inherit;
+        background-color: transparent;
+        border: none;
+        height: 100%;
+        width: 100%;
+    }
+
+    > .inline-autocomplete {
+        position: relative;
+        background: transparent;
+        margin: 0;
+        outline: 0;
+        overflow: hidden;
+    }
+
+    > .inline-autocomplete-suggestions {
+        position: absolute;
+        top: 0;
+        @include ms-left(0);
+        color:  $ms-color-neutralTertiaryAlt;
+        box-sizing: border-box;
+    }
+}

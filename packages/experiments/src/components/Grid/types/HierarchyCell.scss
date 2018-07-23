@@ -1,0 +1,46 @@
+@import '../common/_mixins.scss';
+@import '../common/_fabric.scss';
+
+.hierarchy-cell {
+    @include flex-parent(row);
+
+    > .chevron-wrapper {
+        @include flex-child-sizeFixed(auto);
+        @include flex-parent(column);
+        @include flex-parent-centerAll;
+        overflow: hidden;
+
+        &.has-children {
+            cursor: pointer;
+        }
+
+        > .chevron {
+            color: $ms-color-black;
+            padding: 8px;
+
+            &.chevron-hidden {
+                visibility: hidden
+            }
+
+            &.expanded {
+                @include ms-LTR {
+                    transform: rotate(90deg);
+                }
+                @include ms-RTL {
+                    transform: rotate(-90deg);
+                }
+            }
+
+            &.ms-Icon {
+                transition: transform .1s linear;
+            }
+        }
+    }
+
+    > .wrapped-content {
+        @include flex-child-sizeFlexible;
+        vertical-align: middle;
+        display: inline-flex;
+        align-items: center;
+    }
+}

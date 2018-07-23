@@ -1,0 +1,26 @@
+@import '../../common/_mixins.scss';
+@import '../../common/fabric';
+.date-editor-container {
+    width: 100%;
+    padding: 0;
+    @include flex-parent(row);
+    align-items: center;
+    > .date-editor {
+        margin: 0;
+        border: none;
+        outline: 0;
+        font-size: inherit;
+        font-weight: inherit;
+        font-family: inherit;
+        background-color: transparent;
+        @include flex-child-sizeFlexible(0px);
+    }
+    > .ms-Icon {
+        @include flex-child-sizeFixed(auto);
+        font-size: 20px;
+        cursor: pointer;
+        &.calendar-open {
+            color: $ms-color-themePrimary;
+        }
+    }
+}

@@ -1,0 +1,138 @@
+/**
+ * All mixins that are shared between all apps should appear here.
+ */
+
+// Mixin for centering all children in an element.
+// Requires calling flex-parent before use.
+@mixin flex-parent-centerAll {
+    justify-content: center;
+    align-items: center;
+}
+
+// Mixin for parents.
+// $direction - row | row-reverse | column | column-reverse
+// $wrap - nowrap | wrap | wrap-reverse
+@mixin flex-parent($direction: row, $wrap: nowrap) {
+    display: "-webkit-flex";
+    display: "-moz-flex";
+    display: "-ms-flexbox"; // IE10 uses -ms-flexbox
+    display: "-ms-flex"; // IE11
+    display: flex;
+    -webkit-flex-direction: $direction;
+    -moz-flex-direction: $direction;
+    -ms-flex-direction: $direction;
+    flex-direction: $direction;
+    -webkit-flex-wrap: $wrap;
+    -moz-flex-wrap: $wrap;
+    -ms-flex-wrap: $wrap;
+    flex-wrap: $wrap;
+}
+
+// Flex - Used for flexible views only
+// - Applies only to elements using .flex-parent(...)
+@mixin flex-child-sizeFlexible($width: 0px) {
+    -webkit-flex: 1 1 $width;
+    -moz-flex: 1 1 $width;
+    -ms-flex: 1 1 $width;
+    flex: 1 1 $width;
+    min-height: 0;
+    /* Chrome fix - Chrome incorrectly sets a min-height it will not go lower than */
+    min-width: 0;
+    /* Chrome fix - Chrome incorrectly sets a min-height it will not go lower than */
+}
+
+// Flex - Used for fixed sized elements
+// - Applies only to elements using .flex-parent(...)
+@mixin flex-child-sizeFixed($width: auto) {
+    -webkit-flex: 0 0 $width;
+    -moz-flex: 0 0 $width;
+    -ms-flex: 0 0 $width;
+    flex: 0 0 $width;
+    min-height: 0;
+    /* Chrome fix - Chrome incorrectly sets a min-height it will not go lower than */
+    min-width: 0;
+    /* Chrome fix - Chrome incorrectly sets a min-height it will not go lower than */
+}
+
+// Mixin for setting the height by an amount and # of lines.
+// $amnt: <integer>
+// $numLines: <integer>
+@mixin multi-line-max-height($amnt: 1.3em, $numLines: 1) {
+    line-height: $amnt;
+    max-height: $amnt * $numLines;
+    font-size: $amnt;
+}
+
+// Mixin for text that commonly overflows.
+// $overflow - clip | ellipsis | <string>
+@mixin text-clip($overflow: clip) {
+    text-overflow: $overflow;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+// Using an anchor element causes colors to change and an underlined text
+// In some cases, this isn't wanted
+@mixin styleAnchorIgnore {
+    text-decoration: none;
+    color: inherit;
+}
+
+/**
+ * Using the HTML Button element provides better context for accessible users
+ * This mixin will remove any stylings of a button and make it look like a div
+ * for easier styling.
+ */
+@mixin styleButtonAsDiv {
+    display: block;
+    background-color: transparent;
+    border: none;
+    align-items: inherit;
+    text-align: inherit;
+    color: inherit;
+    box-sizing: inherit;
+    padding: 0px;
+    margin: 0px;
+    font: inherit;
+}
+
+/**
+ * Sets the placeholder selector text color as it can only be set via browser specific selectors
+ */
+@mixin placeholder($color) {
+    &::-webkit-input-placeholder {
+        color: $color;
+    }
+    &:-moz-placeholder {
+        color: $color;
+    }
+    &::-moz-placeholder {
+        color: $color;
+    }
+    &:-ms-input-placeholder {
+        color: $color;
+    }
+}
+
+/**
+ * Sets the element to be positioned sticky at the top of the relative/absolute parent
+ */
+@mixin positionStickyTop {
+    position: -webkit-sticky; // required for Safari
+    position: sticky;
+    top: 0px;
+}
+
+/** Central location for keeping track of all z-indexes on the app. */
+
+$z-layers: (
+    "grid-fill-handle" : 1,
+    "grid-header-container--sticky": 2,
+    "sticky-container": 2
+);
+
+/** Function that returns a z-index for a specific layer. You can set z-indexes relative to a layer too. E.g If you want a z-index greater than grid use z-index: setzindex("grid") + 1 */
+
+@function getzindex($layer) {
+    @return map-get($z-layers, $layer);
+}

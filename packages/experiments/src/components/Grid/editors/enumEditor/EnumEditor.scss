@@ -1,0 +1,53 @@
+@import '../../common/_mixins.scss';
+@import '../../common/fabric';
+
+.enum-editor {
+    @include flex-parent(row);
+    align-items:center;
+    position: relative;
+
+    > .enum-editor-value {
+        outline: 0;
+
+        // Make cursor invisible and give the text a shadow to still draw.
+        color: transparent;
+        text-shadow: 0 0 0 $ms-color-black;
+
+        // Make border invisible
+        border-color: transparent;
+    }
+
+    > .arrow-icon {
+        cursor: pointer;
+        position: absolute;
+        @include ms-right(0);
+    }
+}
+
+// Callout
+.enum-editor-options {
+    .enum-editor-option {
+        @include flex-parent;
+        cursor: pointer;
+
+        // Use CSS from ComboBox control in fabric to match UX
+        width: 100%;
+        height: auto;
+        min-height: 36px;
+        max-height: 40px;
+        line-height: 20px;
+        padding: 5px 16px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        text-align: left;
+        align-items: center;
+
+        &.selected {
+            background-color: $ms-color-neutralLight;
+        }
+
+        &:hover {
+            background-color: $ms-color-neutralLight;
+        }
+    }
+}

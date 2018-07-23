@@ -1,0 +1,34 @@
+@import './_mixins.scss';
+@import '../common/_fabric';
+.grid-width-container {
+    width: 100%;
+
+    &.virtualized-self {
+        overflow: auto;
+        height: 100%;
+    }
+}
+
+.grid-container .grid-body .grid-row .grid-cell.grid-empty {
+    @include ms-font-xl;
+    color: $ms-color-neutralPrimary;
+    text-align: center;
+}
+
+.grid-container .grid-body .grid-row .grid-cell,
+.grid-container .grid-header .grid-header-row, .grid-column-header-cell {
+    &.align-left {
+        @include ms-text-align(left);
+        justify-content: flex-start;
+    }
+
+    &.align-center {
+        text-align: center;
+        justify-content: center;
+    }
+
+    &.align-right {
+        @include ms-text-align(right);
+        justify-content: flex-end;
+    }
+}

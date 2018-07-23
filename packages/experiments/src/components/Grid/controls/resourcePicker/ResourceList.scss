@@ -1,0 +1,48 @@
+@import "../../common/_mixins";
+@import "../../common/_fabric";
+
+.resource-list-result-group-title {
+    @include ms-text-align(left);
+    color: $ms-color-themePrimary;
+    font-size: $ms-font-size-s;
+    padding: 24px 0 10px 0;
+}
+
+.resource-list-results {
+    min-width: 180px;
+
+    .resource-list-result {
+        @include flex-parent(row);
+        @include ms-text-align(left);
+
+        padding: 4px;
+        margin: 0;
+        height: auto;
+        border: none;
+
+        &:hover {
+            background: $ms-color-neutralLight;
+        }
+
+        > .hidden {
+            visibility: hidden;
+        }
+
+        > button.resource-list-persona {
+            @include flex-child-sizeFlexible();
+            background: none;
+            padding: 0;
+            cursor: pointer;
+            border: none;
+        }
+
+        > button.resource-list-cancel {
+            @include flex-child-sizeFixed();
+            background: none;
+            padding: 0;
+            cursor: pointer;
+            border: none;
+            font-size: $ms-icon-size-m;
+        }
+    }
+}

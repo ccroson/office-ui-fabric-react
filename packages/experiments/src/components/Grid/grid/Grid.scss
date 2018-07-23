@@ -1,0 +1,25 @@
+@import '../common/_mixins.scss';
+@import '../common/_fabric';
+$validationColor: #fde7e9;
+
+.validation-callout {
+    .ms-Callout-beak,
+    .ms-Callout-main {
+        background-color: $validationColor;
+    }
+    .validation-callout-content {
+        padding: 10px;
+        @include flex-parent(row);
+        align-items: center;
+        .ms-Icon {
+            @include ms-fontSize-m;
+            color: $ms-color-red;
+            @include flex-child-sizeFixed(auto);
+        }
+        .validation-message {
+            @include ms-font-s;
+            @include flex-child-sizeFlexible(auto);
+            @include ms-margin-left(10px);
+        }
+    }
+}

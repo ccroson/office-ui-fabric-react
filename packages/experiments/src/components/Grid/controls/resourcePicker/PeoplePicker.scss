@@ -1,0 +1,27 @@
+@import "../../common/_mixins";
+@import "../../common/_fabric";
+@import "../../common/_constantFabric";
+
+.peoplePicker {
+    min-width: 250px;
+    padding: 24px 16px 16px;
+
+    .peoplePicker-results {
+        max-height: 450px;
+        overflow-y: auto;
+    }
+
+    .peoplePicker-noresults {
+        padding: 10px;
+    }
+
+    #{$fabric-persona-primary-text},
+    #{$fabric-persona-secondary-text} {
+        max-width: 180px;
+        @include text-clip(ellipsis);
+    }
+
+    #{$fabric-search-box} {
+        margin: 0;
+    }
+}

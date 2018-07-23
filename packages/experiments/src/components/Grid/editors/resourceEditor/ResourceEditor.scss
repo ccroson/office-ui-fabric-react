@@ -1,0 +1,34 @@
+@import '../../common/_mixins';
+@import '../../common/_fabric';
+
+.resource-editor-container {
+    @include flex-parent(row);
+    width: 100%;
+    padding: 0;
+    align-items: center;
+    >.resource-editor-facepile {
+        @include flex-child-sizeFlexible(auto);
+        margin: 0;
+        border: none;
+        outline: 0;
+        > .ms-Facepile {
+            > .ms-Facepile-itemContainer {
+                > .ms-FocusZone.ms-Facepile-members {
+                    @include ms-padding-right(12px);
+
+                    > .ms-Facepile-itemButton.ms-Facepile-person {
+                        > .ms-Persona-coin.ms-Persona--size32 {
+                            @include ms-margin-right(-12px);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    >.ms-Icon.ms-Icon--People {
+        @include flex-child-sizeFixed(auto);
+        @include ms-padding-left(3px);
+        font-size: $ms-font-size-xl;
+        cursor: pointer;
+    }
+}
