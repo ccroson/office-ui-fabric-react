@@ -7,5 +7,5 @@ export type Identifiable<T> = IIdentity & T;
  * Interface that requires identification parameters
  */
 export interface IIdentity {
-  id: string;
+    id: string;
 }

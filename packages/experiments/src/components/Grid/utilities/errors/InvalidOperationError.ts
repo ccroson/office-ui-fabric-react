@@ -3,9 +3,9 @@
  * Invalid operation error
  */
 export class InvalidOperationError extends Error {
-  constructor(message?: string) {
-    super(message);
+    constructor(message?: string) {
+        super(message);
 
-    this.name = 'InvalidOperationError';
-  }
+        this.name = 'InvalidOperationError';
+    }
 }

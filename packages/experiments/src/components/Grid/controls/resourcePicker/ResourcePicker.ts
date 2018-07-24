@@ -1,2 +1,2 @@
-export * from './PeoplePicker';
-export * from './ResourceList';
+export * from "./PeoplePicker";
+export * from "./ResourceList";
