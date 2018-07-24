@@ -4,239 +4,238 @@ $cellDefaultBorderWidth: 1px;
 $selectedCellBorderWidth: 2px;
 $editingCellBorderWidth: 3px;
 $activeHeaderBorderWidth: 3px;
-$headerBoxShadowStyle: 0px 3px 3px rgba(0,0,0,0.05);
+$headerBoxShadowStyle: 0px 3px 3px rgba(0, 0, 0, 0.05);
 $fillHandleSize: 6px;
 $fillHandleOffset: 4px;
 
 .grid-container {
-    display: inline-table;
-    outline: 0;
-    > .grid-virtualized-container {
+  display: inline-table;
+  outline: 0;
+  > .grid-virtualized-container {
+    position: relative;
+    display: inline-flex;
+
+    > .grid-header-container {
+      &.grid-header-container--sticky {
+        @include positionStickyTop();
+        z-index: getzindex('grid-header-container--sticky');
+      }
+
+      > .sticky-container {
+        position: fixed;
+        overflow: hidden;
+        z-index: getzindex('sticky-container');
+        box-shadow: $headerBoxShadowStyle;
+      }
+      > .grid-header-relative-container {
         position: relative;
-        display: inline-flex;
+      }
+      .grid-header {
+        display: flex;
+        > .grid-header-row {
+          white-space: nowrap;
+          display: inline-flex;
+          box-sizing: border-box;
+          border-top: $cellDefaultBorderWidth solid;
+          border-bottom: $cellDefaultBorderWidth solid;
 
-        > .grid-header-container {
+          > .grid-row-header-cell {
+            box-sizing: border-box;
+          }
 
-            &.grid-header-container--sticky {
-                @include positionStickyTop();
-                z-index: getzindex("grid-header-container--sticky");
-            }
-
-            > .sticky-container {
-                position: fixed;
-                overflow: hidden;
-                z-index: getzindex("sticky-container");
-                box-shadow: $headerBoxShadowStyle;
-            }
-            > .grid-header-relative-container {
-                position: relative;
-            }
-            .grid-header {
-                display: flex;
-                > .grid-header-row {
-                    white-space: nowrap;
-                    display: inline-flex;
-                    box-sizing: border-box;
-                    border-top: $cellDefaultBorderWidth solid;
-                    border-bottom: $cellDefaultBorderWidth solid;
-
-                    > .grid-row-header-cell {
-                        box-sizing: border-box;
-                    }
-
-                    > .grid-column-header-cell {
-                        @include flex-parent();
-                        vertical-align: middle;
-                        position: relative;
-                        align-items: center;
-                        box-sizing: border-box;
-
-                        .grid-column-header-context-menu-indicator {
-                            @include flex-parent-centerAll();
-                            font-family: FullMDL2Assets;
-                            color: $ms-color-neutralPrimary;
-                            display: flex;
-                            width: 10px;
-                            min-height: 24px;
-                            height: 100%;
-                            cursor: pointer;
-                            font-size: 10px;
-                            @include ms-margin-left(3px);
-                        }
-
-                        &.grid-column-header-cell--clickable {
-                            cursor: pointer;
-                            &:hover {
-                                background-color: $ms-color-neutralLight;
-                            }
-                        }
-
-                        &.grid-column-header-cell--dragover {
-                            > .grid-column-header-cell-content {
-                                @include ms-padding-left(2px);
-                            }
-                        }
-
-                        > .grid-column-header-cell-content {
-                            @include ms-font-s;
-                            @include ms-fontWeight-semibold;
-                            @include ms-fontColor-neutralPrimary;
-                            white-space: nowrap;
-                            text-overflow: ellipsis;
-                            overflow: hidden;
-                            padding: 0 5px;
-                            box-sizing: border-box;
-                            width: 100%;
-
-                            > .grid-column-header-cell-content-parts {
-                                @include flex-parent();
-                                align-items: baseline;
-                            }
-                        }
-
-                        > .grid-column-header-drag-handle {
-                            @include ms-right(0);
-                            @include ms-padding-left(5px);
-                            position: absolute;
-                            top: 0;
-                            bottom: 0;
-                            width: 1px;
-                            background-clip: content-box;
-                            opacity: 0;
-                            transition: opacity 250ms;
-                            &.drag-handle--draggable {
-                                cursor: ew-resize;
-                            }
-                            &:hover.drag-handle--draggable,
-                            &.drag-handle--border {
-                                opacity: 1;
-                            }
-                        }
-                    }
-                }
-                &.grid-header--fixed {
-                    position: absolute;
-                }
-            }
-            > .grid-header-placeholder.grid-header-placeholder--fixed {
-                position: absolute;
-                top: 0;
-            }
-        }
-        > .grid {
-            position: absolute;
-            @include ms-left(0);
+          > .grid-column-header-cell {
+            @include flex-parent();
+            vertical-align: middle;
+            position: relative;
+            align-items: center;
             box-sizing: border-box;
 
-            &.scrolling {
-                pointer-events: none;
+            .grid-column-header-context-menu-indicator {
+              @include flex-parent-centerAll();
+              font-family: FullMDL2Assets;
+              color: $ms-color-neutralPrimary;
+              display: flex;
+              width: 10px;
+              min-height: 24px;
+              height: 100%;
+              cursor: pointer;
+              font-size: 10px;
+              @include ms-margin-left(3px);
             }
 
-            > .grid-body {
-                > .grid-row {
-                    display: flex;
-                    white-space: nowrap;
-
-                    > .grid-row-header-cell {
-                        box-sizing: border-box;
-                        border-bottom: $cellDefaultBorderWidth solid;
-
-                        & * {
-                            @include text-clip(ellipsis);
-                        }
-                    }
-
-                    > .grid-cell {
-                        position: relative;
-                        cursor: default;
-                        user-select: none;
-                        @include ms-font-m;
-                        box-sizing: border-box;
-                        display: flex;
-                        height: 100%;
-                        align-items: center;
-
-                        border-bottom: $cellDefaultBorderWidth solid;
-
-                        > .grid-cell-content {
-                            overflow: hidden;
-                            width: 100%;
-                        }
-
-                        &.grid-cell--hidden {
-                            border: 0;
-                            height: 0;
-                            padding: 0;
-                        }
-                        &.selectable {
-                            cursor: cell;
-                        }
-                        &.editing {
-                            border: $editingCellBorderWidth solid;
-
-                             > .grid-cell-content {
-                                 // adding negative margin to avoid shifting of content,
-                                 // $editingCellBorderWidth, since this had no left border by default
-                                @include ms-margin-left(-1 * $editingCellBorderWidth);
-
-                                // $editingCellBorderWidth - $cellDefaultBorderWidth, since this already had a right border by default
-                                @include ms-margin-right(-1 * ($editingCellBorderWidth - $cellDefaultBorderWidth));
-
-                                // $editingCellBorderWidth, since this had no top border by default
-                                margin-top: -1 * $editingCellBorderWidth;
-
-                                // $editingCellBorderWidth - $cellDefaultBorderWidth, since this already had a bottom border by default
-                                margin-bottom: -1 * ($editingCellBorderWidth - $cellDefaultBorderWidth);
-                            }
-                        }
-                        &.selectionEdgeLeft {
-                            @include ms-border-left($selectedCellBorderWidth, solid, null);
-
-                            > .grid-cell-content {
-                                // adding negative margin to avoid shifting of content,
-                                // $selectedCellBorderWidth, since this had no left border by default
-                                @include ms-margin-left(-1 * $selectedCellBorderWidth);
-                            }
-                        }
-                        &.selectionEdgeRight {
-                            @include ms-border-right($selectedCellBorderWidth, solid, null);
-
-                            > .grid-cell-content {
-                                // adding negative margin to avoid shifting of content,
-                                // $selectedCellBorderWidth, since this had no right border by default
-                                @include ms-margin-right(-1 * ($selectedCellBorderWidth));
-                            }
-                        }
-                        &.selectionEdgeTop {
-                            border-top: $selectedCellBorderWidth solid;
-
-                            > .grid-cell-content {
-                                // adding negative margin to avoid shifting of content,
-                                // $selectedCellBorderWidth, since this had no top border by default
-                                margin-top: -1 * $selectedCellBorderWidth;
-                            }
-                        }
-                        &.selectionEdgeBottom {
-                            border-bottom: $selectedCellBorderWidth solid;
-
-                            > .grid-cell-content {
-                                // adding negative margin to avoid shifting of content,
-                                // $selectedCellBorderWidth - $cellDefaultBorderWidth, since this already had a bottom border by default
-                                margin-bottom: -1 * ($selectedCellBorderWidth - $cellDefaultBorderWidth);
-                            }
-                        }
-                        > .grid-cell-fill-handle {
-                            position: absolute;
-                            width: $fillHandleSize;
-                            height: $fillHandleSize;
-                            bottom: -1 * $fillHandleOffset;
-                            @include ms-right(-1 * $fillHandleOffset);
-                            cursor: crosshair;
-                            z-index: getzindex("grid-fill-handle");
-                        }
-                    }
-                }
+            &.grid-column-header-cell--clickable {
+              cursor: pointer;
+              &:hover {
+                background-color: $ms-color-neutralLight;
+              }
             }
+
+            &.grid-column-header-cell--dragover {
+              > .grid-column-header-cell-content {
+                @include ms-padding-left(2px);
+              }
+            }
+
+            > .grid-column-header-cell-content {
+              @include ms-font-s;
+              @include ms-fontWeight-semibold;
+              @include ms-fontColor-neutralPrimary;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              padding: 0 5px;
+              box-sizing: border-box;
+              width: 100%;
+
+              > .grid-column-header-cell-content-parts {
+                @include flex-parent();
+                align-items: baseline;
+              }
+            }
+
+            > .grid-column-header-drag-handle {
+              @include ms-right(0);
+              @include ms-padding-left(5px);
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              width: 1px;
+              background-clip: content-box;
+              opacity: 0;
+              transition: opacity 250ms;
+              &.drag-handle--draggable {
+                cursor: ew-resize;
+              }
+              &:hover.drag-handle--draggable,
+              &.drag-handle--border {
+                opacity: 1;
+              }
+            }
+          }
         }
+        &.grid-header--fixed {
+          position: absolute;
+        }
+      }
+      > .grid-header-placeholder.grid-header-placeholder--fixed {
+        position: absolute;
+        top: 0;
+      }
     }
+    > .grid {
+      position: absolute;
+      @include ms-left(0);
+      box-sizing: border-box;
+
+      &.scrolling {
+        pointer-events: none;
+      }
+
+      > .grid-body {
+        > .grid-row {
+          display: flex;
+          white-space: nowrap;
+
+          > .grid-row-header-cell {
+            box-sizing: border-box;
+            border-bottom: $cellDefaultBorderWidth solid;
+
+            & * {
+              @include text-clip(ellipsis);
+            }
+          }
+
+          > .grid-cell {
+            position: relative;
+            cursor: default;
+            user-select: none;
+            @include ms-font-m;
+            box-sizing: border-box;
+            display: flex;
+            height: 100%;
+            align-items: center;
+
+            border-bottom: $cellDefaultBorderWidth solid;
+
+            > .grid-cell-content {
+              overflow: hidden;
+              width: 100%;
+            }
+
+            &.grid-cell--hidden {
+              border: 0;
+              height: 0;
+              padding: 0;
+            }
+            &.selectable {
+              cursor: cell;
+            }
+            &.editing {
+              border: $editingCellBorderWidth solid;
+
+              > .grid-cell-content {
+                // adding negative margin to avoid shifting of content,
+                // $editingCellBorderWidth, since this had no left border by default
+                @include ms-margin-left(-1 * $editingCellBorderWidth);
+
+                // $editingCellBorderWidth - $cellDefaultBorderWidth, since this already had a right border by default
+                @include ms-margin-right(-1 * ($editingCellBorderWidth - $cellDefaultBorderWidth));
+
+                // $editingCellBorderWidth, since this had no top border by default
+                margin-top: -1 * $editingCellBorderWidth;
+
+                // $editingCellBorderWidth - $cellDefaultBorderWidth, since this already had a bottom border by default
+                margin-bottom: -1 * ($editingCellBorderWidth - $cellDefaultBorderWidth);
+              }
+            }
+            &.selectionEdgeLeft {
+              @include ms-border-left($selectedCellBorderWidth, solid, null);
+
+              > .grid-cell-content {
+                // adding negative margin to avoid shifting of content,
+                // $selectedCellBorderWidth, since this had no left border by default
+                @include ms-margin-left(-1 * $selectedCellBorderWidth);
+              }
+            }
+            &.selectionEdgeRight {
+              @include ms-border-right($selectedCellBorderWidth, solid, null);
+
+              > .grid-cell-content {
+                // adding negative margin to avoid shifting of content,
+                // $selectedCellBorderWidth, since this had no right border by default
+                @include ms-margin-right(-1 * ($selectedCellBorderWidth));
+              }
+            }
+            &.selectionEdgeTop {
+              border-top: $selectedCellBorderWidth solid;
+
+              > .grid-cell-content {
+                // adding negative margin to avoid shifting of content,
+                // $selectedCellBorderWidth, since this had no top border by default
+                margin-top: -1 * $selectedCellBorderWidth;
+              }
+            }
+            &.selectionEdgeBottom {
+              border-bottom: $selectedCellBorderWidth solid;
+
+              > .grid-cell-content {
+                // adding negative margin to avoid shifting of content,
+                // $selectedCellBorderWidth - $cellDefaultBorderWidth, since this already had a bottom border by default
+                margin-bottom: -1 * ($selectedCellBorderWidth - $cellDefaultBorderWidth);
+              }
+            }
+            > .grid-cell-fill-handle {
+              position: absolute;
+              width: $fillHandleSize;
+              height: $fillHandleSize;
+              bottom: -1 * $fillHandleOffset;
+              @include ms-right(-1 * $fillHandleOffset);
+              cursor: crosshair;
+              z-index: getzindex('grid-fill-handle');
+            }
+          }
+        }
+      }
+    }
+  }
 }
