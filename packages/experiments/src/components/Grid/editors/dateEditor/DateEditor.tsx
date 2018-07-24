@@ -9,13 +9,12 @@ import { GridTheme } from '../../common/Types';
 
 // controls
 import { BaseComponent } from '../../utilities/BaseComponent';
-import { elementContains } from '../../../../../../utilities';
 import { Calendar, DayOfWeek } from 'office-ui-fabric-react/lib/Calendar';
 import { Callout, DirectionalHint } from 'office-ui-fabric-react/lib/Callout';
 import { GridAction, PickerOpenedAction } from '../../actions/GridActions';
 
 // Utilities
-import { autobind, css } from '../../../../Utilities';
+import { autobind, css, elementContains } from '../../../../Utilities';
 
 /**
  * The props for Date editor

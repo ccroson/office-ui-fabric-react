@@ -1,6 +1,6 @@
 // OneDrive:IgnoreCodeCoverage
 import * as React from 'react';
-import { getRTL } from '../../../../../Utilities';
+import { getRTL } from '../../../Utilities';
 
 export namespace RtlUtils {
   'use strict';
