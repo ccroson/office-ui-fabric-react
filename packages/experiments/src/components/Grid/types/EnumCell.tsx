@@ -99,6 +99,7 @@ export class EnumCell implements ICellType {
     context: CellContext
   ): JSX.Element | string {
     if (context.isEditable(context.coordinate)) {
+      const functionToCall = () => transitionToEditMode(new PickerOpenedAction());
       return (
         <EnumEditor
           enumOptions={this.enumOptions}
@@ -107,7 +108,7 @@ export class EnumCell implements ICellType {
           value={cellData}
           onValueUpdated={null}
           onEditConfirmed={null}
-          onCellClick={() => transitionToEditMode(new PickerOpenedAction())}
+          onCellClick={functionToCall}
           width={context.columnWidth}
           theme={context.theme}
         />

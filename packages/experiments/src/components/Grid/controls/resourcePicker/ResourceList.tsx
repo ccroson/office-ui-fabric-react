@@ -57,6 +57,7 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
     onItemRemove: null
   };
 
+  // tslint:disable-next-line:no-any
   constructor(props: IResourceListProps, context?: any) {
     super(props, context);
   }
@@ -73,7 +74,7 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
 
     return (
       <div className="resource-list-result-group">
-        {this.renderHeader()}
+        {this._renderHeader()}
         <FocusZone
           aria-label={listHeaderText}
           className="resource-list-results"
@@ -94,20 +95,20 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
    * @param {(id: string) => void} onClick Action to invoke when IconButton is clicked
    * @returns the icon component
    */
-  private renderRemoveButton(resource: Identifiable<IPersonaProps>) {
+  private _renderRemoveButton(resource: Identifiable<IPersonaProps>): JSX.Element {
     const { onItemRemoveClick } = this.props;
-
+    const onClick = () => {
+      if (onItemRemoveClick && resource) {
+        onItemRemoveClick(resource.id);
+      }
+    };
     return (
       <IconButton
         iconProps={{ iconName: Icons.Cancel }}
         aria-hidden={true}
         className={css('resource-list-cancel', { hidden: !onItemRemoveClick })}
         data-is-focusable={false}
-        onClick={() => {
-          if (onItemRemoveClick && resource) {
-            onItemRemoveClick(resource.id);
-          }
-        }}
+        onClick={onClick}
       />
     );
   }
@@ -115,7 +116,7 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
   /**
    * Render the resource group header
    */
-  private renderHeader() {
+  private _renderHeader(): JSX.Element | null {
     const { listHeaderText, resourceList, showHeaderIfNoData } = this.props;
 
     return (showHeaderIfNoData || _.size(resourceList)) && listHeaderText ? (
@@ -173,7 +174,7 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
             size={compactMode ? PersonaSize.extraSmall : PersonaSize.small}
           />
         </button>
-        {this.renderRemoveButton(resource)}
+        {this._renderRemoveButton(resource)}
       </div>
     );
   };

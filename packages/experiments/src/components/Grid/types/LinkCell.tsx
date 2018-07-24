@@ -29,19 +29,16 @@ export class LinkCell implements ICellType {
    * Return a Fabric Link element
    */
   public render(cellData: LinkCellData, context: CellContext): JSX.Element | string {
+    const onClick = (event: React.MouseEvent<HTMLElement>) => {
+      event.stopPropagation();
+      if (cellData.onClick) {
+        cellData.onClick();
+      }
+    };
+
     return (
       cellData && (
-        <a
-          className="grid-link"
-          tabIndex={-1}
-          href={cellData.href}
-          onClick={(event: React.MouseEvent<HTMLElement>) => {
-            event.stopPropagation();
-            if (cellData.onClick) {
-              cellData.onClick();
-            }
-          }}
-        >
+        <a className="grid-link" tabIndex={-1} href={cellData.href} onClick={onClick}>
           {this.toString(cellData)}
         </a>
       )
