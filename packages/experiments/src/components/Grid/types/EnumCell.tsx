@@ -12,7 +12,7 @@ import { StringUtils } from '../utilities/StringUtils';
  * True/false, Single choice, Flags, Enums
  */
 export class EnumCell implements ICellType {
-  public name: string = 'EnumCell';
+  public name = 'EnumCell';
 
   private enumOptions: EnumOption[];
 
@@ -37,14 +37,14 @@ export class EnumCell implements ICellType {
   public render(cellData: EnumCellData, cellContext: CellContext): JSX.Element | string {
     if (
       !cellData ||
-      (this.enumOptions == null || this.enumOptions.length <= 0) ||
+      (this.enumOptions === null || this.enumOptions.length <= 0) ||
       cellContext.inFooterRow ||
-      cellData.selectedEnumKey == null ||
+      cellData.selectedEnumKey === null ||
       cellData.selectedEnumKey.toString() === ''
     ) {
       return null;
     }
-    let value = _.find(this.enumOptions, (option: EnumOption) => {
+    const value = _.find(this.enumOptions, (option: EnumOption) => {
       return option.key === cellData.selectedEnumKey;
     }).text;
     return value;
@@ -64,6 +64,7 @@ export class EnumCell implements ICellType {
     cellData: EnumCellData,
     pendingUpdate: string | EnumCellData,
     action: GridAction,
+    // tslint:disable-next-line:no-any
     onValueUpdated: (updatedValue: any) => void,
     onEditCancelled: () => void,
     onEditConfirmed: (optionKey: string) => void,
@@ -88,7 +89,8 @@ export class EnumCell implements ICellType {
   /**
    * Return a JSX.Element or string in the selected mode, when this is the primary cell in the selection
    * @param cellData The cell data extracted through property or accessor
-   * @param transitionToEditMode The delegate to transition the grid to edit mode. Accepts optional action that would be passed to renderEditor
+   * @param transitionToEditMode The delegate to transition the grid to edit mode.
+   * Accepts optional action that would be passed to renderEditor
    * @param context The cell context which provides additional properties, usable for rendering
    */
   public renderSelected(
@@ -133,9 +135,10 @@ export class EnumCell implements ICellType {
    * @param originalValue The cell data extracted through property or accessor
    * @param changedValue The raw input to parse to Object
    */
+  // tslint:disable-next-line:no-any
   public parseRawInput(originalValue: EnumCellData, changedValue: string | EnumCellData | any): EnumKey {
     // Verify if the update already has the selected enum key
-    if (changedValue.selectedEnumKey != null) {
+    if (changedValue.selectedEnumKey !== null) {
       return changedValue.selectedEnumKey;
     }
     // Check if we have an exact match first where the key would be used from a dropdown item click

@@ -20,12 +20,12 @@ export class FixedRowPositionManager implements IRowPositionManager {
   /**
    * Update the configuration
    */
-  public setConfiguration(rowCount: number, estimatedSize: number) {
-    if (estimatedSize == null || estimatedSize <= 0) {
+  public setConfiguration(rowCount: number, estimatedSize: number): void {
+    if (estimatedSize === null || estimatedSize <= 0) {
       throw new ArgumentError('estimatedSize', 'estimatedSize must be greater than 0');
     }
 
-    if (rowCount == null || rowCount < 0) {
+    if (rowCount === null || rowCount < 0) {
       throw new ArgumentError('rowCount', 'rowCount must be greater than or equal to 0');
     }
 
@@ -61,10 +61,10 @@ export class FixedRowPositionManager implements IRowPositionManager {
       };
     }
 
-    let rowRange: RowRange = this.getVisibleRowRange(viewportHeight, scrollPosition, topOverscan, bottomOverscan);
-    let topInfo: RowBoundaries = this.getRowBounds(rowRange.start);
-    let bottomInfo: RowBoundaries = this.getRowBounds(rowRange.end);
-    let totalSize: number = this.getCombinedRowHeight();
+    const rowRange: RowRange = this._getVisibleRowRange(viewportHeight, scrollPosition, topOverscan, bottomOverscan);
+    const topInfo: RowBoundaries = this.getRowBounds(rowRange.start);
+    const bottomInfo: RowBoundaries = this.getRowBounds(rowRange.end);
+    const totalSize: number = this._getCombinedRowHeight();
 
     return {
       range: rowRange,
@@ -109,7 +109,7 @@ export class FixedRowPositionManager implements IRowPositionManager {
   /**
    * Get the total height of all the rows
    */
-  private getCombinedRowHeight(): number {
+  private _getCombinedRowHeight(): number {
     return this.rowCount * this.fixedRowHeight;
   }
 
@@ -120,19 +120,19 @@ export class FixedRowPositionManager implements IRowPositionManager {
    * @param topOverscan The number of extra rows to render before
    * @param bottomOverscan The number of extra rows to render after
    */
-  private getVisibleRowRange(
+  private _getVisibleRowRange(
     viewportHeight: number,
     scrollPosition: number,
     topOverscan: number,
     bottomOverscan: number
   ): RowRange {
-    let totalSize: number = this.getCombinedRowHeight();
+    const totalSize: number = this._getCombinedRowHeight();
     if (totalSize === 0) {
       return { start: -1, end: -1 };
     }
 
-    let startIndex: number = this.findNearestRow(scrollPosition);
-    let endIndex: number = startIndex + Math.floor(viewportHeight / this.fixedRowHeight) - 1;
+    const startIndex: number = this._findNearestRow(scrollPosition);
+    const endIndex: number = startIndex + Math.floor(viewportHeight / this.fixedRowHeight) - 1;
     return {
       start: Math.max(0, startIndex - topOverscan),
       end: Math.min(this.rowCount - 1, endIndex + bottomOverscan)
@@ -143,8 +143,8 @@ export class FixedRowPositionManager implements IRowPositionManager {
    * Find the nearest row to a certain scroll offset
    * @param offset The scroll offset
    */
-  private findNearestRow(offset: number): number {
-    let index: number = Math.floor(offset / this.fixedRowHeight);
+  private _findNearestRow(offset: number): number {
+    const index: number = Math.floor(offset / this.fixedRowHeight);
     return Math.min(index, this.rowCount - 1);
   }
 }

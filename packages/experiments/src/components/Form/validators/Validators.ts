@@ -6,8 +6,10 @@ export namespace Validators {
    * Returns a validator that checks for null and whitespace
    * @param errorMessage Required error message to display
    */
+  // tslint:disable-next-line:no-any
   export function required(errorMessage: string): (value?: any | null) => string | undefined {
     'use strict';
+    // tslint:disable-next-line:no-any
     return (value?: any): string | undefined => {
       if (value === null || value === undefined || value === '') {
         return errorMessage;
