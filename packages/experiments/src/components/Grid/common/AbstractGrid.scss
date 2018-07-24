@@ -1,6 +1,8 @@
 @import './_mixins.scss';
 @import '../common/_fabric';
-.grid-width-container {
+@import '~office-ui-fabric-react/src/common/common';
+
+:global .grid-width-container {
     width: 100%;
 
     &.virtualized-self {
@@ -9,14 +11,15 @@
     }
 }
 
-.grid-container .grid-body .grid-row .grid-cell.grid-empty {
+:global .grid-container .grid-body .grid-row .grid-cell.grid-empty {
     @include ms-font-xl;
     color: $ms-color-neutralPrimary;
     text-align: center;
 }
 
-.grid-container .grid-body .grid-row .grid-cell,
-.grid-container .grid-header .grid-header-row, .grid-column-header-cell {
+:global .grid-container .grid-body .grid-row .grid-cell,
+:global .grid-container .grid-header .grid-header-row, 
+:global .grid-column-header-cell {
     &.align-left {
         @include ms-text-align(left);
         justify-content: flex-start;

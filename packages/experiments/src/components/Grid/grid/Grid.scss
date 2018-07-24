@@ -1,7 +1,8 @@
 @import '../common/_mixins.scss';
 @import '../common/_fabric';
 $validationColor: #fde7e9;
-
+@import '~office-ui-fabric-react/src/common/common';
+:global
 .validationCallout {
     .ms-Callout-beak,
     .ms-Callout-main {

@@ -1,6 +1,8 @@
 @import "../../common/_mixins";
 @import "../../common/_fabric";
 @import "../../common/_constantFabric";
+@import '~office-ui-fabric-react/src/common/common';
+:global
 
 .peoplePicker {
     min-width: 250px;

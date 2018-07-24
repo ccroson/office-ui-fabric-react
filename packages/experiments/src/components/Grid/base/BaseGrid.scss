@@ -1,5 +1,6 @@
 @import '../common/_mixins.scss';
 @import '../common/_fabric';
+@import '~office-ui-fabric-react/src/common/common';
 $cellDefaultBorderWidth: 1px;
 $selectedCellBorderWidth: 2px;
 $editingCellBorderWidth: 3px;
@@ -8,6 +9,7 @@ $headerBoxShadowStyle: 0px 3px 3px rgba(0, 0, 0, 0.05);
 $fillHandleSize: 6px;
 $fillHandleOffset: 4px;
 
+:global
 .grid-container {
   display: inline-table;
   outline: 0;

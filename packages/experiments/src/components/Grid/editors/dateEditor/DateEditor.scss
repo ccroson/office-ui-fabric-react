@@ -1,5 +1,7 @@
 @import '../../common/_mixins.scss';
 @import '../../common/fabric';
+@import '~office-ui-fabric-react/src/common/common';
+:global
 .date-editor-container {
     width: 100%;
     padding: 0;

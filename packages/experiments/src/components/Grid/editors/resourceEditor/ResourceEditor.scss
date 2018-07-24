@@ -1,6 +1,7 @@
 @import '../../common/_mixins';
 @import '../../common/_fabric';
-
+@import '~office-ui-fabric-react/src/common/common';
+:global
 .resource-editor-container {
     @include flex-parent(row);
     width: 100%;

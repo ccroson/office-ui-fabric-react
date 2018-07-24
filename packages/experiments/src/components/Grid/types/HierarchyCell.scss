@@ -1,6 +1,7 @@
 @import '../common/_mixins.scss';
 @import '../common/_fabric.scss';
-
+@import '~office-ui-fabric-react/src/common/common';
+:global
 .hierarchy-cell {
     @include flex-parent(row);
 

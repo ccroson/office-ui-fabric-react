@@ -1,4 +1,6 @@
 @import '../common/_fabric';
+@import '~office-ui-fabric-react/src/common/common';
+:global
 .grid-link {
     color: $ms-color-black;
     &.ms-Link:not(.is-disabled):focus,

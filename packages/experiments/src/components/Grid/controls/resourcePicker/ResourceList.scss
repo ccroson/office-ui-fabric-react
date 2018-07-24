@@ -1,6 +1,7 @@
 @import "../../common/_mixins";
 @import "../../common/_fabric";
-
+@import '~office-ui-fabric-react/src/common/common';
+:global
 .resource-list-result-group-title {
     @include ms-text-align(left);
     color: $ms-color-themePrimary;
@@ -8,6 +9,7 @@
     padding: 24px 0 10px 0;
 }
 
+:global
 .resource-list-results {
     min-width: 180px;
 

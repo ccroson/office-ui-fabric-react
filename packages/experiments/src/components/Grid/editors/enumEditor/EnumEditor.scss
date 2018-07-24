@@ -1,6 +1,7 @@
 @import '../../common/_mixins.scss';
 @import '../../common/fabric';
-
+@import '~office-ui-fabric-react/src/common/common';
+:global
 .enum-editor {
     @include flex-parent(row);
     align-items:center;
@@ -25,6 +26,7 @@
 }
 
 // Callout
+:global
 .enum-editor-options {
     .enum-editor-option {
         @include flex-parent;
