@@ -52,7 +52,8 @@ export class MomentCalendarCell implements ICellType {
      * @param prevMonthAriaLabel an optional Aria-label for the 'previous month' button.
      * @param nextMonthAriaLabel an optional Aria-label for the 'next month' button.
      */
-    constructor(validationFailureErrorMessage: string, todayLabel: string, calendarFormat?: moment.CalendarSpec, prevMonthAriaLabel?: string, nextMonthAriaLabel?: string) {
+    constructor(validationFailureErrorMessage: string, todayLabel: string, calendarFormat?: moment.CalendarSpec,
+        prevMonthAriaLabel?: string, nextMonthAriaLabel?: string) {
         if (calendarFormat) {
             this.calendarFormat = calendarFormat;
         }
@@ -92,8 +93,9 @@ export class MomentCalendarCell implements ICellType {
         return (
             // sameElse is type string | moment.formatFunction so need to type check and use if a string otherwise undefined.
             <DateEditor
-                dateFormat={ (this.calendarFormat && typeof this.calendarFormat.sameElse === 'string') ? this.calendarFormat.sameElse : undefined }
-                value={ pendingUpdate != null ? pendingUpdate : cellData }
+                dateFormat={ (this.calendarFormat && typeof this.calendarFormat.sameElse === 'string') ?
+                this.calendarFormat.sameElse : undefined }
+                value={ pendingUpdate !== null ? pendingUpdate : cellData }
                 onValueUpdated={ onValueUpdated }
                 onEditConfirmed={ onEditConfirmed }
                 todayLabel={ this.todayLabel }
@@ -109,7 +111,8 @@ export class MomentCalendarCell implements ICellType {
     /**
      * Return a JSX.Element or string in the selected mode, when this is the primary cell in the selection
      * @param cellData The cell data extracted through property or accessor
-     * @param transitionToEditMode The delegate to transition the grid to edit mode. Accepts optional action that would be passed to renderEditor
+     * @param transitionToEditMode The delegate to transition the grid to edit mode. Accepts optional action that would be
+     * passed to renderEditor
      * @param context The cell context which provides additional properties, usable for rendering
      */
     public renderSelected(
@@ -118,10 +121,12 @@ export class MomentCalendarCell implements ICellType {
         context: CellContext
     ): JSX.Element | string {
         if (context.isEditable(context.coordinate)) {
+            const onCalendarClick =  () => transitionToEditMode(new PickerOpenedAction());
             return (
                 // sameElse is type string | moment.formatFunction so need to type check and use if a string otherwise undefined.
                 <DateEditor
-                    dateFormat={ (this.calendarFormat && typeof this.calendarFormat.sameElse === 'string') ? this.calendarFormat.sameElse : undefined }
+                    dateFormat={ (this.calendarFormat && typeof this.calendarFormat.sameElse === 'string') ?
+                    this.calendarFormat.sameElse : undefined }
                     value={ cellData }
                     onValueUpdated={ null }
                     onEditConfirmed={ null }
@@ -129,7 +134,7 @@ export class MomentCalendarCell implements ICellType {
                     prevMonthAriaLabel={ this.prevMonthAriaLabel }
                     nextMonthAriaLabel={ this.nextMonthAriaLabel }
                     isTextEditing={ false }
-                    onCalendarIconClicked={ () => transitionToEditMode(new PickerOpenedAction()) }
+                    onCalendarIconClicked={ onCalendarClick }
                     theme={ context.theme }
                 />
             );
@@ -180,6 +185,7 @@ export class MomentCalendarCell implements ICellType {
      * @param originalValue The cell data extracted through property or accessor
      * @param changedValue The raw input to parse to Object
      */
+    // tslint:disable-next-line:no-any
     public parseRawInput(originalValue: moment.Moment, changedValue: any): moment.Moment {
         if (!changedValue) {
             return null;
