@@ -1,5 +1,5 @@
 // OneDrive:IgnoreCodeCoverage
-
+// tslint:disable:no-any
 /**
  * Represents the user actions that need to be stored in the grid and the cell editors may be interested in.
  * e.g. Picker opened, type over etc.

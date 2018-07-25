@@ -1,4 +1,5 @@
 /*tslint:disable:member-ordering*/
+// tslint:disable:no-any
 import './BaseGrid.scss';
 import * as React from 'react';
 
@@ -1171,7 +1172,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             return;
         }
 
-        if (this.scrollableParent == null) {
+        if (this.scrollableParent === null) {
             // Container is already fixed on the page. Nothing to be done here
             return;
         }
@@ -2091,7 +2092,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         } = this.props;
 
         const rowSpan: number = getRowSpan ? getRowSpan(cellCoordinate) : 1;
-        if (rowSpan == null) {
+        if (rowSpan === null) {
             return 0;
         }
 

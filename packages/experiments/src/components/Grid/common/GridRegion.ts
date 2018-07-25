@@ -28,14 +28,14 @@ export class GridRegion {
      * Get the range of columns this region spans
      */
     public get columnRange(): RowRange {
-        return GridRegion.absoluteRange(this._primaryCoordinate.columnIndex, this._secondaryCoordinate.columnIndex);
+        return GridRegion._absoluteRange(this._primaryCoordinate.columnIndex, this._secondaryCoordinate.columnIndex);
     }
 
     /**
      * Get the range of rows this region spans
      */
     public get rowRange(): RowRange {
-        return GridRegion.absoluteRange(this._primaryCoordinate.rowIndex, this._secondaryCoordinate.rowIndex);
+        return GridRegion._absoluteRange(this._primaryCoordinate.rowIndex, this._secondaryCoordinate.rowIndex);
     }
     /** The initial corner of the region. Often corresponds to drag direction */
     private _primaryCoordinate: GridCoordinate;
@@ -48,12 +48,12 @@ export class GridRegion {
      * Ex. 4 - 1 => 1 - 4
      * Ex. 1 - 4 => 1 - 4
      */
-    private static absoluteRange(r1: number, r2?: number): RowRange {
-        if (r1 == null) {
+    private static _absoluteRange(r1: number, r2?: number): RowRange {
+        if (r1 === null) {
             throw new ArgumentNullError('r1', 'Cannot compute absolute range with null arg r1');
         }
 
-        if (r2 == null) {
+        if (r2 === null) {
             r2 = r1;
         }
 
@@ -73,7 +73,7 @@ export class GridRegion {
      * @param secondaryCoordinate The final coordinate of the region. @default primaryCoordinate
      */
     constructor(primaryCoordinate: GridCoordinate, secondaryCoordinate?: GridCoordinate) {
-        if (primaryCoordinate == null) {
+        if (primaryCoordinate === null) {
             throw new ArgumentNullError('primaryCoordinate');
         }
 
@@ -107,8 +107,10 @@ export class GridRegion {
      * find the smallest rectangular selection that fits those cells.
      * Does not create a copy of the selection
      * @param getRowSpan Get the row span for a cell coordinate
-     * @param getMappedCell A delegate that returns the mapped cell to use, for given a cell. In case of empty rowspanned cells, it returns the corresponding cell having a rowspan > 1
-     * @param addPartialCellsToSelection If we find a partially selected cell, should we add it to the selection? @default true
+     * @param getMappedCell A delegate that returns the mapped cell to use, for given a cell.
+     * In case of empty rowspanned cells, it returns the corresponding cell having a rowspan > 1
+     * @param addPartialCellsToSelection If we find a partially selected cell, should we add it to the
+     * selection? @default true
      */
     public fillPartialCells(
         getRowSpan: (cellCoordinate: GridCoordinate) => number,
@@ -134,7 +136,7 @@ export class GridRegion {
 
                 // Get the row span for the cell
                 const rowSpan: number = getRowSpan(cell);
-                if (rowSpan <= 0 || rowSpan == null) {
+                if (rowSpan <= 0 || rowSpan===null) {
                     throw new Error('Received a invalid rowspan value: ' + rowSpan + ' for cell: ' + cell.toString());
                 }
 
@@ -173,7 +175,7 @@ export class GridRegion {
 
                     // Get the row span for the cell
                     const rowSpan: number = getRowSpan(cell);
-                    if (rowSpan <= 0 || rowSpan == null) {
+                    if (rowSpan <= 0 || rowSpan===null) {
                         throw new Error('Received a invalid rowspan value: ' + rowSpan + ' for cell: ' + cell.toString());
                     }
 
@@ -207,7 +209,7 @@ export class GridRegion {
      * Get a cell's position information within a region.
      */
     public getCellPosition(cellCoordinate: GridCoordinate, rowSpan: number = 1): CellRegionPosition {
-        if (cellCoordinate == null) {
+        if (cellCoordinate===null) {
             throw new ArgumentNullError('cellCoordinate', 'Cannot get position of null cell coordinate');
         }
 
@@ -227,7 +229,7 @@ export class GridRegion {
      * @param cellCoordinate The current moused over cell
      */
     public getFillRegion(cellCoordinate: GridCoordinate): GridRegion {
-        if (cellCoordinate == null) {
+        if (cellCoordinate === null) {
             throw new ArgumentNullError('cellCoordinate', 'Cannot get fill region from null coordinate');
         }
 
@@ -235,9 +237,11 @@ export class GridRegion {
         const rowRange = this.rowRange;
 
         if (rowRange.end < cellCoordinate.rowIndex) { // the cell is below the selection region, filling down
-            return new GridRegion(new GridCoordinate(rowRange.end + 1, columnRange.start), new GridCoordinate(cellCoordinate.rowIndex, columnRange.end));
+            return new GridRegion(new GridCoordinate(rowRange.end + 1, columnRange.start),
+                new GridCoordinate(cellCoordinate.rowIndex, columnRange.end));
         } else if (rowRange.start > cellCoordinate.rowIndex) { // the cell is above the selection region, filling up
-            return new GridRegion(new GridCoordinate(rowRange.start - 1, columnRange.start), new GridCoordinate(cellCoordinate.rowIndex, columnRange.end));
+            return new GridRegion(new GridCoordinate(rowRange.start - 1, columnRange.start),
+                new GridCoordinate(cellCoordinate.rowIndex, columnRange.end));
         }
 
         return null;
@@ -247,7 +251,7 @@ export class GridRegion {
      * Checks to see if this cell is contained in the current region
      */
     public isCellInRegion(cellCoordinate: GridCoordinate): boolean {
-        if (cellCoordinate == null) {
+        if (cellCoordinate === null) {
             throw new ArgumentNullError('cellCoordinate', 'Cannot check a null coordinate');
         }
 
@@ -264,7 +268,7 @@ export class GridRegion {
      * Checks to see if the given region is overlapping with the current region
      */
     public isOverlapping(region: GridRegion): boolean {
-        if (region == null) {
+        if (region === null) {
             throw new ArgumentNullError('region', 'Cannot check a null region');
         }
 
@@ -292,7 +296,7 @@ export class GridRegion {
      * Checks to see if two regions are equivalent
      */
     public equals(other: GridRegion): boolean {
-        return other != null &&
+        return other !== null &&
             _.isEqual(other.rowRange, this.rowRange) &&
             _.isEqual(other.columnRange, this.columnRange);
     }
@@ -303,7 +307,7 @@ export class GridRegion {
      * ex. (0,0), (3,5) merge (1,0), (10,4) => (0,0), (10,5)
      */
     public merge(other: GridRegion): GridRegion {
-        if (other == null) {
+        if (other === null) {
             throw new ArgumentNullError('other', 'Cannot merge with a null region');
         }
 

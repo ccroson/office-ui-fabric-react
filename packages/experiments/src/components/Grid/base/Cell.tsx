@@ -163,7 +163,7 @@ export class Cell extends BaseComponent<ICellProps, {}> {
         }
 
         // Tree item is not allowed to have read only set
-        if (role !== GridConstants.TREEITEM_ROLE && ariaAndDataAttributes[GridConstants.ARIA_READONLY] == null) {
+        if (role !== GridConstants.TREEITEM_ROLE && ariaAndDataAttributes[GridConstants.ARIA_READONLY] === null) {
             ariaAndDataAttributes[GridConstants.ARIA_READONLY] = !isCellEditableValue ? 'true' : 'false';
         }
 

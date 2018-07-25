@@ -1554,7 +1554,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     if (columnDefinitions && columnDefinitions.length > 0) {
       _.forEach(columnDefinitions, (columnDefinition: IColumnDefinition) => {
         // Null checks
-        if (columnDefinition == null) {
+        if (columnDefinition === null) {
           throw new PropValidationError(componentName, 'columnDefinitions', 'Column definition must not be null');
         }
 
@@ -1566,7 +1566,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
           );
         }
 
-        if (columnDefinition.cell == null) {
+        if (columnDefinition.cell === null) {
           throw new PropValidationError(
             componentName,
             'columnDefinitions',
@@ -1574,7 +1574,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
           );
         }
 
-        if (columnDefinition.header == null) {
+        if (columnDefinition.header === null) {
           throw new PropValidationError(
             componentName,
             'columnDefinition',
@@ -1582,7 +1582,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
           );
         }
 
-        if (columnDefinition.cell.type == null) {
+        if (columnDefinition.cell.type === null) {
           throw new PropValidationError(
             componentName,
             'columnDefinition',
@@ -1620,7 +1620,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
         }
 
         // Validate column resize
-        if (columnDefinition.resizable && onColumnResize == null) {
+        if (columnDefinition.resizable && onColumnResize === null) {
           throw new PropValidationError(
             componentName,
             'onColumnResize',

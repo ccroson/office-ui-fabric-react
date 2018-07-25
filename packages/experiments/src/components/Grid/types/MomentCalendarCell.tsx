@@ -168,7 +168,7 @@ export class MomentCalendarCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      */
     public toString(cellData: moment.Moment): string {
-        if (cellData && this.validate(cellData) == null) {
+        if (cellData && this.validate(cellData) === null) {
             // if validate returns no error, this is a valid moment
             return cellData.calendar(null, this.calendarFormat ? this.calendarFormat : null);
         }

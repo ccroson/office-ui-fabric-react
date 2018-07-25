@@ -153,7 +153,7 @@ export class ResourceCell implements ICellType {
      * @returns {string} the string representation of the cell data
      */
     public toString(data: ResourceEditorData): string {
-        if (data == null) {
+        if (data === null) {
             return '';
         }
         return _.map(data.assignedResources, (resource: IResource) => resource.name).toString();

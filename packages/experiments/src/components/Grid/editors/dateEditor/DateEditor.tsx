@@ -319,7 +319,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
         if (moment.isMoment(value)) {
             return (value as moment.Moment).format(dateFormat);
         }
-        if (value == null) {
+        if (value === null) {
             return '';
         }
 

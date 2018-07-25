@@ -68,7 +68,7 @@ export class StringCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      */
     public toString(cellData: string): string {
-        if (cellData == null) {
+        if (cellData === null) {
             return '';
         }
         return cellData.toString();

@@ -921,7 +921,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     _.forEach(columnDefinitions, (columnDefinition: IColumnDefinition) => {
       // Validating the props for editing scenario
       if (columnDefinition.editable) {
-        if (onDataUpdated == null) {
+        if (onDataUpdated === null) {
           throw new PropValidationError(
             'Grid',
             'onDataUpdated',
@@ -929,7 +929,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
           );
         }
 
-        if (columnDefinition.cell.type.renderEditor == null) {
+        if (columnDefinition.cell.type.renderEditor === null) {
           throw new PropValidationError(
             'Grid',
             'renderEditor',
