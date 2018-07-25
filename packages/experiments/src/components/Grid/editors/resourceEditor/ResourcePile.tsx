@@ -15,7 +15,7 @@ import { BaseComponent } from '../../utilities/BaseComponent';
  * Setting this high so that Facepile cells will only be
  * limited by the width of the grid cell per requirements.
  */
-export const MAX_PERSONAS: number = 99;
+export const MAX_PERSONAS = 99;
 
 /**
  * The rendered width of face pile coin per persona size.
@@ -26,7 +26,7 @@ PERSONA_RENDERED_WIDTH[PersonaSize.size24] = 35;
 /**
  * Length of facepile at which the persona details are to be shown
  */
-export const FACEPILE_LENGTH_TO_SHOW_DETAILS_AT: number = 1;
+export const FACEPILE_LENGTH_TO_SHOW_DETAILS_AT = 1;
 
 export interface IResourcePileProps {
     resources: IResource[];
@@ -35,6 +35,7 @@ export interface IResourcePileProps {
 }
 
 export class ResourcePile extends BaseComponent<IResourcePileProps, {}> {
+    /* tslint:disable:no-any */
     constructor(props: IResourcePileProps, context: any) {
         super(props, context);
     }
@@ -49,9 +50,9 @@ export class ResourcePile extends BaseComponent<IResourcePileProps, {}> {
     protected renderComponent(): JSX.Element {
         const { resources, width, total } = this.props;
         // show details only if number of assigned resources equals to FACEPILE_LENGTH_TO_SHOW_DETAILS_AT
-        let showPersonalDetails: boolean = resources.length === FACEPILE_LENGTH_TO_SHOW_DETAILS_AT;
+        const showPersonalDetails: boolean = resources.length === FACEPILE_LENGTH_TO_SHOW_DETAILS_AT;
 
-        let maxPersonas = Math.floor(width / PERSONA_RENDERED_WIDTH[PersonaSize.size24]);
+        const maxPersonas = Math.floor(width / PERSONA_RENDERED_WIDTH[PersonaSize.size24]);
 
         let personas = _.map(resources, (resource: IResource): IFacepilePersona => {
             return {
@@ -75,19 +76,21 @@ export class ResourcePile extends BaseComponent<IResourcePileProps, {}> {
             ];
         }
 
+        const getPersona = (persona: IFacepilePersona) => {
+            return {
+                hidePersonaDetails: !showPersonalDetails,
+                imageShouldFadeIn: false,
+                text: persona.personaName,
+                imageUrl: persona.imageUrl
+            };
+        }; 
+        
         return (
             <Facepile
                 maxDisplayablePersonas={ maxPersonas || MAX_PERSONAS }
                 personas={ personas }
                 personaSize={ PersonaSize.size32 }
-                getPersonaProps={ (persona: IFacepilePersona) => {
-                    return {
-                        hidePersonaDetails: !showPersonalDetails,
-                        imageShouldFadeIn: false,
-                        text: persona.personaName,
-                        imageUrl: persona.imageUrl
-                    };
-                } }
+                getPersonaProps={ getPersona }
                 overflowButtonType={ OverflowButtonType.descriptive }
             />
         );

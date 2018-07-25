@@ -43,10 +43,10 @@ export class PersonaCell implements ICellType {
     public render(cellData: User, context: CellContext): JSX.Element {
         if (cellData) {
             return (
-                <Persona 
+                <Persona
                     imageUrl={ cellData && cellData.imageUrl }
                     text={ cellData && cellData.name }
-                    size={ PersonaSize.size32 } 
+                    size={ PersonaSize.size32 }
                 />
             );
         }

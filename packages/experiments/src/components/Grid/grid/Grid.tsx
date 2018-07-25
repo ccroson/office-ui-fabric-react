@@ -537,7 +537,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     const { selectionState } = this.state;
 
     super.onCellRightClick(cellCoordinate, event);
-    this.updateFromMouseEvent(event, this.stateManager.handleCellRightClick(selectionState, cellCoordinate));
+    this.updateFromMouseEvent(event, this.stateManager._handleCellRightClick(selectionState, cellCoordinate));
   }
 
   /**

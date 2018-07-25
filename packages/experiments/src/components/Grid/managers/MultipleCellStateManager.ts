@@ -41,9 +41,9 @@ export class MultipleCellStateManager extends StateManager {
         } = prevState;
 
         if (mode === GridMode.None) {
-            let minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
+            const minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
             if (minSelectableColumnIndex <= this.getMaxColumnIndex()) {
-                let newPrimaryCell: GridCoordinate = this.isColumnHeaderHidden ?
+                const newPrimaryCell: GridCoordinate = this.isColumnHeaderHidden ?
                     new GridCoordinate(0, minSelectableColumnIndex, false) :
                     new GridCoordinate(GridConstants.HEADER_ROW_INDEX, minSelectableColumnIndex, true);
 
@@ -71,7 +71,7 @@ export class MultipleCellStateManager extends StateManager {
         if (mode === GridMode.Select || mode === GridMode.Edit) {
             const rowSpan = this.getRowSpan(primaryCell);
             if (primaryCell.rowIndex + (rowSpan - 1) < this.getMaxRowIndex()) {
-                let newPrimaryCell: GridCoordinate = new GridCoordinate(primaryCell.rowIndex + rowSpan, primaryCell.columnIndex);
+                const newPrimaryCell: GridCoordinate = new GridCoordinate(primaryCell.rowIndex + rowSpan, primaryCell.columnIndex);
                 return {
                     ...prevState,
                     mode: GridMode.Select,
@@ -132,7 +132,7 @@ export class MultipleCellStateManager extends StateManager {
 
         if (mode === GridMode.Select || mode === GridMode.Edit) {
             const newPrimaryCell = this.getNextTabCell(primaryCell);
-            return this.handleTabHelper(prevState, newPrimaryCell);
+            return this._handleTabHelper(prevState, newPrimaryCell);
         }
     }
 
@@ -149,7 +149,7 @@ export class MultipleCellStateManager extends StateManager {
 
         if (mode === GridMode.Select || mode === GridMode.Edit) {
             const newPrimaryCell = this.getPreviousTabCell(primaryCell);
-            return this.handleTabHelper(prevState, newPrimaryCell);
+            return this._handleTabHelper(prevState, newPrimaryCell);
         }
     }
 
@@ -167,7 +167,7 @@ export class MultipleCellStateManager extends StateManager {
         if (mode === GridMode.Select && selections.length === 1) {
             const minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
             if (minSelectableColumnIndex !== -1) {
-                let selection: GridRegion = this.getPrimarySelection(prevState);
+                const selection: GridRegion = this._getPrimarySelection(prevState);
                 const alreadyHome: boolean = primaryCell.columnIndex === minSelectableColumnIndex;
                 if (!alreadyHome || !selection.isSingleCell()) {
                     const newPrimaryCell: GridCoordinate = this.getMappedCell(
@@ -198,7 +198,7 @@ export class MultipleCellStateManager extends StateManager {
         if (mode === GridMode.Select && selections.length === 1) {
             const minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
             if (minSelectableColumnIndex !== -1) {
-                let selection: GridRegion = this.getPrimarySelection(prevState);
+                const selection: GridRegion = this._getPrimarySelection(prevState);
                 const alreadyHome: boolean = primaryCell.rowIndex === 0 && primaryCell.columnIndex === minSelectableColumnIndex;
                 if (!alreadyHome || !selection.isSingleCell()) {
                     const newPrimaryCell: GridCoordinate = new GridCoordinate(0, minSelectableColumnIndex);
@@ -213,7 +213,8 @@ export class MultipleCellStateManager extends StateManager {
     }
 
     /**
-     * The Shift + Home shortcut should select all the cells from the primary cell to the first selectable cell in the row.
+     * The Shift + Home shortcut should select all the cells from the primary cell to the first
+     * selectable cell in the row.
      * @param prevState The previous selection state to transition from
      */
     public handleShiftHome(prevState: SelectionState): SelectionState {
@@ -224,9 +225,11 @@ export class MultipleCellStateManager extends StateManager {
 
         if (mode === GridMode.Select && selections.length === 1) {
             const minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
-            let selection: GridRegion = this.getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState);
             if (minSelectableColumnIndex !== -1 && selection.secondaryCoordinate.columnIndex !== minSelectableColumnIndex) {
-                const newSecondaryCoordinate: GridCoordinate = new GridCoordinate(selection.secondaryCoordinate.rowIndex, minSelectableColumnIndex);
+                const newSecondaryCoordinate: GridCoordinate =
+                    new GridCoordinate(selection.secondaryCoordinate.rowIndex, minSelectableColumnIndex);
+
                 const newSelection: GridRegion = this.getRectangularSelection(
                     new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate)
                 );
@@ -251,13 +254,14 @@ export class MultipleCellStateManager extends StateManager {
 
         if (mode === GridMode.Select && selections.length === 1) {
             const minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
-            let selection: GridRegion = this.getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState);
             const secondaryCoordinate: GridCoordinate = selection.secondaryCoordinate;
-            if (minSelectableColumnIndex !== -1 && (secondaryCoordinate.rowIndex !== 0 || secondaryCoordinate.columnIndex !== minSelectableColumnIndex)) {
-                const newSecondaryCoordinate: GridCoordinate = new GridCoordinate(0, minSelectableColumnIndex);
-                const newSelection: GridRegion = this.getRectangularSelection(
-                    new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate)
-                );
+            if (minSelectableColumnIndex !== -1 && (secondaryCoordinate.rowIndex !== 0 ||
+                secondaryCoordinate.columnIndex !== minSelectableColumnIndex)) {
+                    const newSecondaryCoordinate: GridCoordinate = new GridCoordinate(0, minSelectableColumnIndex);
+                    const newSelection: GridRegion = this.getRectangularSelection(
+                        new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate)
+                    );
 
                 return {
                     ...prevState,
@@ -282,7 +286,7 @@ export class MultipleCellStateManager extends StateManager {
             const maxSelectableColumnIndex: number = this.getMaxSelectableColumnIndex();
             if (maxSelectableColumnIndex !== -1) {
                 const alreadyEnd: boolean = primaryCell.columnIndex === maxSelectableColumnIndex;
-                let selection: GridRegion = this.getPrimarySelection(prevState);
+                const selection: GridRegion = this._getPrimarySelection(prevState);
                 if (!alreadyEnd || !selection.isSingleCell()) {
                     const newPrimaryCell: GridCoordinate = this.getMappedCell(
                         new GridCoordinate(primaryCell.rowIndex, maxSelectableColumnIndex, primaryCell.isColumnHeaderCell)
@@ -314,7 +318,7 @@ export class MultipleCellStateManager extends StateManager {
             if (maxSelectableColumnIndex !== -1) {
                 const maxRowIndex: number = this.getMaxRowIndex();
                 const alreadyEnd: boolean = primaryCell.rowIndex === maxRowIndex && primaryCell.columnIndex === maxSelectableColumnIndex;
-                let selection: GridRegion = this.getPrimarySelection(prevState);
+                const selection: GridRegion = this._getPrimarySelection(prevState);
 
                 if (!alreadyEnd || !selection.isSingleCell()) {
                     const newPrimaryCell: GridCoordinate = this.getMappedCell(
@@ -332,7 +336,8 @@ export class MultipleCellStateManager extends StateManager {
     }
 
     /**
-     * The Shift + End shortcut should select all the cells between the primary cell and the last selectable cell in the row
+     * The Shift + End shortcut should select all the cells between the primary cell and the last
+     * selectable cell in the row
      * @param prevState The previous selection state to transition from
      */
     public handleShiftEnd(prevState: SelectionState): SelectionState {
@@ -343,11 +348,12 @@ export class MultipleCellStateManager extends StateManager {
 
         if (mode === GridMode.Select && selections.length === 1) {
             const maxSelectableColumnIndex: number = this.getMaxSelectableColumnIndex();
-            let selection: GridRegion = this.getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState);
             const secondaryCoordinate: GridCoordinate = selection.secondaryCoordinate;
 
             if (maxSelectableColumnIndex !== -1 && secondaryCoordinate.columnIndex !== maxSelectableColumnIndex) {
-                const newSecondaryCoordinate: GridCoordinate = new GridCoordinate(selection.secondaryCoordinate.rowIndex, maxSelectableColumnIndex);
+                const newSecondaryCoordinate: GridCoordinate = new
+                 GridCoordinate(selection.secondaryCoordinate.rowIndex, maxSelectableColumnIndex);
                 const newSelection: GridRegion = this.getRectangularSelection(
                     new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate)
                 );
@@ -373,14 +379,15 @@ export class MultipleCellStateManager extends StateManager {
         if (mode === GridMode.Select && selections.length === 1) {
             const maxRowIndex: number = this.getMaxRowIndex();
             const maxSelectableColumnIndex: number = this.getMaxSelectableColumnIndex();
-            let selection: GridRegion = this.getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState);
             const secondaryCoordinate: GridCoordinate = selection.secondaryCoordinate;
 
-            if (maxSelectableColumnIndex !== -1 && (secondaryCoordinate.rowIndex !== maxRowIndex || secondaryCoordinate.columnIndex !== maxSelectableColumnIndex)) {
-                const newSecondaryCoordinate: GridCoordinate = new GridCoordinate(maxRowIndex, maxSelectableColumnIndex);
-                const newSelection: GridRegion = this.getRectangularSelection(
-                    new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate)
-                );
+            if (maxSelectableColumnIndex !== -1 && (secondaryCoordinate.rowIndex !== maxRowIndex ||
+                secondaryCoordinate.columnIndex !== maxSelectableColumnIndex)) {
+                    const newSecondaryCoordinate: GridCoordinate = new GridCoordinate(maxRowIndex, maxSelectableColumnIndex);
+                    const newSelection: GridRegion = this.getRectangularSelection(
+                        new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate)
+                    );
 
                 return {
                     ...prevState,
@@ -433,10 +440,12 @@ export class MultipleCellStateManager extends StateManager {
         } = prevState;
 
         if (mode === GridMode.Select && selections.length === 1) {
-            let selection: GridRegion = this.getPrimarySelection(prevState);
-            if (selection.secondaryCoordinate.columnIndex > 0 && this.isColumnSelectable(selection.secondaryCoordinate.columnIndex - 1)) {
-                let newSecondaryCoordinate: GridCoordinate = new GridCoordinate(selection.secondaryCoordinate.rowIndex, selection.secondaryCoordinate.columnIndex - 1);
-                let newSelection: GridRegion = this.getRectangularSelection(
+            const selection: GridRegion = this._getPrimarySelection(prevState);
+            if (selection.secondaryCoordinate.columnIndex > 0 &&
+                this.isColumnSelectable(selection.secondaryCoordinate.columnIndex - 1)) {
+                const newSecondaryCoordinate: GridCoordinate = new
+                GridCoordinate(selection.secondaryCoordinate.rowIndex, selection.secondaryCoordinate.columnIndex - 1);
+                const newSelection: GridRegion = this.getRectangularSelection(
                     new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate)
                 );
 
@@ -475,7 +484,7 @@ export class MultipleCellStateManager extends StateManager {
         } = prevState;
 
         if (mode === GridMode.Select) {
-            let newSelection: GridRegion;
+            const newSelection: GridRegion;
             const newPrimaryCell = this.getNextTabCell(primaryCell);
 
             if (newPrimaryCell) {
@@ -524,12 +533,14 @@ export class MultipleCellStateManager extends StateManager {
         } = prevState;
 
         if (mode === GridMode.Select && selections.length === 1) {
-            let selection: GridRegion = this.getPrimarySelection(prevState);
-            if (selection.secondaryCoordinate.columnIndex < this.getMaxColumnIndex() && this.isColumnSelectable(selection.secondaryCoordinate.columnIndex + 1)) {
-                let newSecondaryCoordinate: GridCoordinate = new GridCoordinate(selection.secondaryCoordinate.rowIndex, selection.secondaryCoordinate.columnIndex + 1);
-                let newSelection: GridRegion = this.getRectangularSelection(
-                    new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate)
-                );
+            const selection: GridRegion = this._getPrimarySelection(prevState);
+            if (selection.secondaryCoordinate.columnIndex < this.getMaxColumnIndex() &&
+                this.isColumnSelectable(selection.secondaryCoordinate.columnIndex + 1)) {
+                    const newSecondaryCoordinate: GridCoordinate = new
+                    GridCoordinate(selection.secondaryCoordinate.rowIndex, selection.secondaryCoordinate.columnIndex + 1);
+                        const newSelection: GridRegion = this.getRectangularSelection(
+                            new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate)
+                        );
 
                 return {
                     ...prevState,
@@ -603,14 +614,15 @@ export class MultipleCellStateManager extends StateManager {
         } = prevState;
 
         if (mode === GridMode.Select && selections.length === 1 && !prevState.primaryCell.isColumnHeaderCell) {
-            let selection: GridRegion = this.getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState);
             if (selection.secondaryCoordinate.rowIndex < this.getMaxRowIndex()) {
-                let newSecondaryCoordinate: GridCoordinate = new GridCoordinate(selection.secondaryCoordinate.rowIndex + 1, selection.secondaryCoordinate.columnIndex);
-                let newSelection: GridRegion = new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate);
-                newSelection = this.getRectangularSelection(
-                    newSelection,
-                    newSelection.rowRange.start !== newSelection.secondaryCoordinate.rowIndex
-                );
+                const newSecondaryCoordinate: GridCoordinate = new
+                GridCoordinate(selection.secondaryCoordinate.rowIndex + 1, selection.secondaryCoordinate.columnIndex);
+                    let newSelection: GridRegion = new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate);
+                    newSelection = this.getRectangularSelection(
+                        newSelection,
+                        newSelection.rowRange.start !== newSelection.secondaryCoordinate.rowIndex
+                    );
 
                 return {
                     ...prevState,
@@ -632,7 +644,7 @@ export class MultipleCellStateManager extends StateManager {
 
         if (mode === GridMode.Select && selections.length === 1) {
             const maxRowIndex = this.getMaxRowIndex();
-            let selection: GridRegion = this.getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState);
             const secondaryCoordinate: GridCoordinate = selection.secondaryCoordinate;
             const rowSpan = this.getRowSpan(secondaryCoordinate);
             if (secondaryCoordinate.rowIndex + (rowSpan - 1) !== maxRowIndex) {
@@ -668,7 +680,7 @@ export class MultipleCellStateManager extends StateManager {
                 newPrimaryCell = this.getMappedCell(
                     new GridCoordinate(primaryCell.rowIndex - 1, primaryCell.columnIndex));
             } else {
-                return; //No action
+                return; // No action
             }
 
             newSelection = new GridRegion(newPrimaryCell);
@@ -716,14 +728,15 @@ export class MultipleCellStateManager extends StateManager {
         } = prevState;
 
         if (mode === GridMode.Select && selections.length === 1) {
-            let selection: GridRegion = this.getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState);
             if (selection.secondaryCoordinate.rowIndex > 0) {
-                let newSecondaryCoordinate: GridCoordinate = new GridCoordinate(selection.secondaryCoordinate.rowIndex - 1, selection.secondaryCoordinate.columnIndex);
-                let newSelection: GridRegion = new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate);
-                newSelection = this.getRectangularSelection(
-                    newSelection,
-                    newSelection.rowRange.end !== newSelection.secondaryCoordinate.rowIndex
-                );
+                const newSecondaryCoordinate: GridCoordinate = new
+                GridCoordinate(selection.secondaryCoordinate.rowIndex - 1, selection.secondaryCoordinate.columnIndex);
+                    let newSelection: GridRegion = new GridRegion(selection.primaryCoordinate, newSecondaryCoordinate);
+                    newSelection = this.getRectangularSelection(
+                        newSelection,
+                        newSelection.rowRange.end !== newSelection.secondaryCoordinate.rowIndex
+                    );
 
                 return {
                     ...prevState,
@@ -744,7 +757,7 @@ export class MultipleCellStateManager extends StateManager {
         } = prevState;
 
         if (mode === GridMode.Select && selections.length === 1) {
-            let selection: GridRegion = this.getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState);
             const secondaryCoordinate: GridCoordinate = selection.secondaryCoordinate;
             if (secondaryCoordinate.rowIndex !== 0) {
                 const newSecondaryCoordinate: GridCoordinate = new GridCoordinate(0, secondaryCoordinate.columnIndex);
@@ -811,7 +824,7 @@ export class MultipleCellStateManager extends StateManager {
         } = prevState;
 
         if (this.isColumnSelectable(target.columnIndex) && mode !== GridMode.None) {
-            let updatedSelections: GridRegion[] = this.expandPrimarySelection(prevState, target);
+            const updatedSelections: GridRegion[] = this._expandPrimarySelection(prevState, target);
             if (updatedSelections) {
                 return {
                     ...prevState,
@@ -834,7 +847,7 @@ export class MultipleCellStateManager extends StateManager {
 
         if (this.isColumnSelectable(target.columnIndex)) {
 
-            let newSelections: GridRegion[] = [...selections];
+            const newSelections: GridRegion[] = [...selections];
             // if clicked outside, add another region
             if (!GridUtilities.isCellInsideAnySelection(target, selections)) {
                 newSelections.push(new GridRegion(target));
@@ -865,7 +878,7 @@ export class MultipleCellStateManager extends StateManager {
         if (mode === GridMode.Selecting) {
             if (this.isColumnSelectable(target.columnIndex)) {
 
-                let updatedSelections: GridRegion[] = this.expandPrimarySelection(prevState, target);
+                const updatedSelections: GridRegion[] = this._expandPrimarySelection(prevState, target);
                 if (updatedSelections) {
                     return {
                         ...prevState,
@@ -874,7 +887,7 @@ export class MultipleCellStateManager extends StateManager {
                 }
             }
         } else if (mode === GridMode.Filling && selections.length === 1) {
-            let selection: GridRegion = this.getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState);
             const newFillSelection = selection.getFillRegion(target);
             // if newFillSelection is null and fillSelection is not, we need to set the fillSelection to null
             if (newFillSelection !== fillSelection || (newFillSelection && !newFillSelection.equals(fillSelection))) {
@@ -907,7 +920,7 @@ export class MultipleCellStateManager extends StateManager {
         }
     }
 
-    private handleTabHelper(prevState: SelectionState, newPrimaryCell: GridCoordinate): SelectionState {
+    private _handleTabHelper(prevState: SelectionState, newPrimaryCell: GridCoordinate): SelectionState {
         if (newPrimaryCell) {
             return {
                 ...prevState,
@@ -923,7 +936,7 @@ export class MultipleCellStateManager extends StateManager {
         }
     }
 
-    private getPrimarySelection(selectionState: SelectionState) {
+    private _getPrimarySelection(selectionState: SelectionState): GridRegion | undefined {
         const {
             primaryCell,
             selections
@@ -938,7 +951,7 @@ export class MultipleCellStateManager extends StateManager {
      * @param target The target cell
      * @returns an array of new selection, if there is no overlap, otherwise retuns null
      */
-    private expandPrimarySelection(prevState: SelectionState, target: GridCoordinate): GridRegion[] {
+    private _expandPrimarySelection(prevState: SelectionState, target: GridCoordinate): GridRegion[] {
         const {
             primaryCell,
             selections
@@ -947,13 +960,13 @@ export class MultipleCellStateManager extends StateManager {
         // If this cell is mapped, get the mapped cell
         target = this.getMappedCell(target);
 
-        let newSelection: GridRegion = this.getRectangularSelection(
+        const newSelection: GridRegion = this.getRectangularSelection(
             new GridRegion(primaryCell, target)
         );
 
         // if the new selection causes overlap, ignore it, we don't want to have overlapping selections.
-        let nonPrimarySelections: GridRegion[] = _.filter(selections, (selection: GridRegion) => !selection.isCellInRegion(primaryCell));
-        let updateSelection: boolean = true;
+        const nonPrimarySelections: GridRegion[] = _.filter(selections, (selection: GridRegion) => !selection.isCellInRegion(primaryCell));
+        let updateSelection = true;
         _.forEach(nonPrimarySelections, (selection: GridRegion) => {
             if (selection.isOverlapping(newSelection)) {
                 updateSelection = false;

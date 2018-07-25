@@ -300,7 +300,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
         } = this.state;
 
         super.onCellRightClick(cellCoordinate, event);
-        this.updateFromEvent(event, this.stateManager.handleCellRightClick(selectionState, cellCoordinate));
+        this.updateFromEvent(event, this.stateManager._handleCellRightClick(selectionState, cellCoordinate));
     }
 
     /*-------------------

@@ -24,7 +24,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      */
     public handleFocus(prevState: SelectionState): SelectionState {
-        return this.wrapCellHandler(() => super.handleFocus(prevState));
+        return this._wrapCellHandler(() => super.handleFocus(prevState));
     }
 
     /**
@@ -32,7 +32,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      */
     public handleEnter(prevState: SelectionState): SelectionState {
-        return this.wrapCellHandler(() => super.handleEnter(prevState));
+        return this._wrapCellHandler(() => super.handleEnter(prevState));
     }
 
     /**
@@ -40,7 +40,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      */
     public handleShiftEnter(prevState: SelectionState): SelectionState {
-        return this.wrapCellHandler(() => super.handleShiftEnter(prevState));
+        return this._wrapCellHandler(() => super.handleShiftEnter(prevState));
     }
 
     /**
@@ -72,7 +72,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      */
     public handleControlHome(prevState: SelectionState): SelectionState {
-        return this.wrapCellHandler(() => super.handleControlHome(prevState));
+        return this._wrapCellHandler(() => super.handleControlHome(prevState));
     }
 
     /**
@@ -88,7 +88,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      */
     public handleControlShiftHome(prevState: SelectionState): SelectionState {
-        return this.wrapCellHandler(() => super.handleControlShiftHome(prevState));
+        return this._wrapCellHandler(() => super.handleControlShiftHome(prevState));
     }
 
     /**
@@ -104,7 +104,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      */
     public handleControlEnd(prevState: SelectionState): SelectionState {
-        return this.wrapCellHandler(() => super.handleControlEnd(prevState));
+        return this._wrapCellHandler(() => super.handleControlEnd(prevState));
     }
 
     /**
@@ -120,7 +120,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      */
     public handleControlShiftEnd(prevState: SelectionState): SelectionState {
-        return this.wrapCellHandler(() => super.handleControlShiftEnd(prevState));
+        return this._wrapCellHandler(() => super.handleControlShiftEnd(prevState));
     }
 
     /**
@@ -208,7 +208,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      */
     public handleUp(prevState: SelectionState): SelectionState {
-        return this.wrapCellHandler(() => super.handleUp(prevState));
+        return this._wrapCellHandler(() => super.handleUp(prevState));
     }
 
     /**
@@ -224,7 +224,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      */
     public handleShiftUp(prevState: SelectionState): SelectionState {
-        return this.wrapCellHandler(() => super.handleShiftUp(prevState));
+        return this._wrapCellHandler(() => super.handleShiftUp(prevState));
     }
 
     /**
@@ -240,7 +240,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      */
     public handleDown(prevState: SelectionState): SelectionState {
-        return this.wrapCellHandler(() => super.handleDown(prevState));
+        return this._wrapCellHandler(() => super.handleDown(prevState));
     }
 
     /**
@@ -256,7 +256,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      */
     public handleShiftDown(prevState: SelectionState): SelectionState {
-        return this.wrapCellHandler(() => super.handleShiftDown(prevState));
+        return this._wrapCellHandler(() => super.handleShiftDown(prevState));
     }
 
     /**
@@ -276,7 +276,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param target The pressed cell
      */
     public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
-        return this.wrapCellHandler(() => super.handleCellMouseDown(prevState, target));
+        return this._wrapCellHandler(() => super.handleCellMouseDown(prevState, target));
     }
 
     /**
@@ -286,22 +286,22 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param target The moused enter cell
      */
     public handleCellMouseEnter(prevState: SelectionState, target: GridCoordinate): SelectionState {
-        return this.wrapCellHandler(() => super.handleCellMouseEnter(prevState, target));
+        return this._wrapCellHandler(() => super.handleCellMouseEnter(prevState, target));
     }
 
     /** Handle the event when a Cell is right clicked */
     public handleCellRightClick(prevState: SelectionState, target: GridCoordinate): SelectionState {
-        return this.wrapCellHandler(() => super.handleCellRightClick(prevState, target));
+        return this._wrapCellHandler(() => super.handleCellRightClick(prevState, target));
     }
 
     /** Handle the event when a mousedown occurs on a Cell with the shift key */
     public handleShiftCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
-        return this.wrapCellHandler(() => super.handleShiftCellMouseDown(prevState, target));
+        return this._wrapCellHandler(() => super.handleShiftCellMouseDown(prevState, target));
     }
 
     /** Handle the event when a mousedown occurs on a Cell with the ctrl key */
     public handleControlCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
-        return this.wrapCellHandler(() => super.handleControlCellMouseDown(prevState, target));
+        return this._wrapCellHandler(() => super.handleControlCellMouseDown(prevState, target));
     }
 
     /**
@@ -310,11 +310,11 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous state to execute the handler with
      * @param target The optional target to execute the handler with
      */
-    private wrapCellHandler(handler: () => SelectionState): SelectionState {
-        let cellState: SelectionState = handler();
+    private _wrapCellHandler(handler: () => SelectionState): SelectionState {
+        const cellState: SelectionState = handler();
         if (cellState) {
             cellState.selections = _.map(cellState.selections, (selection: GridRegion) => {
-                let newSelection = this.expandToRowSelection(selection);
+                const newSelection = this.expandToRowSelection(selection);
                 newSelection.primaryCoordinate.isRowHeaderCell = true;
                 return newSelection;
             });

@@ -117,7 +117,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * @param target The moused down cell
      */
     public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
-        let newState: SelectionState = super.handleCellMouseDown(prevState, target);
+        const newState: SelectionState = super.handleCellMouseDown(prevState, target);
         if (newState) {
             newState.mode = GridMode.Select;
             return newState;

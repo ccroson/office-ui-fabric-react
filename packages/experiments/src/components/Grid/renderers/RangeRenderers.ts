@@ -3,11 +3,12 @@ export namespace RangeRenderers {
     /**
      * Render elements using a cache if the page is scrolling
      */
-    export function cachedRenderer({ startIndex, endIndex, cache = {}, getKey, isScrolling = false, render }: RenderRangeParameters): JSX.Element[] {
-        let renderedRange: JSX.Element[] = [];
+    export function cachedRenderer({ startIndex, endIndex, cache = {},
+        getKey, isScrolling = false, render }: RenderRangeParameters): JSX.Element[] {
+        const renderedRange: JSX.Element[] = [];
         for (let index: number = startIndex; index <= endIndex; index++) {
             // If we are not scrolling, update the cached entry and use the rendered item
-            let key = getKey(index);
+            const key = getKey(index);
             if (!isScrolling || !cache[key]) {
                 cache[key] = render(index);
             }
@@ -22,7 +23,7 @@ export namespace RangeRenderers {
      * Default renderer for elements
      */
     export function defaultRenderer({ startIndex, endIndex, render }: RenderRangeParameters): JSX.Element[] {
-        let renderedRange: JSX.Element[] = [];
+        const renderedRange: JSX.Element[] = [];
         for (let index: number = startIndex; index <= endIndex; index++) {
             renderedRange.push(render(index));
         }

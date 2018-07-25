@@ -340,8 +340,8 @@ export abstract class StateManager {
      * @param selection The selection to expand
      */
     protected expandToRowSelection(selection: GridRegion): GridRegion {
-        let minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
-        let maxSelectableColumnIndex: number = this.getMaxSelectableColumnIndex();
+        const minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
+        const maxSelectableColumnIndex: number = this.getMaxSelectableColumnIndex();
         if (minSelectableColumnIndex <= this.getMaxColumnIndex() && maxSelectableColumnIndex >= 0) {
             // create a new region using min,max selectable column and the primary,secondary coordinates from the original region
             return new GridRegion(

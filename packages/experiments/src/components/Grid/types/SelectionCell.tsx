@@ -1,3 +1,4 @@
+/* tslint:disable:no-any */
 import * as React from 'react';
 
 import { Check } from 'office-ui-fabric-react/lib-commonjs/Check';

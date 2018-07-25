@@ -1,3 +1,4 @@
+/* tslint:disable:no-any */
 import './LinkCell.scss';
 import * as React from 'react';
 import * as _ from 'lodash';
@@ -29,18 +30,19 @@ export class LinkCell implements ICellType {
      * Return a Fabric Link element
      */
     public render(cellData: LinkCellData, context: CellContext): JSX.Element | string {
+        const onClick = (event: React.MouseEvent<HTMLElement>) => {
+            event.stopPropagation();
+            if (cellData.onClick) {
+                cellData.onClick();
+            }
+        };
         return (
             cellData &&
             <a
-                className='grid-link'
+                className="grid-link"
                 tabIndex={ -1 }
                 href={ cellData.href }
-                onClick={ (event: React.MouseEvent<HTMLElement>) => {
-                    event.stopPropagation();
-                    if (cellData.onClick) {
-                        cellData.onClick();
-                    }
-                } }
+                onClick={ onClick }
             >
                 { this.toString(cellData) }
             </a>

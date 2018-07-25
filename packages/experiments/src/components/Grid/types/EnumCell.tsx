@@ -1,3 +1,4 @@
+/* tslint:disable:no-any */
 import * as _ from 'lodash';
 import * as React from 'react';
 
@@ -12,7 +13,7 @@ import { StringUtils } from '../utilities/StringUtils';
  * True/false, Single choice, Flags, Enums
  */
 export class EnumCell implements ICellType {
-  public name: string = 'EnumCell';
+  public name = 'EnumCell';
 
   private enumOptions: EnumOption[];
 
@@ -37,9 +38,9 @@ export class EnumCell implements ICellType {
   public render(cellData: EnumCellData, cellContext: CellContext): JSX.Element | string | null {
     if (
       !cellData ||
-      (this.enumOptions == null || this.enumOptions.length <= 0) ||
+      (this.enumOptions === null || this.enumOptions.length <= 0) ||
       cellContext.inFooterRow ||
-      cellData.selectedEnumKey == null ||
+      cellData.selectedEnumKey === null ||
       cellData.selectedEnumKey.toString() === ''
     ) {
       return null;
@@ -89,7 +90,8 @@ export class EnumCell implements ICellType {
   /**
    * Return a JSX.Element or string in the selected mode, when this is the primary cell in the selection
    * @param cellData The cell data extracted through property or accessor
-   * @param transitionToEditMode The delegate to transition the grid to edit mode. Accepts optional action that would be passed to renderEditor
+   * @param transitionToEditMode The delegate to transition the grid to edit mode.
+   * Accepts optional action that would be passed to renderEditor
    * @param context The cell context which provides additional properties, usable for rendering
    */
   public renderSelected(
@@ -98,6 +100,7 @@ export class EnumCell implements ICellType {
     context: CellContext
   ): JSX.Element | string {
     if (context.isEditable(context.coordinate)) {
+      const onClick = () => transitionToEditMode(new PickerOpenedAction());
       return (
         <EnumEditor
           enumOptions={this.enumOptions}
@@ -106,7 +109,7 @@ export class EnumCell implements ICellType {
           value={cellData}
           onValueUpdated={null}
           onEditConfirmed={null}
-          onCellClick={() => transitionToEditMode(new PickerOpenedAction())}
+          onCellClick={onClick}
           width={context.columnWidth}
           theme={context.theme}
         />
@@ -136,7 +139,7 @@ export class EnumCell implements ICellType {
    */
   public parseRawInput(originalValue: EnumCellData, changedValue: string | EnumCellData | any): EnumKey | undefined {
     // Verify if the update already has the selected enum key
-    if (changedValue.selectedEnumKey != null) {
+    if (changedValue.selectedEnumKey !== null) {
       return changedValue.selectedEnumKey;
     }
 
