@@ -1,203 +1,283 @@
 // OneDrive:IgnoreCodeCoverage
-import * as React from "react";
-import { getRTL } from "@uifabric/utilities/lib-commonjs/rtl";
+import * as React from 'react';
+import { getRTL } from '@uifabric/experiments/lib/Utilities';
 
 export namespace RtlUtils {
-    "use strict";
+  'use strict';
 
+  /**
+   * Types of ScrollLeft behaviors in browsers
+   */
+  enum ScrollLeftType {
     /**
-     * Cached scrollLeft type
+     * 'Default' behavior: Used by webkit browsers. Values are same in RTL as they are in LTR. Values go from a high
+     * positive number to 0 as you scroll from right to left. The left edge of the scrollbar is measured.
      */
-    let scrollLeftType: ScrollLeftType = undefined;
-
+    Default,
     /**
-     * Get a standardized scrollLeft value from an element. This method determines the type if it needs to,
-     * then returns a value in the 'Reverse' type. The current browser type is saved for subsequent calls
-     * since it only changes when you change browsers.
-     *
-     * See ScrollLeftType enum for more info.
-     *
-     * @param element Element to measure scrollLeft on
-     * @return Horizontal scroll value in 'Reverse' type
+     * 'Reverse' behavior: Used by IE/Edge. Values are reversed on the horizontal axis. Values go from 0 on the
+     * right-most side and grow positively as you scroll left. The right edge of the scrollbar is measured.
      */
-    export function getStandardizedScrollLeftValue(element: HTMLElement): number {
-        "use strict";
-
-        if (!element) {
-            return 0;
-        }
-
-        // when not in RTL, just return browser defined scrollLeft value
-        if (!getRTL()) {
-            return element.scrollLeft;
-        }
-
-        // if we dont have a cached scrollLeft type, then we need to figure it out
-        if (!scrollLeftType) {
-            scrollLeftType = determineScrollLeftType();
-        }
-
-        // use the scrollLeft value and the type to calculate the scrollLeft value in 'Reverse' type
-        let browserSpecificScrollLeft: number = element.scrollLeft;
-        switch (scrollLeftType) {
-            case ScrollLeftType.Negative:
-                return Math.abs(browserSpecificScrollLeft);
-            case ScrollLeftType.Default:
-                return element.scrollWidth - browserSpecificScrollLeft - element.clientWidth;
-        }
-
-        // if its already 'Reverse', then just return it
-        return browserSpecificScrollLeft;
-    }
-
+    Reverse,
     /**
-     * Get the browser specific scrollLeft value from an element after shifting by the scrollOffset. This uses the scrollLeftType
-     * to determine how to add the offset to the browser specific scrollLeft value to achieve the desired left/right shift.
-     * The current browser type is saved for subsequent calls since it only changes when you change browsers.
-     *
-     * See ScrollLeftType enum for more info.
-     *
-     * @param element Element to measure scrollLeft on
-     * @param scrollOffset Amount to shift scrollLeft. When LTR positive value shifts right. When RTL positive value shifts left
-     * @return Browser specific scrollLeft value
+     * 'Negative' behavior: Used by Firefox. Values go from 0 on the right-most side and grow negatively as you
+     * scroll left. The right edge of the scrollbar is measured.
      */
-    export function getBrowserSpecificScrollLeftValueWithOffset(element: HTMLElement, scrollOffset: number): number {
-        "use strict";
-        const browserSpecificScrollLeft: number = element.scrollLeft;
+    Negative
+  }
 
-        // when not in RTL, just add to browser defined scrollLeft value
-        if (!getRTL()) {
-            return browserSpecificScrollLeft + scrollOffset;
-        }
+  /**
+   * Cached scrollLeft type
+   */
+  let scrollLeftType: ScrollLeftType | undefined = undefined;
 
-        // if we dont have a cached scrollLeft type, then we need to figure it out
-        if (!scrollLeftType) {
-            scrollLeftType = determineScrollLeftType();
-        }
+  /**
+   * Get a standardized scrollLeft value from an element. This method determines the type if it needs to,
+   * then returns a value in the 'Reverse' type. The current browser type is saved for subsequent calls
+   * since it only changes when you change browsers.
+   *
+   * See ScrollLeftType enum for more info.
+   *
+   * @param element Element to measure scrollLeft on
+   * @return Horizontal scroll value in 'Reverse' type
+   */
+  export function getStandardizedScrollLeftValue(element: HTMLElement): number {
+    'use strict';
 
-        return scrollLeftType === ScrollLeftType.Reverse ?
-            browserSpecificScrollLeft + scrollOffset :
-            browserSpecificScrollLeft - scrollOffset; // ScrollLeftType Default or Negative
+    if (!element) {
+      return 0;
     }
 
-    /**
-     * Set the RTL safe border left on the given CSSProperties object
-     * In LTR it sets border-left, in RTL it sets border-right
-     * @param style The given CSS Properties to add the style to
-     * @param borderWidth The border width in pixels, use null to ignore setting this
-     * @param borderStyle The border style, (solid, dotted, none etc.) use null to ignore setting this
-     * @param borderColor The border color as string or hash value, use null to ignore setting this
-     */
-    export function setRTLSafeBorderLeft(cssProperties: React.CSSProperties, borderWidth: number, borderStyle: "-moz-initial" | "inherit" | "initial" | "revert" | "unset" | "dashed" | "dotted" | "double" | "groove" | "hidden" | "inset" | "none" | "outset" | "ridge" | "solid", borderColor: string) {
-        "use strict";
-        if (!getRTL()) {
-            setBorderLeft(cssProperties, borderWidth, borderStyle, borderColor);
-        } else {
-            setBorderRight(cssProperties, borderWidth, borderStyle, borderColor);
-        }
+    // when not in RTL, just return browser defined scrollLeft value
+    if (!getRTL()) {
+      return element.scrollLeft;
     }
 
-    /**
-     * Set the RTL safe border right on the given CSSProperties object
-     * In LTR it sets border-right, in RTL it sets border-left
-     * @param style The given CSS Properties to add the style to
-     * @param borderWidth The border width in pixels, use null to ignore setting this
-     * @param borderStyle The border style, (solid, dotted, none etc.) use null to ignore setting this
-     * @param borderColor The border color as string or hash value, use null to ignore setting this
-     */
-    export function setRTLSafeBorderRight(cssProperties: React.CSSProperties, borderWidth: number, borderStyle: "-moz-initial" | "inherit" | "initial" | "revert" | "unset" | "dashed" | "dotted" | "double" | "groove" | "hidden" | "inset" | "none" | "outset" | "ridge" | "solid", borderColor: string) {
-        "use strict";
-        if (!getRTL()) {
-            setBorderRight(cssProperties, borderWidth, borderStyle, borderColor);
-        } else {
-            setBorderLeft(cssProperties, borderWidth, borderStyle, borderColor);
-        }
+    // if we dont have a cached scrollLeft type, then we need to figure it out
+    if (!scrollLeftType) {
+      scrollLeftType = determineScrollLeftType();
     }
 
-    function setBorderLeft(cssProperties: React.CSSProperties, borderWidth: number, borderStyle: "-moz-initial" | "inherit" | "initial" | "revert" | "unset" | "dashed" | "dotted" | "double" | "groove" | "hidden" | "inset" | "none" | "outset" | "ridge" | "solid", borderColor: string) {
-        "use strict";
-        if (cssProperties) {
-            if (borderWidth) {
-                cssProperties.borderLeftWidth = borderWidth;
-            }
-
-            if (borderStyle) {
-                cssProperties.borderLeftStyle = borderStyle;
-            }
-
-            if (borderColor) {
-                cssProperties.borderLeftColor = borderColor;
-            }
-        }
+    // use the scrollLeft value and the type to calculate the scrollLeft value in 'Reverse' type
+    const browserSpecificScrollLeft: number = element.scrollLeft;
+    switch (scrollLeftType) {
+      case ScrollLeftType.Negative:
+        return Math.abs(browserSpecificScrollLeft);
+      case ScrollLeftType.Default:
+        return element.scrollWidth - browserSpecificScrollLeft - element.clientWidth;
     }
 
-    function setBorderRight(cssProperties: React.CSSProperties, borderWidth: number, borderStyle: "-moz-initial" | "inherit" | "initial" | "revert" | "unset" | "dashed" | "dotted" | "double" | "groove" | "hidden" | "inset" | "none" | "outset" | "ridge" | "solid", borderColor: string) {
-        "use strict";
-        if (cssProperties) {
-            if (borderWidth) {
-                cssProperties.borderRightWidth = borderWidth;
-            }
+    // if its already 'Reverse', then just return it
+    return browserSpecificScrollLeft;
+  }
 
-            if (borderStyle) {
-                cssProperties.borderRightStyle = borderStyle;
-            }
+  /**
+   * Get the browser specific scrollLeft value from an element after shifting by the scrollOffset. This uses the scrollLeftType
+   * to determine how to add the offset to the browser specific scrollLeft value to achieve the desired left/right shift.
+   * The current browser type is saved for subsequent calls since it only changes when you change browsers.
+   *
+   * See ScrollLeftType enum for more info.
+   *
+   * @param element Element to measure scrollLeft on
+   * @param scrollOffset Amount to shift scrollLeft. When LTR positive value shifts right. When RTL positive value shifts left
+   * @return Browser specific scrollLeft value
+   */
+  export function getBrowserSpecificScrollLeftValueWithOffset(element: HTMLElement, scrollOffset: number): number {
+    'use strict';
+    const browserSpecificScrollLeft: number = element.scrollLeft;
 
-            if (borderColor) {
-                cssProperties.borderRightColor = borderColor;
-            }
-        }
+    // when not in RTL, just add to browser defined scrollLeft value
+    if (!getRTL()) {
+      return browserSpecificScrollLeft + scrollOffset;
     }
 
-    function determineScrollLeftType(): ScrollLeftType {
-        "use strict";
-
-        // create a div that will scroll and add it to the body off the screen
-        let scrollDiv: HTMLElement = document.createElement("div");
-        scrollDiv.style.setProperty("dir", "rtl");
-        scrollDiv.style.setProperty("width", "1px");
-        scrollDiv.style.setProperty("height", "1px");
-        scrollDiv.style.setProperty("position", "absolute");
-        scrollDiv.style.setProperty("top", "-1000px");
-        scrollDiv.style.setProperty("overflow", "scroll");
-        scrollDiv.style.setProperty("font-size", "14px");
-        scrollDiv.innerText = "ABCD";
-        document.body.appendChild(scrollDiv);
-
-        // determine scrollLeft type
-        let type: ScrollLeftType = ScrollLeftType.Reverse;
-        if (scrollDiv.scrollLeft > 0) {
-            type = ScrollLeftType.Default;
-        } else {
-            scrollDiv.scrollLeft = 1;
-            if (scrollDiv.scrollLeft === 0) {
-                type = ScrollLeftType.Negative;
-            }
-        }
-
-        // remove the div
-        document.body.removeChild(scrollDiv);
-
-        return type;
+    // if we dont have a cached scrollLeft type, then we need to figure it out
+    if (!scrollLeftType) {
+      scrollLeftType = determineScrollLeftType();
     }
 
-    /**
-     * Types of ScrollLeft behaviors in browsers
-     */
-    enum ScrollLeftType {
-        /**
-         * 'Default' behavior: Used by webkit browsers. Values are same in RTL as they are in LTR. Values go from a high
-         * positive number to 0 as you scroll from right to left. The left edge of the scrollbar is measured.
-         */
-        Default,
-        /**
-         * 'Reverse' behavior: Used by IE/Edge. Values are reversed on the horizontal axis. Values go from 0 on the
-         * right-most side and grow positively as you scroll left. The right edge of the scrollbar is measured.
-         */
-        Reverse,
-        /**
-         * 'Negative' behavior: Used by Firefox. Values go from 0 on the right-most side and grow negatively as you
-         * scroll left. The right edge of the scrollbar is measured.
-         */
-        Negative
+    return scrollLeftType === ScrollLeftType.Reverse
+      ? browserSpecificScrollLeft + scrollOffset
+      : browserSpecificScrollLeft - scrollOffset; // ScrollLeftType Default or Negative
+  }
+
+  /**
+   * Set the RTL safe border left on the given CSSProperties object
+   * In LTR it sets border-left, in RTL it sets border-right
+   * @param style The given CSS Properties to add the style to
+   * @param borderWidth The border width in pixels, use null to ignore setting this
+   * @param borderStyle The border style, (solid, dotted, none etc.) use null to ignore setting this
+   * @param borderColor The border color as string or hash value, use null to ignore setting this
+   */
+  export function setRTLSafeBorderLeft(
+    cssProperties: React.CSSProperties,
+    borderWidth: number,
+    borderStyle:
+      | '-moz-initial'
+      | 'inherit'
+      | 'initial'
+      | 'revert'
+      | 'unset'
+      | 'dashed'
+      | 'dotted'
+      | 'double'
+      | 'groove'
+      | 'hidden'
+      | 'inset'
+      | 'none'
+      | 'outset'
+      | 'ridge'
+      | 'solid',
+    borderColor: string
+  ): void {
+    'use strict';
+    if (!getRTL()) {
+      setBorderLeft(cssProperties, borderWidth, borderStyle, borderColor);
+    } else {
+      setBorderRight(cssProperties, borderWidth, borderStyle, borderColor);
     }
+  }
+
+  /**
+   * Set the RTL safe border right on the given CSSProperties object
+   * In LTR it sets border-right, in RTL it sets border-left
+   * @param style The given CSS Properties to add the style to
+   * @param borderWidth The border width in pixels, use null to ignore setting this
+   * @param borderStyle The border style, (solid, dotted, none etc.) use null to ignore setting this
+   * @param borderColor The border color as string or hash value, use null to ignore setting this
+   */
+  export function setRTLSafeBorderRight(
+    cssProperties: React.CSSProperties,
+    borderWidth: number,
+    borderStyle:
+      | '-moz-initial'
+      | 'inherit'
+      | 'initial'
+      | 'revert'
+      | 'unset'
+      | 'dashed'
+      | 'dotted'
+      | 'double'
+      | 'groove'
+      | 'hidden'
+      | 'inset'
+      | 'none'
+      | 'outset'
+      | 'ridge'
+      | 'solid',
+    borderColor: string
+  ): void {
+    'use strict';
+    if (!getRTL()) {
+      setBorderRight(cssProperties, borderWidth, borderStyle, borderColor);
+    } else {
+      setBorderLeft(cssProperties, borderWidth, borderStyle, borderColor);
+    }
+  }
+
+  function setBorderLeft(
+    cssProperties: React.CSSProperties,
+    borderWidth: number,
+    borderStyle:
+      | '-moz-initial'
+      | 'inherit'
+      | 'initial'
+      | 'revert'
+      | 'unset'
+      | 'dashed'
+      | 'dotted'
+      | 'double'
+      | 'groove'
+      | 'hidden'
+      | 'inset'
+      | 'none'
+      | 'outset'
+      | 'ridge'
+      | 'solid',
+    borderColor: string
+  ): void {
+    'use strict';
+    if (cssProperties) {
+      if (borderWidth) {
+        cssProperties.borderLeftWidth = borderWidth;
+      }
+
+      if (borderStyle) {
+        cssProperties.borderLeftStyle = borderStyle;
+      }
+
+      if (borderColor) {
+        cssProperties.borderLeftColor = borderColor;
+      }
+    }
+  }
+
+  function setBorderRight(
+    cssProperties: React.CSSProperties,
+    borderWidth: number,
+    borderStyle:
+      | '-moz-initial'
+      | 'inherit'
+      | 'initial'
+      | 'revert'
+      | 'unset'
+      | 'dashed'
+      | 'dotted'
+      | 'double'
+      | 'groove'
+      | 'hidden'
+      | 'inset'
+      | 'none'
+      | 'outset'
+      | 'ridge'
+      | 'solid',
+    borderColor: string
+  ): void {
+    'use strict';
+    if (cssProperties) {
+      if (borderWidth) {
+        cssProperties.borderRightWidth = borderWidth;
+      }
+
+      if (borderStyle) {
+        cssProperties.borderRightStyle = borderStyle;
+      }
+
+      if (borderColor) {
+        cssProperties.borderRightColor = borderColor;
+      }
+    }
+  }
+
+  function determineScrollLeftType(): ScrollLeftType {
+    'use strict';
+
+    // create a div that will scroll and add it to the body off the screen
+    const scrollDiv: HTMLElement = document.createElement('div');
+    scrollDiv.style.setProperty('dir', 'rtl');
+    scrollDiv.style.setProperty('width', '1px');
+    scrollDiv.style.setProperty('height', '1px');
+    scrollDiv.style.setProperty('position', 'absolute');
+    scrollDiv.style.setProperty('top', '-1000px');
+    scrollDiv.style.setProperty('overflow', 'scroll');
+    scrollDiv.style.setProperty('font-size', '14px');
+    scrollDiv.innerText = 'ABCD';
+    document.body.appendChild(scrollDiv);
+
+    // determine scrollLeft type
+    let type: ScrollLeftType = ScrollLeftType.Reverse;
+    if (scrollDiv.scrollLeft > 0) {
+      type = ScrollLeftType.Default;
+    } else {
+      scrollDiv.scrollLeft = 1;
+      if (scrollDiv.scrollLeft === 0) {
+        type = ScrollLeftType.Negative;
+      }
+    }
+
+    // remove the div
+    document.body.removeChild(scrollDiv);
+
+    return type;
+  }
 }
