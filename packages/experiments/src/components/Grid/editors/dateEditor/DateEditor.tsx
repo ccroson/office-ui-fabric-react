@@ -145,8 +145,8 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
             isCalendarOpen = false
         } = this.state;
 
-        let content: JSX.Element = isTextEditing ?
-            <input className='date-editor'
+        const content: JSX.Element = isTextEditing ?
+            <input className="date-editor"
                 onChange={ this.onTextInputChanged }
                 onClick={ this.onInputClick }
                 onMouseDown={ (event: React.MouseEvent<HTMLElement>) => { event.stopPropagation(); } }
@@ -155,9 +155,9 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
                 onFocus={ this.moveCursorEnd }
                 onBlur={ this.onBlur }
             /> :
-            <div className='date-editor'>{this.getInputValue()}</div>;
+            <div className="date-editor">{this.getInputValue()}</div>;
 
-        let iconStyle: React.CSSProperties = this.props.theme ? {
+        const iconStyle: React.CSSProperties = this.props.theme ? {
             color: this.props.theme.selectionBorderColor,
             fontSize: this.props.theme.iconSize
         } : {};
@@ -165,7 +165,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
         return (
             <div
                 ref={ this.resolveRef(this, 'dateEditorContainer') }
-                className='date-editor-container'
+                className="date-editor-container"
             >
                 { content }
                 <i className={css('ms-Icon ms-Icon--Calendar', { 'calendar-open': isCalendarOpen })}
@@ -190,7 +190,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
             isCalendarOpen = false
         } = this.state;
 
-        let initialCalendarValue: moment.Moment = moment.isMoment(value) ? value as moment.Moment : moment();
+        const initialCalendarValue: moment.Moment = moment.isMoment(value) ? value as moment.Moment : moment();
         if (isCalendarOpen) {
             return (
                 <Callout
@@ -223,8 +223,8 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
      */
     @autobind
     private moveCursorEnd(event: React.FocusEvent<HTMLElement>) {
-        let input = event.target as HTMLInputElement;
-        let length = input.value.length;
+        const input = event.target as HTMLInputElement;
+        const length = input.value.length;
         input.setSelectionRange(length, length);
     }
 
@@ -270,7 +270,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
             onEditConfirmed
         } = this.props;
 
-        let momentDate = moment(date.toISOString());
+        const momentDate = moment(date.toISOString());
 
         // Send the pending update to the Grid
         onEditConfirmed(momentDate);
@@ -344,8 +344,8 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
             // while document.activeElement is 'body' at this point,
             // whereas in IE, event.relatedTarget is always null and document.activeElement gives the correct element,
             // so we need a mix of both here
-            let nextFocusedElement: HTMLElement = (event.relatedTarget || document.activeElement) as HTMLElement;
-            let calendarElement = ReactDOM.findDOMNode(this.calendar) as HTMLElement;
+            const nextFocusedElement: HTMLElement = (event.relatedTarget || document.activeElement) as HTMLElement;
+            const calendarElement = ReactDOM.findDOMNode(this.calendar) as HTMLElement;
             if (elementContains(calendarElement, nextFocusedElement)) {
                 return;
             }

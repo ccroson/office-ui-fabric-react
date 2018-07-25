@@ -125,7 +125,7 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
         } = this.props;
         // If we get a new pending value due to type over, we want to exit edit mode afterwards.
         if (!_.isEqual(prevProps.pendingValue, pendingValue) && onEditConfirmed && onEditCancelled) {
-            let found: EnumOption = this.getOptionFromPending();
+            const found: EnumOption = this.getOptionFromPending();
             if (found) {
                 // Use the option if found
                 onEditConfirmed(found.key);
@@ -153,18 +153,18 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
      * Render a text input with a dropdown callout
      */
     protected renderComponent(): JSX.Element {
-        let val = this.getDisplayedValue();
-        let iconStyle: React.CSSProperties = this.props.theme ? {
+        const val = this.getDisplayedValue();
+        const iconStyle: React.CSSProperties = this.props.theme ? {
             color: this.props.theme.selectionBorderColor,
             fontSize: this.props.theme.iconSize
         } : {};
         return (
             <div
                 onClick={ this.onCellClick }
-                className='enum-editor'
+                className="enum-editor"
                 ref={ this.resolveRef(this, 'EnumEditorContainerRef') } >
                 <div
-                    className='enum-editor-value'
+                    className="enum-editor-value"
                     onKeyDown={ this.onKeyDown }
                     onKeyPress={ this.onKeyPress }
                     onMouseDown={ (event: React.MouseEvent<HTMLElement | HTMLInputElement>) => { /*is this needed?*/event.stopPropagation(); } }>{ val }</div>
@@ -204,19 +204,19 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
                 } }
             >
                 <div
-                    className='enum-editor-options'
+                    className="enum-editor-options"
                     style={ { width: width } }>
                     <FocusZone
-                        className='enum-editor-focus-zone'
+                        className="enum-editor-focus-zone"
                         direction={ FocusZoneDirection.vertical }
                         isCircularNavigation={ true }
                         onKeyPress={ this.onKeyPress }
                         onKeyDown={ this.onKeyDown }
                         ref={ this.resolveRef(this, 'OptionsRef') }
-                        role='menu'>
+                        role="menu">
                         {
                             _.map(enumOptions, (option: EnumOption) => {
-                                let className: string = css('enum-editor-option', { 'selected': option.key === value.selectedEnumKey });
+                                const className: string = css('enum-editor-option', { 'selected': option.key === value.selectedEnumKey });
                                 return (
                                     <div
                                         className={ className }
@@ -224,7 +224,7 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
                                         key={ `${option.key}` }
                                         onClick={ (event: React.MouseEvent<HTMLElement>) => { this.onOptionSelected(event, option.key); } }
                                         ref={ option.key === value.selectedEnumKey && this.resolveRef(this, 'SelectedElementRef') }
-                                        role='menuitem'>
+                                        role="menuitem">
                                         { option.text }
                                     </div>
                                 );
@@ -248,7 +248,7 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
             pendingValue
         } = this.props;
         if (pendingValue) {
-            let found: EnumOption = this.getOptionFromPending();
+            const found: EnumOption = this.getOptionFromPending();
             if (found) {
                 return found.text;
             }
@@ -304,9 +304,9 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
             onValueUpdated,
             value
         } = this.props;
-        let val: EnumOption = _.find(enumOptions, (option: EnumOption) => { return option.text.charAt(0).toLowerCase() === character.charAt(0).toLowerCase(); });
+        const val: EnumOption = _.find(enumOptions, (option: EnumOption) => { return option.text.charAt(0).toLowerCase() === character.charAt(0).toLowerCase(); });
         if (val) {
-            let newValue = value;
+            const newValue = value;
             newValue.selectedEnumKey = val.key;
             onValueUpdated(newValue);
         }

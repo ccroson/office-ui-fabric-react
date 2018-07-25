@@ -62,12 +62,12 @@ export interface IPeoplePickerState {
 /**
  * The default minimum searchable length for search box.
  */
-export const DEFAULT_MIN_SEARCHABLE_LENGTH: number = 3;
+export const DEFAULT_MIN_SEARCHABLE_LENGTH = 3;
 
 /**
  * The default delay for the search action.
  */
-export const DEFAULT_SEARCH_DELAY: number = 500;
+export const DEFAULT_SEARCH_DELAY = 500;
 
 /**
  * Component to allow searching and choosing people from various buckets.
@@ -135,10 +135,10 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
         } = this.props;
         const { searchBoxText } = this.state;
 
-        let resourceListKeys: number = 0;
+        let resourceListKeys = 0;
         this.filteredResourceListCount = 0;
         return (
-            <div className='peoplePicker' ref={ this.resolveRef(this, 'root') } onKeyUp={ this.onKeyUp }>
+            <div className="peoplePicker" ref={ this.resolveRef(this, 'root') } onKeyUp={ this.onKeyUp }>
                 <SearchBox
                     { ...{ autofocus: true } }
                     componentRef={ this.resolveRef(this, 'textInput') }
@@ -147,8 +147,8 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
                     value={ searchBoxText }
                     onFocus={ this.moveCursorEnd }
                 />
-                <div className='peoplePicker-results'>
-                    <div className='peoplePicker-resultGroups'>
+                <div className="peoplePicker-results">
+                    <div className="peoplePicker-resultGroups">
                         { _.map(resourceLists, (resourceListGroup: IResourceListProps) =>
                             this.renderResourceGroup(resourceListGroup, resourceListKeys++)
                         ) }
@@ -156,7 +156,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
                 </div>
                 {
                     this.filteredResourceListCount === 0 && searchedResourcesFetched &&
-                    <div className='peoplePicker-noresults'>{ searchBoxNoResultsText }</div>
+                    <div className="peoplePicker-noresults">{ searchBoxNoResultsText }</div>
                 }
             </div>
         );
@@ -172,7 +172,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
             return;
         }
 
-        let filteredResourceList: Identifiable<IPersonaProps>[] = this.restrictGroupResults(resourceListGroup);
+        const filteredResourceList: Identifiable<IPersonaProps>[] = this.restrictGroupResults(resourceListGroup);
 
         // Check if search has results
         if (filteredResourceList) {
@@ -233,7 +233,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
         ev: React.KeyboardEvent<HTMLElement>,
         resourceId: string
     ): boolean {
-        let success: boolean = action(ev, resourceId);
+        const success: boolean = action(ev, resourceId);
         if (success) {
             if (this.textInput != null) {
                 this.textInput.focus();
@@ -270,7 +270,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
             ? resourceListGroup.resourceList
             : [];
 
-        let onFilter = this.curriedOnFilter(searchBoxText);
+        const onFilter = this.curriedOnFilter(searchBoxText);
 
         if (isSearchFilterTextReady) {
             if (searchBoxText.trim() !== '') {
@@ -328,7 +328,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
                 isSearchFilterTextReady = true;
             }
 
-            let newSearchString = newValue || '';
+            const newSearchString = newValue || '';
             if (onSearchStringChanged) {
                 onSearchStringChanged(newSearchString);
             }
@@ -341,8 +341,8 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
      * @param event The focus event
      */
     private moveCursorEnd = (event: React.FocusEvent<HTMLElement>) => {
-        let input = event.target as HTMLInputElement;
-        let length = input.value.length;
+        const input = event.target as HTMLInputElement;
+        const length = input.value.length;
         input.setSelectionRange(length, length);
     };
 

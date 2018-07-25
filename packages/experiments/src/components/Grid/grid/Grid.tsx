@@ -197,7 +197,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   public changePrimaryCell(primaryCell: GridCoordinate): void {
     const { selectionState } = this.state;
 
-    let newSelectionState: SelectionState =
+    const newSelectionState: SelectionState =
       primaryCell != null
         ? {
             ...selectionState,
@@ -218,7 +218,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   public changeSelection(selections: GridRegion[]): void {
     const { selectionState } = this.state;
 
-    let newSelectionState: SelectionState =
+    const newSelectionState: SelectionState =
       selections != null && selections.length > 0
         ? {
             ...selectionState,
@@ -235,11 +235,11 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    */
   @autobind
   public getDataInSelection(): Object[] {
-    let selections: GridRegion[] = this.state.selectionState.selections || [];
-    let rowsData: Object[] = [];
+    const selections: GridRegion[] = this.state.selectionState.selections || [];
+    const rowsData: Object[] = [];
     _.forEach(selections, (selection: GridRegion) => {
       for (let index: number = selection.rowRange.start; index <= selection.rowRange.end; index++) {
-        let rowData: Object = this.getRowDataAtIndex(index);
+        const rowData: Object = this.getRowDataAtIndex(index);
         if (!this.isFooterRow(rowData)) {
           rowsData.push(rowData);
         }
@@ -303,7 +303,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    */
   @autobind
   protected isCellEditable(cellCoordinate: GridCoordinate): boolean {
-    let { isReadOnlyOverride, columnDefinitions } = this.props;
+    const { isReadOnlyOverride, columnDefinitions } = this.props;
 
     // check the override prop for explicit 'true' value first
     if (isReadOnlyOverride === true) {
@@ -312,7 +312,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
 
     // Check column against definitions
     if (cellCoordinate.columnIndex < columnDefinitions.length) {
-      let columnDef: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
+      const columnDef: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
       if (columnDef.editable && columnDef.cell.type.renderEditor) {
         return true;
       }
@@ -342,7 +342,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     const { validationError } = this.state;
 
     if (validationError) {
-      let cellRef: HTMLDivElement = this.baseGrid.getCellRef(validationError.dataUpdate.cellCoordinate);
+      const cellRef: HTMLDivElement = this.baseGrid.getCellRef(validationError.dataUpdate.cellCoordinate);
 
       return (
         <Callout
@@ -356,7 +356,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
         >
           <div className={gridStyles.validationCalloutContent}>
             <i className={'ms-Icon ms-Icon--ErrorBadge'} />
-            <div className={gridStyles.validationMessage} role='alert' aria-live='assertive' aria-atomic='true'>
+            <div className={gridStyles.validationMessage} role="alert" aria-live="assertive" aria-atomic="true">
               {validationError.errorMessage}
             </div>
           </div>
@@ -378,11 +378,11 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   ): JSX.Element | string {
     const { pendingUpdates, selectionState } = this.state;
 
-    let rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
+    const rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
 
-    let cellDefinition: ICellDefinition = columnDefinition.cell;
-    let cellIdentifier: string = this.getCellIdentifier(rowData, columnDefinition);
+    const cellDefinition: ICellDefinition = columnDefinition.cell;
+    const cellIdentifier: string = this.getCellIdentifier(rowData, columnDefinition);
     let renderedData: JSX.Element | string = null;
 
     let pendingUpdate: any = null;
@@ -390,17 +390,17 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
       pendingUpdate = pendingUpdates[cellIdentifier].updatedValue;
     }
 
-    let shouldRenderEditor: boolean =
+    const shouldRenderEditor: boolean =
       selectionState.mode === GridMode.Edit &&
       selectionState.primaryCell.equals(cellCoordinate) &&
       cellDefinition.type.renderEditor != null;
 
-    let shouldRenderSelected: boolean =
+    const shouldRenderSelected: boolean =
       (selectionState.mode === GridMode.Select || selectionState.mode === GridMode.Selecting) &&
       selectionState.primaryCell.equals(cellCoordinate) &&
       cellDefinition.type.renderSelected != null;
 
-    let cellContext: CellContext = this.getCellContext(cellCoordinate, columnWidth);
+    const cellContext: CellContext = this.getCellContext(cellCoordinate, columnWidth);
     if (shouldRenderEditor) {
       renderedData = cellDefinition.type.renderEditor(
         extractedCellData,
@@ -469,7 +469,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   protected onCellMouseEnter(cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>): void {
     const { selectionState } = this.state;
 
-    let newState: SelectionState = this.stateManager.handleCellMouseEnter(selectionState, cellCoordinate);
+    const newState: SelectionState = this.stateManager.handleCellMouseEnter(selectionState, cellCoordinate);
     if (newState) {
       this.updateFromMouseEvent(event, newState);
 
@@ -504,7 +504,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     const { selectionState } = this.state;
 
     if (selectionState.mode === GridMode.Edit) {
-      let updateCommitted: boolean = this.confirmPendingUpdates(selectionState.primaryCell);
+      const updateCommitted: boolean = this.confirmPendingUpdates(selectionState.primaryCell);
       if (!updateCommitted) {
         return;
       }
@@ -523,7 +523,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   protected onFillMouseUp(event: React.MouseEvent<HTMLElement>): void {
     const { selectionState } = this.state;
 
-    let newState: SelectionState = this.stateManager.handleFillMouseUp(selectionState);
+    const newState: SelectionState = this.stateManager.handleFillMouseUp(selectionState);
     if (newState) {
       this.updateFromMouseEvent(event, newState);
       if (selectionState.fillSelection && selectionState.selections.length === 1) {
@@ -557,7 +557,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
 
     if (event.button === MouseButton.Left) {
       this.stateManager = this.initializeStateManager(SelectionMode.MultipleRow, hideColumnHeader);
-      let targetCoordinate: GridCoordinate = new GridCoordinate(rowIndex, 0, false, true);
+      const targetCoordinate: GridCoordinate = new GridCoordinate(rowIndex, 0, false, true);
       this.handleMouseDown(event, targetCoordinate);
     }
   }
@@ -625,7 +625,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     // We could not use onFocus event here, since that would be called on click on the cell as well
     // (setting first cell as focused before the setting the clicked cell as focused, so listening for keyUp to avoid that)
     if (event.keyCode === KeyCode.TAB) {
-      let newState: SelectionState = this.stateManager.handleFocus(selectionState);
+      const newState: SelectionState = this.stateManager.handleFocus(selectionState);
       if (newState) {
         this.onSelectionStateChanged(newState);
       }
@@ -644,7 +644,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     // so putting a check on the trimmed value
     inputValue = inputValue.trim();
     if (inputValue.length > 0) {
-      let newState: SelectionState = this.stateManager.handleKeyPress(selectionState);
+      const newState: SelectionState = this.stateManager.handleKeyPress(selectionState);
       if (newState) {
         // if switching to edit mode due to key press, preserve the input key and set that as pending update on the primary cell
         if (selectionState.mode === GridMode.Select && newState.mode === GridMode.Edit) {
@@ -665,8 +665,8 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
 
     // We should clear the cell
     if (selectionState.mode === GridMode.Select) {
-      for (let selection of selectionState.selections) {
-        for (let cell of selection.cells()) {
+      for (const selection of selectionState.selections) {
+        for (const cell of selection.cells()) {
           this.constructAndSendUpdate(cell, null);
         }
       }
@@ -732,7 +732,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     const { selectionState } = this.state;
 
     if (selectionState.mode === GridMode.Edit) {
-      let updatesCommitted = this.confirmPendingUpdates(selectionState.primaryCell);
+      const updatesCommitted = this.confirmPendingUpdates(selectionState.primaryCell);
       if (updatesCommitted && this.shouldAddFooterRow(this.props)) {
         // if last row then add in-memory blank row
         if (selectionState.primaryCell.rowIndex === this.getMaxRowIndex()) {
@@ -839,7 +839,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     if (event.altKey && selectionState.primaryCell.isColumnHeaderCell) {
       this.onColumnHeaderAltDown(this.state.selectionState.primaryCell.columnIndex, event);
     } else if (event.altKey && (selectionState.mode === GridMode.Select || selectionState.mode === GridMode.Edit)) {
-      let columnDef: IColumnDefinition = this.getColumnDefinitionAtIndex(selectionState.primaryCell.columnIndex);
+      const columnDef: IColumnDefinition = this.getColumnDefinitionAtIndex(selectionState.primaryCell.columnIndex);
       if (this.isCellEditable(selectionState.primaryCell) && columnDef.cell.type.supportsCalloutForEditing) {
         this.transitionToEditMode(new PickerOpenedAction());
       }
@@ -872,24 +872,24 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
 
     if (sourceRegion && targetRegion && onDataUpdated) {
       // Construct the list of rows to source the fill data from
-      let sourceRows: Object[] = [];
+      const sourceRows: Object[] = [];
       for (let rowIndex = sourceRegion.rowRange.start; rowIndex <= sourceRegion.rowRange.end; rowIndex++) {
         sourceRows.push(this.getRowDataAtIndex(rowIndex));
       }
 
       // For each row and column in the targetRegion, construct an update
-      let updates: DataUpdateInternal[] = [];
+      const updates: DataUpdateInternal[] = [];
       for (let rowIndex = targetRegion.rowRange.start; rowIndex <= targetRegion.rowRange.end; rowIndex++) {
-        let sourceRow = this.getSourceRowForFill(sourceRows, rowIndex, sourceRegion, targetRegion);
-        let targetRow = this.getRowDataAtIndex(rowIndex);
+        const sourceRow = this.getSourceRowForFill(sourceRows, rowIndex, sourceRegion, targetRegion);
+        const targetRow = this.getRowDataAtIndex(rowIndex);
         for (
           let columnIndex = sourceRegion.columnRange.start;
           columnIndex <= sourceRegion.columnRange.end;
           columnIndex++
         ) {
-          let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
-          let data = GridUtilities.getDataFromColumnDefinition(sourceRow, columnDefinition);
-          let dataUpdate: DataUpdateInternal = {
+          const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
+          const data = GridUtilities.getDataFromColumnDefinition(sourceRow, columnDefinition);
+          const dataUpdate: DataUpdateInternal = {
             originalRowData: targetRow,
             columnDefinition: columnDefinition,
             updatedValue: data,
@@ -962,7 +962,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    * @param columnWidth The width of the column that this cell is in
    */
   protected getCellContext(gridCoordinate: GridCoordinate, columnWidth: number): CellContext {
-    let cellContext = super.getCellContext(gridCoordinate, columnWidth);
+    const cellContext = super.getCellContext(gridCoordinate, columnWidth);
     cellContext.inFooterRow = this.isFooterRow(this.getRowDataAtIndex(gridCoordinate.rowIndex));
     return cellContext;
   }
@@ -980,7 +980,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     sourceRegion: GridRegion,
     targetRegion: GridRegion
   ): Object {
-    let isFillDown: boolean = targetRegion.rowRange.start > sourceRegion.rowRange.start;
+    const isFillDown: boolean = targetRegion.rowRange.start > sourceRegion.rowRange.start;
     if (isFillDown) {
       // determine the target row index relative to target region start and return the corresponding source row
       return sourceRows[(targetRowIndex - targetRegion.rowRange.start) % sourceRows.length];
@@ -1023,7 +1023,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    */
   private createFooterRow(columnDefinitions: IColumnDefinition[]) {
     // Create blank row object
-    let newRow: Object = { [GridConstants.__FOOTER_ROW_KEY]: true };
+    const newRow: Object = { [GridConstants.__FOOTER_ROW_KEY]: true };
 
     // Add blank row to rowData
     return newRow;
@@ -1083,8 +1083,8 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    * @param updatedValue The updated value
    */
   private onEditorValueUpdated(cellCoordinate: GridCoordinate, updatedValue: any): void {
-    let rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
+    const rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
 
     // We do not want to fire updates for empty or null value in the footer row, so removing the pending update in case user deletes it
     if (!updatedValue && this.isFooterRow(rowData)) {
@@ -1093,7 +1093,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
         return prevState;
       });
     } else {
-      let update: DataUpdateInternal = {
+      const update: DataUpdateInternal = {
         originalRowData: rowData,
         columnDefinition: columnDefinition,
         cellCoordinate: cellCoordinate,
@@ -1139,7 +1139,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    */
   @autobind
   private onEditCancelled(cellCoordinate: GridCoordinate): void {
-    let newState = this.stateManager.handleCancelKey(this.state.selectionState);
+    const newState = this.stateManager.handleCancelKey(this.state.selectionState);
     if (newState != null) {
       this.setState((prevState: IGridState) => {
         prevState.selectionState = newState;
@@ -1159,12 +1159,12 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   private confirmPendingUpdates(cellCoordinate: GridCoordinate): boolean {
     const { pendingUpdates } = this.state;
 
-    let rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
+    const rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
 
-    let cellIdentifier: string = this.getCellIdentifier(rowData, columnDefinition);
+    const cellIdentifier: string = this.getCellIdentifier(rowData, columnDefinition);
     if (pendingUpdates[cellIdentifier]) {
-      let updateCommitted: boolean = this.validateAndSendUpdates([pendingUpdates[cellIdentifier]]);
+      const updateCommitted: boolean = this.validateAndSendUpdates([pendingUpdates[cellIdentifier]]);
 
       // clear the update
       this.clearPendingUpdates(cellCoordinate);
@@ -1184,10 +1184,10 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   private clearPendingUpdates(cellCoordinate: GridCoordinate): void {
     const { pendingUpdates } = this.state;
 
-    let rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
+    const rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
 
-    let cellIdentifier: string = this.getCellIdentifier(rowData, columnDefinition);
+    const cellIdentifier: string = this.getCellIdentifier(rowData, columnDefinition);
     if (pendingUpdates[cellIdentifier]) {
       this.setState((prevState: IGridState) => {
         // Clone the dictionary
@@ -1210,12 +1210,12 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   private constructAndSendUpdate(cellCoordinate: GridCoordinate, value: any): void {
     const { onDataUpdated } = this.props;
 
-    let rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
+    const rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
 
     // Construct and send the committed update
     if (onDataUpdated) {
-      let update: DataUpdateInternal = {
+      const update: DataUpdateInternal = {
         originalRowData: rowData,
         columnDefinition: columnDefinition,
         cellCoordinate: cellCoordinate,
@@ -1238,17 +1238,17 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     try {
       if (onDataUpdated) {
         // Set the updated values using preProcessInput to clean up data
-        let cleanedUpdates: DataUpdateInternal[] = _.map(dataUpdates, (dataUpdate: DataUpdateInternal) => {
-          let columnDefinition = dataUpdate.columnDefinition;
-          let originalData = GridUtilities.getDataFromColumnDefinition(dataUpdate.originalRowData, columnDefinition);
+        const cleanedUpdates: DataUpdateInternal[] = _.map(dataUpdates, (dataUpdate: DataUpdateInternal) => {
+          const columnDefinition = dataUpdate.columnDefinition;
+          const originalData = GridUtilities.getDataFromColumnDefinition(dataUpdate.originalRowData, columnDefinition);
           dataUpdate.updatedValue = columnDefinition.cell.type.parseRawInput
             ? columnDefinition.cell.type.parseRawInput(originalData, dataUpdate.updatedValue)
             : dataUpdate.updatedValue;
           return dataUpdate;
         });
         // first, validate each update
-        let validationResults: __ValidationResult[] = this.validateUpdates(cleanedUpdates);
-        let invalidUpdates = _.filter(
+        const validationResults: __ValidationResult[] = this.validateUpdates(cleanedUpdates);
+        const invalidUpdates = _.filter(
           validationResults,
           (validationResult: __ValidationResult) => !validationResult.isValid
         );
@@ -1293,21 +1293,21 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     const { onDataUpdated, onRowAdded } = this.props;
 
     if (onDataUpdated) {
-      let constructedUpdates: DataUpdate[] = [];
+      const constructedUpdates: DataUpdate[] = [];
       // Group all de-normalized updates by common rows
-      let groupedUpdates = _.groupBy(
+      const groupedUpdates = _.groupBy(
         dataUpdates,
         (dataUpdateInternal: DataUpdateInternal) => dataUpdateInternal.cellCoordinate.rowIndex
       );
-      for (let key in groupedUpdates) {
+      for (const key in groupedUpdates) {
         // Construct one update object for each row
-        let updates: DataUpdateInternal[] = groupedUpdates[key];
-        let dataUpdate: DataUpdate = {
+        const updates: DataUpdateInternal[] = groupedUpdates[key];
+        const dataUpdate: DataUpdate = {
           originalRowData: updates[0].originalRowData,
           updates: {}
         };
 
-        for (let update of updates) {
+        for (const update of updates) {
           dataUpdate.updates[update.columnDefinition.id] = update.updatedValue;
         }
 
@@ -1329,9 +1329,9 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    * @param dataUpdates The updates to validate
    */
   private validateUpdates(dataUpdates: DataUpdateInternal[]): __ValidationResult[] {
-    let validationResults: __ValidationResult[] = [];
-    for (let dataUpdate of dataUpdates) {
-      let cellDefinition: ICellDefinition = dataUpdate.columnDefinition.cell;
+    const validationResults: __ValidationResult[] = [];
+    for (const dataUpdate of dataUpdates) {
+      const cellDefinition: ICellDefinition = dataUpdate.columnDefinition.cell;
       let validationError: string;
 
       // If the cell type defines a default validator, use that first
@@ -1374,9 +1374,9 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     const { onPrimaryCellChanged, onSelectionChanged } = this.props;
 
     if (selectionState) {
-      let priorPrimaryCell = this.state.selectionState.primaryCell;
+      const priorPrimaryCell = this.state.selectionState.primaryCell;
 
-      let handleStateChange = () => {
+      const handleStateChange = () => {
         if (
           onPrimaryCellChanged &&
           selectionState.primaryCell &&

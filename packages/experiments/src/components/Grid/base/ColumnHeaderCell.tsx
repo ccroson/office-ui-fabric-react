@@ -99,7 +99,7 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
             id
         } = this.props;
 
-        let cellContentStyle: React.CSSProperties = {};
+        const cellContentStyle: React.CSSProperties = {};
         if (isColumnActive) {
             cellContentStyle.color = theme.selectedHeaderTextColor;
         }
@@ -109,7 +109,7 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
                 id={ id }
                 data-header-id={ columnIndex }
                 draggable={ isDragEnabled }
-                role='columnheader'
+                role="columnheader"
                 aria-colindex={ columnIndex + 1 }
                 aria-rowindex={ 0 }
                 aria-selected={ !!isSelected }
@@ -137,7 +137,7 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
                 onContextMenu={ (event: React.MouseEvent<HTMLElement>) => onRightClick && onRightClick(columnIndex, event) }
                 style={ this.getCellStyle() }>
                 {/* Render the header content */ }
-                <div className='grid-column-header-cell-content' style={ cellContentStyle }>
+                <div className="grid-column-header-cell-content" style={ cellContentStyle }>
                     { children }
                 </div>
 
@@ -147,7 +147,7 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
                     onMouseDown={ isResizeEnabled ? (event: React.MouseEvent<HTMLElement>) => onResizeHandleMouseDown(columnIndex, event) : undefined }
                     onClick={ (event: React.MouseEvent<HTMLElement>) => event.stopPropagation() }
                     style={ { backgroundColor: theme.borderColor } }
-                    aria-hidden='true'
+                    aria-hidden="true"
                 />
             </div>
         );
@@ -164,7 +164,7 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
             width
         } = this.props;
 
-        let cellStyle: React.CSSProperties = {
+        const cellStyle: React.CSSProperties = {
             width: width,
             borderTopColor: theme.borderColor,
             borderRightColor: theme.borderColor,
@@ -192,8 +192,8 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
             theme
         } = this.props;
 
-        let dropLocationIndicatorWidth: number = 3;
-        let dropLocationBorder: string = `solid ${dropLocationIndicatorWidth}px`;
+        const dropLocationIndicatorWidth = 3;
+        const dropLocationBorder = `solid ${dropLocationIndicatorWidth}px`;
 
         if (!getRTL()) {
             cellStyle.borderLeft = dropLocationBorder;

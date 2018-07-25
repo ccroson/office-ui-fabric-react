@@ -208,13 +208,13 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
 
     protected renderComponent(): JSX.Element {
         const { value } = this.props;
-        let iconStyle: React.CSSProperties = this.props.theme ? {
+        const iconStyle: React.CSSProperties = this.props.theme ? {
             color: this.props.theme.selectionBorderColor,
             fontSize: this.props.theme.iconSize
         } : {};
         return (
-            <div className='resource-editor-container' ref={ this.resolveRef(this, 'facepileWrapper') } onClick={ this.onCellClick }>
-                <div className='resource-editor-facepile'>
+            <div className="resource-editor-container" ref={ this.resolveRef(this, 'facepileWrapper') } onClick={ this.onCellClick }>
+                <div className="resource-editor-facepile">
                     <ResourcePile resources={ value.assignedResources } total={ value.total } width={ this.props.columnWidth } />
                 </div>
                 <i className={ css('ms-Icon ms-Icon--PeopleAdd') }
@@ -266,7 +266,7 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
                             } }
                         >
                             <Button
-                                className='resource-create-assign-button'
+                                className="resource-create-assign-button"
                                 primary={ true }
                                 label={ this.labels.resourceCreateAndAssignLabel }
                                 text={ this.labels.resourceCreateAndAssignLabel }
@@ -312,7 +312,7 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
 
     /** Convert list of Resource objects to Identifiable objects */
     private getIdentifiable(userInfos: IResource[]): Identifiable<IPersonaProps>[] {
-        let identifiableList: Identifiable<IPersonaProps>[] = _.map(userInfos, (user: IResource) => {
+        const identifiableList: Identifiable<IPersonaProps>[] = _.map(userInfos, (user: IResource) => {
             return {
                 id: user.id,
                 text: user.name,
@@ -331,7 +331,7 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
 
         const { search } = this.state;
 
-        let assigned: IResourceListProps = {
+        const assigned: IResourceListProps = {
             compactMode: false,
             listHeaderText: this.assignedResourcesList.label,
             resourceList: this.getIdentifiable(this.assignedResourcesList.resources()), // List of personas
@@ -344,7 +344,7 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
             })
         };
 
-        let unassignedLists = _(this.unassignedResourcesLists)
+        const unassignedLists = _(this.unassignedResourcesLists)
             .filter((unassignedResourcesList: IUnassignedResourcesList) => unassignedResourcesList.isVisible(search))
             .map((unassignedResourceList: IUnassignedResourcesList) => {
                 return {

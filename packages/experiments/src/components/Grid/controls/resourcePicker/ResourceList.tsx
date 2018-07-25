@@ -72,11 +72,11 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
         const { listHeaderText, resourceList } = this.props;
 
         return (
-            <div className='resource-list-result-group'>
+            <div className="resource-list-result-group">
                 { this.renderHeader() }
                 <FocusZone
                     aria-label={ listHeaderText }
-                    className='resource-list-results'
+                    className="resource-list-results"
                     direction={ FocusZoneDirection.vertical }
                     isCircularNavigation={ false }
                 >
@@ -119,7 +119,7 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
         const { listHeaderText, resourceList, showHeaderIfNoData } = this.props;
 
         return (showHeaderIfNoData || _.size(resourceList)) && listHeaderText ? (
-            <div aria-label={ listHeaderText } className='resource-list-result-group-title' tabIndex={ 0 }>
+            <div aria-label={ listHeaderText } className="resource-list-result-group-title" tabIndex={ 0 }>
                 { listHeaderText }
             </div>
         ) : null;
@@ -132,7 +132,7 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
      */
     private renderResource = (resource: Identifiable<IPersonaProps>, resourceIndex: number) => {
         const { resourceAriaLabel, compactMode, onItemClick, onItemKeyUp } = this.props;
-        let buttonProps = onItemKeyUp
+        const buttonProps = onItemKeyUp
             ? {
                 onKeyUp: (ev: React.KeyboardEvent<HTMLElement>) => {
                     if (resource) {
@@ -155,11 +155,11 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
             };
 
         return (
-            <div key={ resource.id || resourceIndex } className='resource-list-result'>
+            <div key={ resource.id || resourceIndex } className="resource-list-result">
                 <button
                     title={ resource.text }
                     aria-label={ `${resource.text} ${resourceAriaLabel}` }
-                    className='resource-list-persona'
+                    className="resource-list-persona"
                     { ...buttonProps }
                 >
                     <Persona

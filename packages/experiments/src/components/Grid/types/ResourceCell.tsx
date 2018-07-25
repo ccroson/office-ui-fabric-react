@@ -17,7 +17,7 @@ import { GridAction, PickerOpenedAction } from '../actions/GridActions';
  * Class that handles rendering of the Facepile control inside the grid
  */
 export class ResourceCell implements ICellType {
-    public name: string = 'ResourceCell';
+    public name = 'ResourceCell';
 
     private options: IResourceEditorOptions;
 
@@ -73,7 +73,7 @@ export class ResourceCell implements ICellType {
         }
 
         return (
-            <div className='resource-container' style={{ pointerEvents: 'none' }}>
+            <div className="resource-container" style={{ pointerEvents: 'none' }}>
                 <ResourcePile resources={cellData.assignedResources} total={cellData.total} width={context.columnWidth} />
             </div>
         );

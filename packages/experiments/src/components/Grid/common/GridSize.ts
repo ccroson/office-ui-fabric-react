@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 /** Regex for parsing out width values */
 const widthRegex = /^(-?\d*(\.\d+)?)(px|\*)?$/i;
 
-    
 /**
  * Possible Grid width units
  */

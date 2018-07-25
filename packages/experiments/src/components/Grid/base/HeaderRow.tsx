@@ -77,8 +77,8 @@ export class HeaderRow extends BaseComponent<IHeaderRowProps, {}> {
         };
 
         return (
-            <div className='grid-header-row'
-                role='row'
+            <div className="grid-header-row"
+                role="row"
                 style={ style }
                 ref={ this.resolveRef(this, 'innerDiv') }
             >

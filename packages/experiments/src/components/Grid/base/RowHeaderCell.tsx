@@ -65,13 +65,13 @@ export class RowHeaderCell extends BaseComponent<IRowHeaderCellProps, {}> {
             onContextMenu
         } = this.props;
 
-        let cellStyle: React.CSSProperties = {
+        const cellStyle: React.CSSProperties = {
             width: width,
             height: height,
             borderColor: theme.borderColor
         };
 
-        let cellContentStyle: React.CSSProperties = {};
+        const cellContentStyle: React.CSSProperties = {};
 
         if (isRowActive) {
             cellStyle.backgroundColor = theme.selectedHeaderBackgroundColor;
@@ -90,13 +90,13 @@ export class RowHeaderCell extends BaseComponent<IRowHeaderCellProps, {}> {
                     className
                 ) }
                 aria-rowindex={ rowIndex }
-                role='rowheader'
+                role="rowheader"
                 style={ cellStyle }
                 onMouseDown={ onMouseDown }
                 onMouseEnter={ onMouseEnter }
                 onContextMenu={ onContextMenu }
             >
-                <div className='grid-row-header-cell-content'
+                <div className="grid-row-header-cell-content"
                     style={ cellContentStyle }>
                     { children }
                 </div>

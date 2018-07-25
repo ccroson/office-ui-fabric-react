@@ -156,7 +156,7 @@ export class Cell extends BaseComponent<ICellProps, {}> {
         let isCellEditableValue = PropUtils.getValueFromAccessor(isCellEditable, coordinate);
         isCellEditableValue = !(isCellEditableValue === false); // Make isCellEditableValue true if it's undefined
 
-        let cellClassName: string = css('grid-cell', borderClassNameMapping, className);
+        const cellClassName: string = css('grid-cell', borderClassNameMapping, className);
 
         if (!ariaAndDataAttributes) {
             ariaAndDataAttributes = {};
@@ -189,14 +189,14 @@ export class Cell extends BaseComponent<ICellProps, {}> {
             >
                 {/* Render the cell content */ }
                 { children &&
-                    <div className='grid-cell-content'>
+                    <div className="grid-cell-content">
                         { children }
                     </div>
                 }
 
                 {/* Render the fill handle if it is enabled */ }
                 { isFillEnabled && selectionPosition && selectionPosition.right && selectionPosition.bottom &&
-                    <div className='grid-cell-fill-handle' onMouseDown={ onFillMouseDown }
+                    <div className="grid-cell-fill-handle" onMouseDown={ onFillMouseDown }
                         style={ { backgroundColor: theme.selectionBorderColor } } />
                 }
             </div>
@@ -212,7 +212,7 @@ export class Cell extends BaseComponent<ICellProps, {}> {
      * @param cellClassMapping The mapping of the cell classes based on the selection position of the cell
      */
     private getCellStyle(rowSpan: number, height: number, width: number, theme: GridTheme, cellClassMapping: CellClassMapping): React.CSSProperties {
-        let style: React.CSSProperties = {
+        const style: React.CSSProperties = {
             border: rowSpan === 0 ? 0 : '',
             height: height * rowSpan,
             padding: rowSpan === 0 ? 0 : '',

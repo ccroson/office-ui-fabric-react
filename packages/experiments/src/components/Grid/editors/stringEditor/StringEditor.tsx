@@ -56,7 +56,7 @@ export class StringEditor extends BaseComponent<IStringEditorProps, IStringEdito
      */
     public renderComponent(): JSX.Element {
         return (
-            <input className='string-editor'
+            <input className="string-editor"
                 onChange={ (event: React.FormEvent<HTMLInputElement>) => this.props.onValueUpdated((event.target as HTMLInputElement).value) }
                 onClick={ (event: React.MouseEvent<HTMLInputElement>) => { event.stopPropagation(); } }
                 onMouseDown={ (event: React.MouseEvent<HTMLInputElement>) => { event.stopPropagation(); } }
@@ -76,8 +76,8 @@ export class StringEditor extends BaseComponent<IStringEditorProps, IStringEdito
      */
     @autobind
     private moveCursorEnd(event: React.FocusEvent<HTMLElement>) {
-        let input = event.target as HTMLInputElement;
-        let length = input.value.length;
+        const input = event.target as HTMLInputElement;
+        const length = input.value.length;
         input.setSelectionRange(length, length);
     }
 

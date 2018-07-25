@@ -155,9 +155,9 @@ export class HierarchyCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      */
     public getAriaAndDataAttributes(cellData: HierarchyCellData): _.Dictionary<string> {
-        let hierarchyCellAria = {
+        const hierarchyCellAria = {
             'aria-expanded': cellData && cellData.expanded,
-            'aria-level': cellData && cellData.indentationLevel + 1  //Indentation level is 0 based, but the intial level is 1
+            'aria-level': cellData && cellData.indentationLevel + 1  // Indentation level is 0 based, but the intial level is 1
         };
 
         if (cellData && cellData.siblingCount != null) {
@@ -196,9 +196,9 @@ export class HierarchyCell implements ICellType {
      */
     private renderWrapper(cellData: HierarchyCellData, children: JSX.Element | string, context: CellContext): JSX.Element {
         return (
-            <div className='hierarchy-cell' style={ getRTL() ? { paddingRight: cellData && cellData.indentationLevel + 'em' } : { paddingLeft: cellData && cellData.indentationLevel + 'em' } }>
+            <div className="hierarchy-cell" style={ getRTL() ? { paddingRight: cellData && cellData.indentationLevel + 'em' } : { paddingLeft: cellData && cellData.indentationLevel + 'em' } }>
                 { this.renderTreeChevron(cellData, context) }
-                <span className='wrapped-content'>
+                <span className="wrapped-content">
                     { children }
                 </span>
             </div>
@@ -211,9 +211,9 @@ export class HierarchyCell implements ICellType {
      * @param context The cell context which provides additional properties, usable for rendering
      */
     private renderTreeChevron(node: HierarchyCellData, context: CellContext): JSX.Element {
-        let showChevron: boolean = node && node.hasChildren;
-        let rtl: boolean = getRTL();
-        let chevronCssMapping: IDictionary = {
+        const showChevron: boolean = node && node.hasChildren;
+        const rtl: boolean = getRTL();
+        const chevronCssMapping: IDictionary = {
             'ms-Icon--ChevronRightMed': !rtl,
             'ms-Icon--ChevronLeftMed': rtl,
             'expanded': node && node.expanded,
@@ -223,7 +223,7 @@ export class HierarchyCell implements ICellType {
             <div
                 className={ css('chevron-wrapper', { 'has-children': showChevron }) }
                 onClick={ showChevron ? (event: React.MouseEvent<HTMLElement>) => {
-                    event.stopPropagation(); //stop onRowClick from being fired
+                    event.stopPropagation(); // stop onRowClick from being fired
                     this.toggleRowExpansion(node);
                 } : null }
                 onMouseDown={ (event: React.MouseEvent<HTMLElement>) => {

@@ -37,12 +37,12 @@ export class HeaderContainer extends BaseComponent<IHeaderContainerProps, {}> {
         } = this.props;
 
         return (
-            <div 
+            <div
                 className={ css('grid-header-container', { 'grid-header-container--sticky': isSticky }) }
                 style={ { height: height } }
                 role={ role }
             >
-                <div 
+                <div
                     className={ css('grid-header', className) }>
                     { children }
                 </div>

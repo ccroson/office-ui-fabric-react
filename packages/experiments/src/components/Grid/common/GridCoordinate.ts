@@ -30,7 +30,7 @@ export class GridCoordinate {
     }
 
     public equals(other: GridCoordinate): boolean {
-        return other !== null && this.rowIndex === other.rowIndex && this.columnIndex === other.columnIndex 
+        return other !== null && this.rowIndex === other.rowIndex && this.columnIndex === other.columnIndex
             && this.isColumnHeaderCell === other.isColumnHeaderCell;
     }
 

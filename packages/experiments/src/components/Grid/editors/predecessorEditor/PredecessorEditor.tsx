@@ -92,7 +92,7 @@ export class PredecessorEditor extends BaseComponent<IPredecessorEditorProps, IP
      */
     public renderComponent(): JSX.Element {
         return (
-            <div className='tag-editor-container'>
+            <div className="tag-editor-container">
                 <GridTagPicker
                     ref={ this.resolveRef(this, 'tagPicker') }
                     onResolveSuggestions={ this.onFilterChanged }
@@ -112,7 +112,7 @@ export class PredecessorEditor extends BaseComponent<IPredecessorEditorProps, IP
     @autobind
     private onFilterChanged(filterText: string): ITag[] {
         // Get the filtered tasks and remove the ones already selected
-        let suggestions = _.filter(this.props.onFetchPredecessorSuggestions(filterText), (suggestion: ITag) => {
+        const suggestions = _.filter(this.props.onFetchPredecessorSuggestions(filterText), (suggestion: ITag) => {
             return _.findIndex(this.state.currentPredecessors, suggestion) < 0;
         });
 
@@ -136,10 +136,10 @@ export class PredecessorEditor extends BaseComponent<IPredecessorEditorProps, IP
         // When item is added
         if (currentPredecessors.length < items.length) {
             // call on add predecessor callback
-            let diff = _.difference(items, currentPredecessors);
+            const diff = _.difference(items, currentPredecessors);
             this.props.onAddPredecessor(diff[0].key);
         } else if (currentPredecessors.length > items.length) {
-            let diff = _.difference(currentPredecessors, items);
+            const diff = _.difference(currentPredecessors, items);
             // call remove predecessor method
             this.props.onRemovePredecessor(diff[0].key);
         }

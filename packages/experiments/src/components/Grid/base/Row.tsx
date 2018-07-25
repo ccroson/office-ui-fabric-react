@@ -231,7 +231,7 @@ export class Row extends BaseComponent<IRowProps, {}> {
         {...getNativeProps(ariaAndDataAttributes, [])}
         aria-rowindex={rowIndex + 1}
         className={css('grid-row', className)}
-        role='row'
+        role="row"
         style={rowStyle}
       >
         {this.renderCells()}
@@ -275,9 +275,9 @@ export class Row extends BaseComponent<IRowProps, {}> {
       theme
     } = this.props;
 
-    let cells: JSX.Element[] = [];
+    const cells: JSX.Element[] = [];
     if (onRenderRowHeaderCell) {
-      let rowHeaderId: string = this.getRowHeaderId();
+      const rowHeaderId: string = this.getRowHeaderId();
 
       cells.push(
         <RowHeaderCell
@@ -297,14 +297,14 @@ export class Row extends BaseComponent<IRowProps, {}> {
       );
     }
 
-    for (let colIndex: number = 0; colIndex < numColumns; colIndex++) {
+    for (let colIndex = 0; colIndex < numColumns; colIndex++) {
       const cellCoordinate: GridCoordinate = new GridCoordinate(rowIndex, colIndex);
       const cellIdentifier: string = getCellIdentifier(cellCoordinate);
       const cellWidth = getCellWidth(colIndex);
       const renderedCellWidth = cellWidth - CELL_PADDING * 2; // remove left and right padding from the total width
       const style: React.CSSProperties = { padding: `${CELL_PADDING}px` };
       const cellRowSpan: number = getCellRowSpan(cellCoordinate);
-      let isEditing: boolean =
+      const isEditing: boolean =
         selectionState && selectionState.mode === GridMode.Edit && cellCoordinate.equals(selectionState.primaryCell);
 
       if (cellRowSpan > 0) {
@@ -313,14 +313,14 @@ export class Row extends BaseComponent<IRowProps, {}> {
           selectionState.fillSelection && selectionState.fillSelection.isCellInRegion(cellCoordinate)
             ? selectionState.fillSelection.getCellPosition(cellCoordinate, cellRowSpan)
             : null;
-        let selectionPosition: CellRegionPosition = GridUtilities.getCellRegionPositionIfSelected(
+        const selectionPosition: CellRegionPosition = GridUtilities.getCellRegionPositionIfSelected(
           cellCoordinate,
           selectionState.selections,
           cellRowSpan
         );
 
         // Construct the header descriptions depending on if there exists a row header
-        let constructAriaDescriptionIds =
+        const constructAriaDescriptionIds =
           (!!onRenderRowHeaderCell ? this.getRowHeaderId() + ' ' : '') +
           (getCellIdentifier ? getCellIdentifier(new GridCoordinate(0, colIndex, true)) : '');
 

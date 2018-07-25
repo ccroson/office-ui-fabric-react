@@ -119,15 +119,15 @@ export class HeaderStickyContainer extends BaseComponent<IHeaderStickyContainerP
             }
 
             return (
-                <div className='grid-header-container' style={ { width: width, height: height } } role={ GridConstants.ROWGROUP_ROLE }>
+                <div className="grid-header-container" style={ { width: width, height: height } } role={ GridConstants.ROWGROUP_ROLE }>
                     <div className={ css('sticky-container') } style={ stickyContainerStyle }>
-                        <div className='grid-header-relative-container'>
+                        <div className="grid-header-relative-container">
                             <div style={ headerContentStyle } className={ css('grid-header grid-header--fixed', className) }>
                                 { children }
                             </div>
                         </div>
                     </div>
-                    <div className='grid-header-placeholder grid-header-placeholder--fixed'
+                    <div className="grid-header-placeholder grid-header-placeholder--fixed"
                         ref={ this.resolveRef(this, 'headerPlaceHolderRef') }
                         style={ placeHolderElementStyle }>
                     </div>
@@ -136,14 +136,14 @@ export class HeaderStickyContainer extends BaseComponent<IHeaderStickyContainerP
         } else {
             // Render the container in regular mode
             return (
-                <div className='grid-header-container'
+                <div className="grid-header-container"
                     style={ { height: height } }
                     role={ GridConstants.ROWGROUP_ROLE }
                 >
                     <div className={ css('grid-header', className) }>
                         { children }
                     </div>
-                    <div className='grid-header-placeholder'
+                    <div className="grid-header-placeholder"
                         ref={ this.resolveRef(this, 'headerPlaceHolderRef') }>
                     </div>
                 </div>

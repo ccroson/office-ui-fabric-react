@@ -83,8 +83,8 @@ export class ResourcePile extends BaseComponent<IResourcePileProps, {}> {
                 text: persona.personaName,
                 imageUrl: persona.imageUrl
             };
-        }; 
-        
+        };
+
         return (
             <Facepile
                 maxDisplayablePersonas={ maxPersonas || MAX_PERSONAS }

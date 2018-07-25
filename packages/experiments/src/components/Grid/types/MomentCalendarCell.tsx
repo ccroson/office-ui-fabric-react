@@ -191,7 +191,7 @@ export class MomentCalendarCell implements ICellType {
             return changedValue;
         } else {
             // Make a list of valid string formats we accept for this cell type
-            let validFormats = [
+            const validFormats = [
                 moment.ISO_8601,
                 DateFormat.GridDate,
                 DateFormat.FullDigitDateFormat

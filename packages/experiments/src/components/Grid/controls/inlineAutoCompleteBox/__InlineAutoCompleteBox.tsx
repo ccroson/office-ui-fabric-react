@@ -53,15 +53,15 @@ export class __InlineAutoCompleteBox extends React.PureComponent<IInlineAutoComp
      * Render a text input with auto completed suggestions
      */
     public render(): JSX.Element {
-        let {
+        const {
             suggestedValue = '',
             value = ''
         } = this.props;
         return (
-            <div className='inline-autocomplete-container'>
-                <div className='inline-autocomplete-suggestions'>{ suggestedValue }</div>
-                <input className='inline-autocomplete'
-                    type='text'
+            <div className="inline-autocomplete-container">
+                <div className="inline-autocomplete-suggestions">{ suggestedValue }</div>
+                <input className="inline-autocomplete"
+                    type="text"
                     onChange={ this.onTextInputChanged }
                     onMouseDown={ (event: React.MouseEvent<HTMLElement>) => { event.stopPropagation(); } }
                     value={ value }
@@ -78,8 +78,8 @@ export class __InlineAutoCompleteBox extends React.PureComponent<IInlineAutoComp
      */
     @autobind
     private moveCursorEnd(event: React.FocusEvent<HTMLElement>) {
-        let input = event.target as HTMLInputElement;
-        let length = input.value.length;
+        const input = event.target as HTMLInputElement;
+        const length = input.value.length;
 
         input.setSelectionRange(length, length);
     }
@@ -94,7 +94,7 @@ export class __InlineAutoCompleteBox extends React.PureComponent<IInlineAutoComp
             onChange
         } = this.props;
 
-        let currentValue = (event.target as HTMLInputElement).value;
+        const currentValue = (event.target as HTMLInputElement).value;
         onChange(currentValue);
     }
 }

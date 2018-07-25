@@ -334,7 +334,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
             onRenderCell={() => placeholderText}
             onRenderRowHeaderCell={this.showRowHeader && this.renderRowHeaderCell}
             rowHeaderWidth={this.rowHeaderWidth}
-            cellClassName='grid-empty'
+            cellClassName="grid-empty"
             selectionState={selectionState}
           />
         );
@@ -485,11 +485,11 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected renderColumnHeaderCell(columnIndex: number): JSX.Element {
-    let column: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
-    let arrowClassMapping: IDictionary = this.getColumnSortIcon(column.id);
+    const column: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
+    const arrowClassMapping: IDictionary = this.getColumnSortIcon(column.id);
 
     return (
-      <div className='grid-column-header-cell-content-parts'>
+      <div className="grid-column-header-cell-content-parts">
         <div>
           {arrowClassMapping && <i className={css('ms-Icon', arrowClassMapping)} />}
           {column.header.label}
@@ -497,9 +497,9 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
         {/* Render the context menu icon if enabled */
         this.getIsColumnHeaderClickable(columnIndex) && (
           <div
-            className='grid-column-header-context-menu-indicator'
+            className="grid-column-header-context-menu-indicator"
             onClick={(event: React.MouseEvent<HTMLElement>) => this.onColumnHeaderMenuClick(columnIndex, event)}
-            role='menuitem'
+            role="menuitem"
           >
             <i className={`ms-Icon ms-Icon--${Icons.ChevronDownMed}`} />
           </div>
@@ -516,7 +516,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     const { sortState } = this.props;
 
     if (sortState && sortState.columnId === columnId) {
-      let cssProperties: IDictionary = {};
+      const cssProperties: IDictionary = {};
       cssProperties[`ms-Icon--${Icons.SortUp}`] = sortState.isAscending;
       cssProperties[`ms-Icon--${Icons.SortDown}`] = !sortState.isAscending;
       return cssProperties;
@@ -532,9 +532,9 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected renderCell(cellCoordinate: GridCoordinate, columnWidth: number): JSX.Element | string {
-    let rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
-    let cellData: any = this.extractCellData(rowData, columnDefinition);
+    const rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
+    const cellData: any = this.extractCellData(rowData, columnDefinition);
     return this.getRenderedElement(cellCoordinate, cellData, columnWidth);
   }
 
@@ -546,8 +546,8 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     headerContextMenuIndex: number
   ): JSX.Element {
     if (headerContextMenuIndex != null) {
-      let columnDefinition = this.getColumnDefinitionAtIndex(headerContextMenuIndex);
-      let contextMenuItems = this.getHeaderContextMenuItems(columnDefinition);
+      const columnDefinition = this.getColumnDefinitionAtIndex(headerContextMenuIndex);
+      const contextMenuItems = this.getHeaderContextMenuItems(columnDefinition);
       return (
         <ContextualMenu
           items={contextMenuItems}
@@ -564,7 +564,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   protected renderCellContextMenu(cellContextMenuCoordinate: GridCoordinate): JSX.Element {
     if (cellContextMenuCoordinate) {
-      let contextMenuItems = this.getCellContextMenuItemsFromCoordinate(cellContextMenuCoordinate);
+      const contextMenuItems = this.getCellContextMenuItemsFromCoordinate(cellContextMenuCoordinate);
       return (
         <ContextualMenu
           className={'grid-context-menu'}
@@ -618,7 +618,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
   protected getHeaderContextMenuItems(columnDefinition: IColumnDefinition): IContextualMenuItem[] {
     const { sortState } = this.props;
 
-    let items: IContextualMenuItem[] = [];
+    const items: IContextualMenuItem[] = [];
 
     const sortAscendingItem: IContextualMenuItem = {
       key: 'asc',
@@ -767,7 +767,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected onColumnHeaderMenuClick(columnIndex: number, event: React.MouseEvent<HTMLElement>): void {
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
     if (this.getHeaderContextMenuItems(columnDefinition).length > 0) {
       event.preventDefault();
       this.headerContextMenuTarget = event.currentTarget as HTMLElement;
@@ -955,7 +955,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected onColumnHeaderAltDown(columnIndex: number, event: React.KeyboardEvent<HTMLElement>): void {
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
 
     if (this.getHeaderContextMenuItems(columnDefinition).length > 0) {
       event.preventDefault();
@@ -1002,7 +1002,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     const { onColumnResize } = this.props;
 
     if (onColumnResize) {
-      let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
+      const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
       onColumnResize(columnDefinition, newSize);
     }
   }
@@ -1018,7 +1018,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     const { onColumnReorder } = this.props;
 
     if (onColumnReorder) {
-      let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(previousIndex);
+      const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(previousIndex);
       onColumnReorder(columnDefinition, newIndex);
     }
   }
@@ -1120,7 +1120,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
     if (columnDefinition.cell.type.getAriaAndDataAttributes) {
       const row: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
-      let cellData: any = this.extractCellData(row, columnDefinition);
+      const cellData: any = this.extractCellData(row, columnDefinition);
       return columnDefinition.cell.type.getAriaAndDataAttributes(cellData);
     }
   }
@@ -1131,8 +1131,8 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected getCellClassName(cellCoordinate: GridCoordinate): string {
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
-    let row: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
+    const row: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
 
     return css(
       PropUtils.getValueFromAccessor(columnDefinition.cell.className, row),
@@ -1190,7 +1190,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected getColumnKey(columnIndex: number): string {
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
     return columnDefinition.id;
   }
 
@@ -1200,7 +1200,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected getColumnHeaderCellClassName(columnIndex: number): string {
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
 
     return css(
       columnDefinition.header.className,
@@ -1222,7 +1222,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected getIsColumnHeaderClickable(columnIndex: number): boolean {
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
     return (
       columnDefinition.sortable ||
       (columnDefinition.header.contextMenuItems && columnDefinition.header.contextMenuItems.length > 0)
@@ -1259,7 +1259,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @returns {boolean} True if the grid is sorted
    */
   protected isGridSorted(props: P = this.props): boolean {
-    let { sortState } = props;
+    const { sortState } = props;
 
     return sortState != null && sortState.columnId !== undefined;
   }
@@ -1284,8 +1284,8 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
   /** Get the min selectable column index. Will return column count if not found */
   @autobind
   protected getMinSelectableColumnIndex(): number {
-    let minIndex: number = 0;
-    let maxIndex: number = this.getMaxColumnIndex();
+    let minIndex = 0;
+    const maxIndex: number = this.getMaxColumnIndex();
 
     // isSelectionEnabled is only configurable per column and not per cell or row
     while (minIndex <= maxIndex && !this.getIsColumnSelectable(minIndex)) {
@@ -1315,7 +1315,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected getMappedCell(cell: GridCoordinate): GridCoordinate {
-    let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cell.columnIndex);
+    const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cell.columnIndex);
 
     if (columnDefinition.rowSpan && columnDefinition.rowSpan !== 1) {
       return new GridCoordinate(cell.rowIndex - (cell.rowIndex % columnDefinition.rowSpan), cell.columnIndex);
@@ -1381,7 +1381,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     const { rowKey } = this.props;
 
     const rowData: Object = this.getRowDataAtIndex(rowIndex);
-    let userDefinedKey: string = rowKey && rowKey(rowData);
+    const userDefinedKey: string = rowKey && rowKey(rowData);
     return userDefinedKey || rowIndex.toString();
   }
 
@@ -1412,7 +1412,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     }
 
     if (!rowData[GridConstants.__FOOTER_ROW_KEY] === true) {
-      let cellIdentifier: string = this.getCellIdentifier(rowData, columnDefinition);
+      const cellIdentifier: string = this.getCellIdentifier(rowData, columnDefinition);
       // update the cached data if not already cached, and return the cached data
       if (this.cellDataCache[cellIdentifier] === undefined) {
         this.cellDataCache[cellIdentifier] = GridUtilities.getDataFromColumnDefinition(rowData, columnDefinition);
@@ -1436,13 +1436,13 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     }
 
     // all the columns should be editable and have same rowSpan to show fill handle
-    let firstSelectedColumnIndex = selectionState.selections[0].columnRange.start;
-    let firstColumnDefinition = this.getColumnDefinitionAtIndex(firstSelectedColumnIndex);
-    let selectionRowSpan = firstColumnDefinition.rowSpan;
+    const firstSelectedColumnIndex = selectionState.selections[0].columnRange.start;
+    const firstColumnDefinition = this.getColumnDefinitionAtIndex(firstSelectedColumnIndex);
+    const selectionRowSpan = firstColumnDefinition.rowSpan;
     return _.every(
       _.range(selectionState.selections[0].columnRange.start, selectionState.selections[0].columnRange.end + 1),
       (columnIndex: number) => {
-        let columnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
+        const columnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
         return columnDefinition.editable && columnDefinition.rowSpan === selectionRowSpan;
       }
     );
@@ -1461,18 +1461,18 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
 
     if (selectionState && _.size(selectionState.selections)) {
       let newSelectionState: SelectionState = selectionState;
-      let finalRowIndex: number = this.getMaxRowIndex();
+      const finalRowIndex: number = this.getMaxRowIndex();
 
       for (let i: number = selectionState.selections.length - 1; i >= 0; i--) {
         // get upper left and lower right coordinates
-        let currentRegion: GridRegion = selectionState.selections[i];
-        let primaryCoordinateRowIndex: number =
+        const currentRegion: GridRegion = selectionState.selections[i];
+        const primaryCoordinateRowIndex: number =
           currentRegion && currentRegion.primaryCoordinate && currentRegion.primaryCoordinate.rowIndex;
-        let secondaryCoordinateRowIndex: number =
+        const secondaryCoordinateRowIndex: number =
           currentRegion && currentRegion.secondaryCoordinate && currentRegion.secondaryCoordinate.rowIndex;
 
-        let topRowIndex: number = Math.min(primaryCoordinateRowIndex, secondaryCoordinateRowIndex);
-        let bottomRowIndex: number = Math.max(primaryCoordinateRowIndex, secondaryCoordinateRowIndex);
+        const topRowIndex: number = Math.min(primaryCoordinateRowIndex, secondaryCoordinateRowIndex);
+        const bottomRowIndex: number = Math.max(primaryCoordinateRowIndex, secondaryCoordinateRowIndex);
 
         if (Math.max(topRowIndex, bottomRowIndex) > finalRowIndex) {
           // clone if selectionState hasn't been cloned yet
@@ -1525,7 +1525,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @param finalRowIndex Index of the last row in the grid
    */
   private shrinkRegion(selectionState: SelectionState, region: GridRegion, finalRowIndex: number): SelectionState {
-    let isInRegion: boolean = region.isCellInRegion(selectionState.primaryCell);
+    const isInRegion: boolean = region.isCellInRegion(selectionState.primaryCell);
 
     // shrink the selection so it remains within the grid
     if (region.primaryCoordinate.rowIndex > finalRowIndex) {
@@ -1549,7 +1549,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
   protected validateProps(props: IAbstractGridProps) {
     const { columnDefinitions, onColumnResize, onSortByColumn, onClearSort } = props;
 
-    let componentName: string = this.name();
+    const componentName: string = this.name();
 
     if (columnDefinitions && columnDefinitions.length > 0) {
       _.forEach(columnDefinitions, (columnDefinition: IColumnDefinition) => {
@@ -1651,8 +1651,8 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   private updateColumnWidths(): void {
     if (this.gridWidthContainer) {
-      let availableWidth = this.gridWidthContainer.clientWidth;
-      let columnWidths: number[] = this.computeColumnWidths(
+      const availableWidth = this.gridWidthContainer.clientWidth;
+      const columnWidths: number[] = this.computeColumnWidths(
         _.map(this.columnDefinitions, (columnDefinition: IColumnDefinition) =>
           GridSize.parseSize(columnDefinition.width)
         ),
@@ -1673,8 +1673,8 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @param availableWidth The total available width
    */
   private computeColumnWidths(columnWidths: GridSize[], availableWidth: number): number[] {
-    let computedColumnWidths: number[] = _.times(columnWidths.length, _.constant(0));
-    let totalFlexValue: number = 0;
+    const computedColumnWidths: number[] = _.times(columnWidths.length, _.constant(0));
+    let totalFlexValue = 0;
 
     // Assign fixed widths
     _.forEach(columnWidths, (columnWidth: GridSize, index: number) => {
@@ -1955,7 +1955,7 @@ export interface ICellType {
    * @param originalValue The cell data extracted through property or accessor
    * @param changedValue The raw input to parse to Object
    */
-  parseRawInput?: (originalValue: Object, changedValue: Object): any => Object;
+  parseRawInput?: (originalValue: Object, changedValue: Object);: any => Object;
 
   /**
    * Validate a piece of data. Should provide some default validations for the type

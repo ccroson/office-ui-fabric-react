@@ -199,7 +199,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
             this.columnDefinitions.unshift(this.selectionColumnDefinition);
 
             // Compute the currently selected regions using the selected mapping
-            let selectedRegions: GridRegion[] = this.getSelectionsFromMapping(rowData, rowKey, this.selectedKeys);
+            const selectedRegions: GridRegion[] = this.getSelectionsFromMapping(rowData, rowKey, this.selectedKeys);
 
             // Set a new selection state
             this.setState((prevState: IListState) => {
@@ -236,12 +236,12 @@ export class List extends AbstractGrid<IListProps, IListState> {
             selectionState
         } = this.state;
 
-        let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
+        const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
 
-        let cellDefinition: ICellDefinition = columnDefinition.cell;
+        const cellDefinition: ICellDefinition = columnDefinition.cell;
         let renderedElement: JSX.Element | string = null;
 
-        let cellContext: CellContext = this.getCellContext(cellCoordinate, columnWidth);
+        const cellContext: CellContext = this.getCellContext(cellCoordinate, columnWidth);
         if (selectionState.mode === GridMode.Select && selectionState.primaryCell.equals(cellCoordinate) && cellDefinition.type.renderSelected) {
             renderedElement = cellDefinition.type.renderSelected(extractedCellData, null, cellContext);
         } else {
@@ -270,15 +270,15 @@ export class List extends AbstractGrid<IListProps, IListState> {
 
         let newSelectionState: SelectionState;
         if (selectionMode !== ListSelectionMode.None) {
-            let columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
+            const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
             // if clicked on selection cell, toggle the selection for the row
             if (columnDefinition.id === this.selectionColumnDefinition.id) {
                 this.toggleSelection(cellCoordinate.rowIndex);
             } else {
                 // creates a new selection with the single row
-                let maxColumnIndex: number = this.getMaxColumnIndex();
-                let primaryCoordinate: GridCoordinate = new GridCoordinate(cellCoordinate.rowIndex, 0);
-                let secondaryCoordinate: GridCoordinate = new GridCoordinate(cellCoordinate.rowIndex, maxColumnIndex);
+                const maxColumnIndex: number = this.getMaxColumnIndex();
+                const primaryCoordinate: GridCoordinate = new GridCoordinate(cellCoordinate.rowIndex, 0);
+                const secondaryCoordinate: GridCoordinate = new GridCoordinate(cellCoordinate.rowIndex, maxColumnIndex);
                 newSelectionState = {
                     fillSelection: null,
                     mode: GridMode.Select,
@@ -322,7 +322,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
         // We could not use onFocus event here, since that would be called on click as well
         // (setting first row as focused before the setting the clicked row as focused, so listening for keyUp to avoid that)
         if (event.keyCode === KeyCode.TAB) {
-            let newState: SelectionState = this.stateManager.handleFocus(selectionState);
+            const newState: SelectionState = this.stateManager.handleFocus(selectionState);
             if (newState) {
                 this.onSelectionStateChanged(newState);
             }
@@ -442,7 +442,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
             selectionState
         } = this.state;
 
-        let cssMapping: IDictionary = {
+        const cssMapping: IDictionary = {
             selected: this.getSelectedRowIndexes(selectionState.selections).indexOf(rowIndex) >= 0
         };
 
@@ -488,9 +488,9 @@ export class List extends AbstractGrid<IListProps, IListState> {
 
             // Invalidate the existing selection mapping and reconstruct it based on the provided selection
             this.selectedKeys = {};
-            let selectedRows: Object[] = this.getSelectedRows(selectionState.selections);
-            for (let selectedRow of selectedRows) {
-                let resolvedRowKey = rowKey(selectedRow);
+            const selectedRows: Object[] = this.getSelectedRows(selectionState.selections);
+            for (const selectedRow of selectedRows) {
+                const resolvedRowKey = rowKey(selectedRow);
                 this.selectedKeys[resolvedRowKey] = true;
             }
 
@@ -525,7 +525,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
      * @param hideColumnHeader If the column header is hidden
      */
     private initializeStateManager(selectionMode: ListSelectionMode, hideColumnHeader: boolean = GridDefaultProps.HideColumnHeader): StateManager {
-        let gridSelectionMode: SelectionMode = this.getGridSelectionMode(selectionMode);
+        const gridSelectionMode: SelectionMode = this.getGridSelectionMode(selectionMode);
 
         return StateManagerFactory.createStateManager(
             gridSelectionMode,
@@ -589,8 +589,8 @@ export class List extends AbstractGrid<IListProps, IListState> {
         } = this.props;
 
         let selectedRowIndexes: number[] = this.getSelectedRowIndexes(selectionState.selections);
-        let rowIndexInSelection: number = selectedRowIndexes.indexOf(rowIndex);
-        let rowKey: string = this.getRowKey(rowIndex);
+        const rowIndexInSelection: number = selectedRowIndexes.indexOf(rowIndex);
+        const rowKey: string = this.getRowKey(rowIndex);
 
         if (this.selectedKeys[rowKey]) {
             // if row already selected, remove it
@@ -607,9 +607,9 @@ export class List extends AbstractGrid<IListProps, IListState> {
             this.selectedKeys[rowKey] = true;
         }
 
-        let selections: GridRegion[] = this.getSelections(selectedRowIndexes);
+        const selections: GridRegion[] = this.getSelections(selectedRowIndexes);
 
-        let newSelectionState: SelectionState = {
+        const newSelectionState: SelectionState = {
             mode: selections.length > 0 ? GridMode.Select : GridMode.None,
             fillSelection: null,
             // setting primary cell of first region as the primary grid cell,
@@ -624,7 +624,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
         });
 
         if (onSelectionChanged) {
-            let selectedRows: Object[] = _.map(selectedRowIndexes, (selectedRowIndex: number) => this.getRowDataAtIndex(selectedRowIndex));
+            const selectedRows: Object[] = _.map(selectedRowIndexes, (selectedRowIndex: number) => this.getRowDataAtIndex(selectedRowIndex));
             onSelectionChanged(selectedRows);
         }
     }
@@ -635,11 +635,11 @@ export class List extends AbstractGrid<IListProps, IListState> {
      * @returns list of GridRegions, [] if no selected rows
      */
     private getSelections(selectedRows: number[]): GridRegion[] {
-        let maxColumnIndex: number = this.getMaxColumnIndex();
+        const maxColumnIndex: number = this.getMaxColumnIndex();
 
         if (selectedRows) {
             // for every row, add the corresponding GridRegion
-            let selections: GridRegion[] = _.map(selectedRows, (rowIndex: number) => {
+            const selections: GridRegion[] = _.map(selectedRows, (rowIndex: number) => {
                 return new GridRegion(new GridCoordinate(rowIndex, 0), new GridCoordinate(rowIndex, maxColumnIndex));
             });
 
@@ -656,10 +656,10 @@ export class List extends AbstractGrid<IListProps, IListState> {
      * @param mapping The selected keys
      */
     private getSelectionsFromMapping(rowData: Object[], rowKey: (data: Object) => string, mapping: _.Dictionary<boolean>): GridRegion[] {
-        let selectedRegions: GridRegion[] = [];
+        const selectedRegions: GridRegion[] = [];
         if (rowData != null && rowKey != null && mapping != null) {
             for (let i = 0; i < rowData.length; i++) {
-                let resolvedRowKey = rowKey(rowData[i]);
+                const resolvedRowKey = rowKey(rowData[i]);
                 if (this.selectedKeys[resolvedRowKey]) {
                     selectedRegions.push(new GridRegion(new GridCoordinate(i, 0), new GridCoordinate(i, this.getMaxColumnIndex())));
                 }
@@ -674,7 +674,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
      * @param selectedRegions The list of selected GridRegions
      */
     private getSelectedRowIndexes(selectedRegions: GridRegion[]): number[] {
-        let selectedRowIndexes: number[] = [];
+        const selectedRowIndexes: number[] = [];
 
         if (selectedRegions) {
             _.forEach(selectedRegions, (selectedRegion: GridRegion) => {
@@ -692,7 +692,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
      * @param selectedRegions The list of selected GridRegions
      */
     private getSelectedRows(selectedRegions: GridRegion[]): Object[] {
-        let selectedRows: Object[] = [];
+        const selectedRows: Object[] = [];
 
         if (selectedRegions) {
             _.forEach(selectedRegions, (selectedRegion: GridRegion) => {

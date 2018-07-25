@@ -22,7 +22,7 @@ export abstract class GridAction {
  */
 export class PickerOpenedAction extends GridAction {
     /** The type of the action */
-    public static type: string = 'Picker_Opened';
+    public static type = 'Picker_Opened';
 
     constructor() {
         super(PickerOpenedAction.type);

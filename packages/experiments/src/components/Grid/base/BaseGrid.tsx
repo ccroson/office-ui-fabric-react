@@ -395,7 +395,7 @@ export enum DropDirection {
 }
 
 /** Column header class id */
-const COLUMN_HEADER_ID: string = 'data-header-id';
+const COLUMN_HEADER_ID = 'data-header-id';
 
 /**
  * Foundation for all Grid like components. Provides and renders basic grid interactions
@@ -544,14 +544,14 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         this.isScrolling = false;
         this.rowPositionManager = new FixedRowPositionManager(numRows, rowHeight);
 
-        let initialStartRow: number = 0;
+        let initialStartRow = 0;
         let initialEndRow: number = Math.max(numRows - 1, 0);
 
         this.rangeRenderer = shouldCacheOnScroll ? RangeRenderers.cachedRenderer : RangeRenderers.defaultRenderer;
 
         // If virtualized, compute initially visible rows
         if (virtualized && numRows > 0) {
-            let initialVisibilityInformation: VisibilityInformation = this.calculateVisibleRows();
+            const initialVisibilityInformation: VisibilityInformation = this.calculateVisibleRows();
             this.bottomSpacerHeight = initialVisibilityInformation.bottomHeight;
             this.topSpacerHeight = initialVisibilityInformation.topHeight;
             initialStartRow = initialVisibilityInformation.range.start;
@@ -578,9 +578,9 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
      * @param cellCoordinate The coordinate
      */
     public getCellRef(cellCoordinate: GridCoordinate): HTMLDivElement {
-        let row = this.refs[`${cellCoordinate.rowIndex}`] as Row;
+        const row = this.refs[`${cellCoordinate.rowIndex}`] as Row;
         if (row) {
-            let cell = row.getCellRef(cellCoordinate.columnIndex);
+            const cell = row.getCellRef(cellCoordinate.columnIndex);
             if (cell) {
                 return cell.container;
             }
@@ -708,7 +708,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
      * After the component updates, we must update the closest scrollable ancestor if it has changed.
      */
     public componentDidUpdate(prevProps: IBaseGridProps, prevState: IBaseGridState): void {
-        let {
+        const {
             dirtyCanary,
             isHeaderSticky = GridDefaultProps.StickyHeaderEnabled,
             virtualized = GridDefaultProps.Virtualized
@@ -730,8 +730,8 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
 
         if (this.props.selectionState) {
             // if primary cell changed and not visible, scroll to it
-            let previousPrimaryCell: GridCoordinate = prevProps.selectionState && prevProps.selectionState.primaryCell;
-            let newPrimaryCell: GridCoordinate = this.props.selectionState.primaryCell;
+            const previousPrimaryCell: GridCoordinate = prevProps.selectionState && prevProps.selectionState.primaryCell;
+            const newPrimaryCell: GridCoordinate = this.props.selectionState.primaryCell;
 
             if (newPrimaryCell) {
                 if (newPrimaryCell.rowIndex !== previousPrimaryCell.rowIndex) {
@@ -778,7 +778,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             isHeaderFixed
         } = this.state;
 
-        let headerCells: JSX.Element[] = [];
+        const headerCells: JSX.Element[] = [];
 
         if (onRenderRowHeaderCell) {
             const id = 'header-row-header';
@@ -797,7 +797,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         }
 
         // setting all the columns with selected headers as active
-        let activeColumns: _.Dictionary<boolean> = {};
+        const activeColumns: _.Dictionary<boolean> = {};
         _.forEach(selectionState.selections, (selection: GridRegion) => {
             if (selection.primaryCoordinate.isColumnHeaderCell) {
                 for (let index: number = selection.columnRange.start; index <= selection.columnRange.end; index++) {
@@ -806,9 +806,9 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             }
         });
 
-        for (let columnIndex: number = 0; columnIndex < numColumns; columnIndex++) {
-            let headerWidth = this.getColumnWidth(columnIndex);
-            let key: string = 'ColumnHeaderCell_' + this.getColumnKey(columnIndex);
+        for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+            const headerWidth = this.getColumnWidth(columnIndex);
+            const key: string = 'ColumnHeaderCell_' + this.getColumnKey(columnIndex);
             const cellCoordinate: GridCoordinate = new GridCoordinate(GridConstants.HEADER_ROW_INDEX, columnIndex, true);
 
             headerCells.push(
@@ -840,10 +840,10 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             );
         }
 
-        let headerRow: JSX.Element = (
+        const headerRow: JSX.Element = (
             <HeaderRow
                 ref={ this.resolveRef(this, 'headerRowRef') }
-                key='header-row'
+                key="header-row"
                 height={ headerRowHeight }
                 theme={ theme }
                 isHeaderFixed={ isHeaderFixed }
@@ -902,7 +902,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         } = this.state;
 
         // setting all the rows with selected headers as active
-        let activeRows: _.Dictionary<boolean> = {};
+        const activeRows: _.Dictionary<boolean> = {};
         _.forEach(selectionState.selections, (selection: GridRegion) => {
             if (selection.primaryCoordinate.isRowHeaderCell) {
                 for (let index: number = selection.rowRange.start; index <= selection.rowRange.end; index++) {
@@ -913,7 +913,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
 
         const selectedRowIndexes: _.Dictionary<boolean> = this.getSelectedRowIndexes();
 
-        let gridRows: JSX.Element[] = this.rangeRenderer({
+        const gridRows: JSX.Element[] = this.rangeRenderer({
             startIndex: visibleStart,
             endIndex: visibleEnd,
             cache: this.rowCache,
@@ -934,7 +934,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         return (
             <div
                 role={ this.getHeaderRole() }
-                className='grid-body'
+                className="grid-body"
                 style={ gridBodyStyle }
             >
                 { gridRows }
@@ -1034,16 +1034,16 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
     private calculateVisibleRows(props: IBaseGridProps = this.props): VisibilityInformation {
         // Compute visible rows if scroll position has changed
         let height: number = window.innerHeight;
-        let scrollPositionWithinGrid: number = 0;
+        let scrollPositionWithinGrid = 0;
         if (this.scrollableParent && this.gridContainerRef && this.gridContainerInitialOffsetTopFromScrollableParent != null) {
             height = this.scrollableParentClientHeight;
             scrollPositionWithinGrid = Math.max(this.scrollTopPosition - (this.gridContainerInitialOffsetTopFromScrollableParent), 0);
         }
 
-        let topOverscan: number = GridConstants.DEFAULT_OVERSCAN;
-        let bottomOverscan: number = GridConstants.DEFAULT_OVERSCAN;
+        const topOverscan: number = GridConstants.DEFAULT_OVERSCAN;
+        const bottomOverscan: number = GridConstants.DEFAULT_OVERSCAN;
 
-        let visibilityInformation: VisibilityInformation = this.rowPositionManager.getVisibilityInformation(height, scrollPositionWithinGrid, topOverscan, bottomOverscan);
+        const visibilityInformation: VisibilityInformation = this.rowPositionManager.getVisibilityInformation(height, scrollPositionWithinGrid, topOverscan, bottomOverscan);
         return visibilityInformation;
     }
 
@@ -1082,12 +1082,12 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
      * Compare the current horizontal position of fixed sticky element with respect to the scroll view's position
      */
     private shouldStickyElementReRender() {
-        let placeHolderElementClientRect = this.stickyHeaderContainerRef.placeHolderRect;
-        let placeHolderLeftOffset = !getRTL() ?
+        const placeHolderElementClientRect = this.stickyHeaderContainerRef.placeHolderRect;
+        const placeHolderLeftOffset = !getRTL() ?
             this.scrollableParentClientRect.left - placeHolderElementClientRect.left :
             placeHolderElementClientRect.right - this.scrollableParentClientRect.right;
 
-        let stickyElementLeftOffset = this.scrollLeftPosition - this.gridContainerInitialOffsetLeftFromScrollableParent;
+        const stickyElementLeftOffset = this.scrollLeftPosition - this.gridContainerInitialOffsetLeftFromScrollableParent;
         // the sticky element should be horizontally aligned to the placeholder element
         return Math.abs(stickyElementLeftOffset - placeHolderLeftOffset) > 1;
     }
@@ -1205,7 +1205,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
      */
     @autobind
     private getCellRole(cellCoordinate: GridCoordinate): string {
-        //Role of the cell
+        // Role of the cell
         const {
             getIsColumnHierarchyCell
         } = this.props;
@@ -1463,7 +1463,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
 
         event.preventDefault();
 
-        let resizingColumnCurrentWidth: number = this.getColumnWidth(colIndex);
+        const resizingColumnCurrentWidth: number = this.getColumnWidth(colIndex);
 
         if (resizingColumnIndex !== colIndex || resizingColumnWidth !== resizingColumnCurrentWidth) {
             this.setState((prevState: IBaseGridState) => {
@@ -1492,7 +1492,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             resizingColumnWidth
         } = this.state;
 
-        let newWidth = this.getNewWidth(this.resizingColumnInitialWidth, this.resizingColumnDragAnchor, event.clientX);
+        const newWidth = this.getNewWidth(this.resizingColumnInitialWidth, this.resizingColumnDragAnchor, event.clientX);
 
         if (newWidth !== resizingColumnWidth) {
             this.setState((prevState: IBaseGridState) => {
@@ -1519,7 +1519,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         this.events.off(window, 'mouseup', this.onColumnResizeMouseUp);
         this.events.off(window, 'mousemove', this.onColumnResizeMove);
 
-        let newWidth = this.getNewWidth(this.resizingColumnInitialWidth, this.resizingColumnDragAnchor, event.clientX);
+        const newWidth = this.getNewWidth(this.resizingColumnInitialWidth, this.resizingColumnDragAnchor, event.clientX);
 
         // call the resize handler
         if (onColumnResize) {
@@ -1715,7 +1715,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
     @autobind
     private onColumnDragStart(event: React.DragEvent<HTMLElement>) {
         event.dataTransfer.effectAllowed = 'move';
-        let columnId: string = event.currentTarget.getAttribute(COLUMN_HEADER_ID);
+        const columnId: string = event.currentTarget.getAttribute(COLUMN_HEADER_ID);
         if (columnId) {
             event.dataTransfer.setData('text', columnId);
             this.hasColumnDragStarted = true;
@@ -1750,17 +1750,17 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
 
         event.preventDefault();
         if (this.hasColumnDragStarted && onColumnReorder) {
-            let sourceId: string = event.dataTransfer.getData('text');
-            let targetId = event.currentTarget.getAttribute(COLUMN_HEADER_ID);
-            let currentDraggedOverColumnIndex = Number(targetId);
+            const sourceId: string = event.dataTransfer.getData('text');
+            const targetId = event.currentTarget.getAttribute(COLUMN_HEADER_ID);
+            const currentDraggedOverColumnIndex = Number(targetId);
 
             if (PropUtils.getValueFromAccessorWithDefault(GridDefaultProps.DragEnabled, isColumnDraggable, currentDraggedOverColumnIndex)) {
                 if (sourceId && targetId) {
-                    let from: number = Number(sourceId);
+                    const from: number = Number(sourceId);
                     let to: number = Number(targetId);
                     if (!isNaN(from) && !isNaN(to)) {
                         if (from !== to) {
-                            let insertAfter: boolean = this.state.dropDirection === DropDirection.AwayPrimarySide;
+                            const insertAfter: boolean = this.state.dropDirection === DropDirection.AwayPrimarySide;
                             // Update to index to be the correct side (before or after)
                             to = to > from ?
                                 // going right
@@ -1797,10 +1797,10 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
 
         event.preventDefault();
         if (this.hasColumnDragStarted) {
-            let targetId = event.currentTarget.getAttribute(COLUMN_HEADER_ID);
+            const targetId = event.currentTarget.getAttribute(COLUMN_HEADER_ID);
 
             if (targetId) {
-                let currentDraggedOverColumnIndex = Number(targetId);
+                const currentDraggedOverColumnIndex = Number(targetId);
                 if (draggedOverColumnIndex !== currentDraggedOverColumnIndex) {
                     this.setState((prevState: IBaseGridState) => {
                         // Set current column to being dragged over unless it is not dragable then it is also not a drop target.
@@ -1828,18 +1828,18 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         event.preventDefault();
 
         if (this.hasColumnDragStarted) {
-            let otherColumn: HTMLElement = event.currentTarget as HTMLElement;
-            let otherColumnXPosition = otherColumn.getBoundingClientRect().left;
-            let otherColumnWidth = otherColumn.offsetWidth;
-            let currentMouseX: number = event.clientX;
+            const otherColumn: HTMLElement = event.currentTarget as HTMLElement;
+            const otherColumnXPosition = otherColumn.getBoundingClientRect().left;
+            const otherColumnWidth = otherColumn.offsetWidth;
+            const currentMouseX: number = event.clientX;
             let dropDirection: DropDirection = DropDirection.None;
-            let dragPercentage = GridConstants.COLUMN_DRAG_THRESHOLD / 100;
+            const dragPercentage = GridConstants.COLUMN_DRAG_THRESHOLD / 100;
 
             // Check dragging direction
-            let draggingTowardLeftNav: boolean = Number(this.dragSourceItem.getAttribute(COLUMN_HEADER_ID)) > draggedOverColumnIndex;
-            let draggingAwayPrimarySide: boolean = Number(this.dragSourceItem.getAttribute(COLUMN_HEADER_ID)) < draggedOverColumnIndex;
-            let pastLeftColumnThreshold: boolean = currentMouseX < otherColumnXPosition + otherColumnWidth - (dragPercentage * otherColumnWidth);
-            let pastRightColumnThreshold: boolean = currentMouseX > otherColumnXPosition + (dragPercentage * otherColumnWidth);
+            const draggingTowardLeftNav: boolean = Number(this.dragSourceItem.getAttribute(COLUMN_HEADER_ID)) > draggedOverColumnIndex;
+            const draggingAwayPrimarySide: boolean = Number(this.dragSourceItem.getAttribute(COLUMN_HEADER_ID)) < draggedOverColumnIndex;
+            const pastLeftColumnThreshold: boolean = currentMouseX < otherColumnXPosition + otherColumnWidth - (dragPercentage * otherColumnWidth);
+            const pastRightColumnThreshold: boolean = currentMouseX > otherColumnXPosition + (dragPercentage * otherColumnWidth);
 
             if (draggingTowardLeftNav) {
                 if (!getRTL()) {
@@ -1883,10 +1883,10 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
 
         event.preventDefault();
         if (this.hasColumnDragStarted) {
-            let targetId = event.currentTarget.getAttribute(COLUMN_HEADER_ID);
+            const targetId = event.currentTarget.getAttribute(COLUMN_HEADER_ID);
 
             if (Number(targetId) !== draggedOverColumnIndex) {
-                let dropDirection: DropDirection = DropDirection.None;
+                const dropDirection: DropDirection = DropDirection.None;
                 if (this.state.dropDirection !== dropDirection) {
                     this.setState((prevState: IBaseGridState) => {
                         prevState.dropDirection = dropDirection;
@@ -1933,9 +1933,9 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         } = this.state;
 
         if (this.dragSourceItem) {
-            let sourceId: string = this.dragSourceItem.getAttribute(COLUMN_HEADER_ID);
+            const sourceId: string = this.dragSourceItem.getAttribute(COLUMN_HEADER_ID);
             if (sourceId) {
-                let dragDiff: number = draggedOverColumnIndex - Number(sourceId);
+                const dragDiff: number = draggedOverColumnIndex - Number(sourceId);
                 if (dragDiff === 1) { // Column is adjacent near side
                     return dropDirection === DropDirection.TowardPrimarySide;
                 } else if (dragDiff === -1) { // Column is adjacent far side
@@ -2106,8 +2106,8 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
      */
     @autobind
     private getSelectedRowIndexes(): _.Dictionary<boolean> {
-        let selections: GridRegion[] = this.props.selectionState.selections || [];
-        let selectedRowIndexes: _.Dictionary<boolean> = {};
+        const selections: GridRegion[] = this.props.selectionState.selections || [];
+        const selectedRowIndexes: _.Dictionary<boolean> = {};
         _.forEach(selections, (selection: GridRegion) => {
             for (let index: number = selection.rowRange.start; index <= selection.rowRange.end; index++) {
                 selectedRowIndexes[index] = true;
@@ -2135,25 +2135,25 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             // so this.scrollableParentClientRect.top + headerRowHeight is the visible top
             // if header is not fixed, then visible top may be below the scrollable parent's top, in case there is some content above the grid in page scroll scenario.
             // so computing the visible top using the initial offset and scrollTop position
-            let gridVisibleTop: number = isHeaderFixed ?
+            const gridVisibleTop: number = isHeaderFixed ?
                 this.scrollableParentClientRect.top + headerRowHeight :
                 Math.max(this.scrollableParentClientRect.top,
                     this.scrollableParentClientRect.top + this.gridContainerInitialOffsetTopFromScrollableParent + headerRowHeight - this.scrollTopPosition);
 
-            let gridVisibleBottom: number = Math.min(this.scrollableParentClientRect.bottom, this.gridContainerClientRect.bottom);
+            const gridVisibleBottom: number = Math.min(this.scrollableParentClientRect.bottom, this.gridContainerClientRect.bottom);
 
             let height: number = Math.max(gridVisibleBottom - gridVisibleTop, 0);
             height = Math.min(height, this.scrollableParentClientHeight); // In case the scrollable parent has a bottom scroll bar, the clientHeight is less than bottom-top
 
-            let scrollPositionWithinGrid: number = Math.max(0, this.scrollTopPosition -
+            const scrollPositionWithinGrid: number = Math.max(0, this.scrollTopPosition -
                 (isHeaderFixed ?
                     this.gridContainerInitialOffsetTopFromScrollableParent :
                     this.gridContainerInitialOffsetTopFromScrollableParent + headerRowHeight
                 )
             );
-            let rowRange: RowRange = this.rowPositionManager.getFullyVisibleRowRange(height, scrollPositionWithinGrid);
-            let rowBounds: RowBoundaries = this.rowPositionManager.getRowBounds(selectionState.primaryCell.rowIndex);
-            let gridOffsetTop: number = this.gridContainerInitialOffsetTopFromScrollableParent;
+            const rowRange: RowRange = this.rowPositionManager.getFullyVisibleRowRange(height, scrollPositionWithinGrid);
+            const rowBounds: RowBoundaries = this.rowPositionManager.getRowBounds(selectionState.primaryCell.rowIndex);
+            const gridOffsetTop: number = this.gridContainerInitialOffsetTopFromScrollableParent;
 
             if (selectionState.primaryCell.rowIndex < rowRange.start) {
                 // if the active element is above the visible rows
@@ -2184,11 +2184,11 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             const columnIndex: number = selectionState.primaryCell.columnIndex;
             const cellWidth: number = this.getColumnWidth(columnIndex);
 
-            let cellStart: number = 0;
+            let cellStart = 0;
             for (let i = 0; i < columnIndex; i++) {
                 cellStart += this.getColumnWidth(i);
             }
-            let cellEnd: number = cellStart + cellWidth;
+            const cellEnd: number = cellStart + cellWidth;
 
             if (cellStart < gridVisibleStart) {
                 this.scrollableParent.scrollLeft = RtlUtils.getBrowserSpecificScrollLeftValueWithOffset(this.scrollableParent, cellStart - gridVisibleStart);

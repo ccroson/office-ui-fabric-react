@@ -13,11 +13,58 @@ import {
  * Represents a group of cells within a Grid
  */
 export class GridRegion {
+
+    /** The initial corner of the region. Often corresponds to drag direction */
+    public get primaryCoordinate(): GridCoordinate {
+        return this._primaryCoordinate;
+    }
+
+    /** The end corner of the region. Opposite the primary coordinate */
+    public get secondaryCoordinate(): GridCoordinate {
+        return this._secondaryCoordinate;
+    }
+
+    /**
+     * Get the range of columns this region spans
+     */
+    public get columnRange(): RowRange {
+        return GridRegion.absoluteRange(this._primaryCoordinate.columnIndex, this._secondaryCoordinate.columnIndex);
+    }
+
+    /**
+     * Get the range of rows this region spans
+     */
+    public get rowRange(): RowRange {
+        return GridRegion.absoluteRange(this._primaryCoordinate.rowIndex, this._secondaryCoordinate.rowIndex);
+    }
     /** The initial corner of the region. Often corresponds to drag direction */
     private _primaryCoordinate: GridCoordinate;
 
     /** The end corner of the region. Opposite the primary coordinate */
     private _secondaryCoordinate: GridCoordinate;
+
+    /**
+     * Compute the 'aboslute range' between two points.
+     * Ex. 4 - 1 => 1 - 4
+     * Ex. 1 - 4 => 1 - 4
+     */
+    private static absoluteRange(r1: number, r2?: number): RowRange {
+        if (r1 == null) {
+            throw new ArgumentNullError('r1', 'Cannot compute absolute range with null arg r1');
+        }
+
+        if (r2 == null) {
+            r2 = r1;
+        }
+
+        const smaller: number = r1 < r2 ? r1 : r2;
+        const larger: number = r1 > r2 ? r1 : r2;
+
+        return {
+            start: smaller,
+            end: larger
+        };
+    }
 
     /**
      * Build a new region, starting at primaryCoordinate and ending at secondaryCoordinate. If secondaryCoordinate is not provided,
@@ -34,44 +81,11 @@ export class GridRegion {
         this._secondaryCoordinate = secondaryCoordinate ? secondaryCoordinate.clone() : primaryCoordinate.clone();
     }
 
-    /** The initial corner of the region. Often corresponds to drag direction */
-    public get primaryCoordinate(): GridCoordinate {
-        return this._primaryCoordinate;
-    }
-
-    /** The end corner of the region. Opposite the primary coordinate */
-    public get secondaryCoordinate(): GridCoordinate {
-        return this._secondaryCoordinate;
-    }
-
-    /**
-     * Compute the 'aboslute range' between two points.
-     * Ex. 4 - 1 => 1 - 4
-     * Ex. 1 - 4 => 1 - 4
-     */
-    private static absoluteRange(r1: number, r2?: number): RowRange {
-        if (r1 == null) {
-            throw new ArgumentNullError('r1', 'Cannot compute absolute range with null arg r1');
-        }
-
-        if (r2 == null) {
-            r2 = r1;
-        }
-
-        let smaller: number = r1 < r2 ? r1 : r2;
-        let larger: number = r1 > r2 ? r1 : r2;
-
-        return {
-            start: smaller,
-            end: larger
-        };
-    }
-
     /**
      * Return all the cells in this selection from left to right, top to bottom
      */
     public cells(): GridCoordinate[] {
-        let cells: GridCoordinate[] = [];
+        const cells: GridCoordinate[] = [];
         for (let row = this.rowRange.start; row <= this.rowRange.end; row++) {
             for (let column = this.columnRange.start; column <= this.columnRange.end; column++) {
                 cells.push(new GridCoordinate(row, column));
@@ -102,18 +116,18 @@ export class GridRegion {
         addPartialCellsToSelection: boolean = true
     ): void {
 
-        let movedPastPrimary: boolean = false;
+        let movedPastPrimary = false;
 
         // Bottom row
         let cellToMove: GridCoordinate = this._secondaryCoordinate.rowIndex === this.rowRange.end ? this._secondaryCoordinate : this._primaryCoordinate;
-        let foundPartialCell: boolean = false;
+        let foundPartialCell = false;
         do {
             foundPartialCell = false;
             for (let column = this.columnRange.start; column <= this.columnRange.end; column++) {
                 let cell: GridCoordinate = new GridCoordinate(this.rowRange.end, column);
 
                 // If a cell is mapped to another cell, get that cell instead
-                let mappedCell: GridCoordinate = getMappedCell(cell);
+                const mappedCell: GridCoordinate = getMappedCell(cell);
                 if (mappedCell) {
                     cell = mappedCell;
                 }
@@ -127,11 +141,11 @@ export class GridRegion {
                 if (this.rowRange.end < cell.rowIndex + (rowSpan - 1)) {
                     // Found a partial cell!
                     if (addPartialCellsToSelection) {
-                        //Extend the selection downwards
+                        // Extend the selection downwards
                         cellToMove.rowIndex = cell.rowIndex + (rowSpan - 1);
                         foundPartialCell = true;
                     } else {
-                        //Collapse the selection upwards
+                        // Collapse the selection upwards
                         cellToMove.rowIndex = cell.rowIndex - 1;
                         foundPartialCell = true;
                         if (this._secondaryCoordinate.rowIndex < this._primaryCoordinate.rowIndex) {
@@ -152,7 +166,7 @@ export class GridRegion {
                     let cell: GridCoordinate = new GridCoordinate(this.rowRange.start, column);
 
                     // If a cell is mapped to another cell, get that cell instead
-                    let mappedCell: GridCoordinate = getMappedCell(cell);
+                    const mappedCell: GridCoordinate = getMappedCell(cell);
                     if (mappedCell) {
                         cell = mappedCell;
                     }
@@ -166,11 +180,11 @@ export class GridRegion {
                     if (this.rowRange.start > cell.rowIndex) {
                         // Found a partial cell!
                         if (addPartialCellsToSelection) {
-                            //Extend the selection upwards
+                            // Extend the selection upwards
                             cellToMove.rowIndex = cell.rowIndex;
                             foundPartialCell = true;
                         } else {
-                            //Collapse the selection downwards
+                            // Collapse the selection downwards
                             cellToMove.rowIndex = cell.rowIndex + rowSpan;
                             foundPartialCell = true;
                             if (this._secondaryCoordinate.rowIndex > this._primaryCoordinate.rowIndex) {
@@ -197,8 +211,8 @@ export class GridRegion {
             throw new ArgumentNullError('cellCoordinate', 'Cannot get position of null cell coordinate');
         }
 
-        let columnRange = this.columnRange;
-        let rowRange = this.rowRange;
+        const columnRange = this.columnRange;
+        const rowRange = this.rowRange;
         return {
             left: columnRange.start === cellCoordinate.columnIndex,
             right: columnRange.end === cellCoordinate.columnIndex,
@@ -217,8 +231,8 @@ export class GridRegion {
             throw new ArgumentNullError('cellCoordinate', 'Cannot get fill region from null coordinate');
         }
 
-        let columnRange = this.columnRange;
-        let rowRange = this.rowRange;
+        const columnRange = this.columnRange;
+        const rowRange = this.rowRange;
 
         if (rowRange.end < cellCoordinate.rowIndex) { // the cell is below the selection region, filling down
             return new GridRegion(new GridCoordinate(rowRange.end + 1, columnRange.start), new GridCoordinate(cellCoordinate.rowIndex, columnRange.end));
@@ -237,8 +251,8 @@ export class GridRegion {
             throw new ArgumentNullError('cellCoordinate', 'Cannot check a null coordinate');
         }
 
-        let columnRange = this.columnRange;
-        let rowRange = this.rowRange;
+        const columnRange = this.columnRange;
+        const rowRange = this.rowRange;
 
         return rowRange.start <= cellCoordinate.rowIndex &&
             rowRange.end >= cellCoordinate.rowIndex &&
@@ -293,12 +307,12 @@ export class GridRegion {
             throw new ArgumentNullError('other', 'Cannot merge with a null region');
         }
 
-        let rowRange: RowRange = {
+        const rowRange: RowRange = {
             start: Math.min(this.rowRange.start, other.rowRange.start),
             end: Math.max(this.rowRange.end, other.rowRange.end)
         };
 
-        let columnRange: RowRange = {
+        const columnRange: RowRange = {
             start: Math.min(this.columnRange.start, other.columnRange.start),
             end: Math.max(this.columnRange.end, other.columnRange.end)
         };
@@ -307,20 +321,6 @@ export class GridRegion {
             new GridCoordinate(rowRange.start, columnRange.start),
             new GridCoordinate(rowRange.end, columnRange.end)
         );
-    }
-
-    /**
-     * Get the range of columns this region spans
-     */
-    public get columnRange(): RowRange {
-        return GridRegion.absoluteRange(this._primaryCoordinate.columnIndex, this._secondaryCoordinate.columnIndex);
-    }
-
-    /**
-     * Get the range of rows this region spans
-     */
-    public get rowRange(): RowRange {
-        return GridRegion.absoluteRange(this._primaryCoordinate.rowIndex, this._secondaryCoordinate.rowIndex);
     }
 
     public toString(): string {

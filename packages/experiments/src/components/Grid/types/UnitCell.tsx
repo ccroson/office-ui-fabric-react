@@ -14,7 +14,7 @@ import { ParseUtils } from '../utilities/ParseUtils';
 /**
  * Default value to set the cell to if it is null or undefined
  */
-const DEFAULT_CELL_VALUE: string = '';
+const DEFAULT_CELL_VALUE = '';
 
 /**
  * Class that handles rendering of 'unit' types in the grid where the value is a number
@@ -101,8 +101,8 @@ export class UnitCell implements ICellType {
             if (changedValue.value) {
                 return changedValue.value;
             }
-            let value = parseFloat(changedValue);
-            let updatedOption: UnitOption = _.find(this.acceptableOptions, (option: UnitOption) => { return _.startsWith(option.text, ParseUtils.extractAlphaString(changedValue)); });
+            const value = parseFloat(changedValue);
+            const updatedOption: UnitOption = _.find(this.acceptableOptions, (option: UnitOption) => { return _.startsWith(option.text, ParseUtils.extractAlphaString(changedValue)); });
             if (this.parser) {
                 return this.parser({ selectedUnitOption: updatedOption, value: value });
             } else {
@@ -118,9 +118,9 @@ export class UnitCell implements ICellType {
     @autobind
     public getSuggestedValue(currentValue: string): string {
         if (currentValue) {
-            let inputUnits: string = ParseUtils.extractAlphaString(currentValue);
+            const inputUnits: string = ParseUtils.extractAlphaString(currentValue);
             if (inputUnits && this.acceptableOptions) {
-                let suggestedUnit: UnitOption = _.first(_.filter(this.acceptableOptions, (format: UnitOption) => { return _.startsWith(format.text.toLocaleUpperCase(), inputUnits.toLocaleUpperCase()); }));
+                const suggestedUnit: UnitOption = _.first(_.filter(this.acceptableOptions, (format: UnitOption) => { return _.startsWith(format.text.toLocaleUpperCase(), inputUnits.toLocaleUpperCase()); }));
                 if (suggestedUnit) {
                     return _.replace(currentValue, inputUnits, suggestedUnit.text); // Remove the units we found and use only the value
                 }
