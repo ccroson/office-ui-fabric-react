@@ -7,6 +7,6 @@ export namespace CSSUtils {
 
         mStyle.cssText = prop + value;
 
-        return !!mStyle[property];
+        return !!(mStyle as any)[property];
     }
 }
