@@ -1,9 +1,9 @@
 /*tslint:disable:class-name*/
-import "./InlineAutoCompleteBox.scss";
-import * as React from "react";
+import './InlineAutoCompleteBox.scss';
+import * as React from 'react';
 
 // utilities
-import { autobind } from "@uifabric/utilities/lib-commonjs/autobind";
+import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
 
 /**
  * The props for __InlineAutoCompleteBox
@@ -46,7 +46,7 @@ export class __InlineAutoCompleteBox extends React.PureComponent<IInlineAutoComp
      * Name of the component
      */
     public name(): string {
-        return "__InlineAutoCompleteBox";
+        return '__InlineAutoCompleteBox';
     }
 
     /**
@@ -54,14 +54,14 @@ export class __InlineAutoCompleteBox extends React.PureComponent<IInlineAutoComp
      */
     public render(): JSX.Element {
         let {
-            suggestedValue = "",
-            value = ""
+            suggestedValue = '',
+            value = ''
         } = this.props;
         return (
-            <div className="inline-autocomplete-container">
-                <div className="inline-autocomplete-suggestions">{ suggestedValue }</div>
-                <input className="inline-autocomplete"
-                    type="text"
+            <div className='inline-autocomplete-container'>
+                <div className='inline-autocomplete-suggestions'>{ suggestedValue }</div>
+                <input className='inline-autocomplete'
+                    type='text'
                     onChange={ this.onTextInputChanged }
                     onMouseDown={ (event: React.MouseEvent<HTMLElement>) => { event.stopPropagation(); } }
                     value={ value }

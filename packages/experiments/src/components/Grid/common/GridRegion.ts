@@ -1,13 +1,13 @@
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 // Errors
-import { ArgumentNullError } from "../utilities/errors/Errors";
+import { ArgumentNullError } from '../utilities/errors/Errors';
 
 import {
     CellRegionPosition,
     GridCoordinate,
     RowRange
-} from "./Common";
+} from './Common';
 
 /**
  * Represents a group of cells within a Grid
@@ -27,7 +27,7 @@ export class GridRegion {
      */
     constructor(primaryCoordinate: GridCoordinate, secondaryCoordinate?: GridCoordinate) {
         if (primaryCoordinate == null) {
-            throw new ArgumentNullError("primaryCoordinate");
+            throw new ArgumentNullError('primaryCoordinate');
         }
 
         this._primaryCoordinate = primaryCoordinate.clone();
@@ -51,7 +51,7 @@ export class GridRegion {
      */
     private static absoluteRange(r1: number, r2?: number): RowRange {
         if (r1 == null) {
-            throw new ArgumentNullError("r1", "Cannot compute absolute range with null arg r1");
+            throw new ArgumentNullError('r1', 'Cannot compute absolute range with null arg r1');
         }
 
         if (r2 == null) {
@@ -121,7 +121,7 @@ export class GridRegion {
                 // Get the row span for the cell
                 const rowSpan: number = getRowSpan(cell);
                 if (rowSpan <= 0 || rowSpan == null) {
-                    throw new Error("Received a invalid rowspan value: " + rowSpan + " for cell: " + cell.toString());
+                    throw new Error('Received a invalid rowspan value: ' + rowSpan + ' for cell: ' + cell.toString());
                 }
 
                 if (this.rowRange.end < cell.rowIndex + (rowSpan - 1)) {
@@ -160,7 +160,7 @@ export class GridRegion {
                     // Get the row span for the cell
                     const rowSpan: number = getRowSpan(cell);
                     if (rowSpan <= 0 || rowSpan == null) {
-                        throw new Error("Received a invalid rowspan value: " + rowSpan + " for cell: " + cell.toString());
+                        throw new Error('Received a invalid rowspan value: ' + rowSpan + ' for cell: ' + cell.toString());
                     }
 
                     if (this.rowRange.start > cell.rowIndex) {
@@ -194,7 +194,7 @@ export class GridRegion {
      */
     public getCellPosition(cellCoordinate: GridCoordinate, rowSpan: number = 1): CellRegionPosition {
         if (cellCoordinate == null) {
-            throw new ArgumentNullError("cellCoordinate", "Cannot get position of null cell coordinate");
+            throw new ArgumentNullError('cellCoordinate', 'Cannot get position of null cell coordinate');
         }
 
         let columnRange = this.columnRange;
@@ -214,7 +214,7 @@ export class GridRegion {
      */
     public getFillRegion(cellCoordinate: GridCoordinate): GridRegion {
         if (cellCoordinate == null) {
-            throw new ArgumentNullError("cellCoordinate", "Cannot get fill region from null coordinate");
+            throw new ArgumentNullError('cellCoordinate', 'Cannot get fill region from null coordinate');
         }
 
         let columnRange = this.columnRange;
@@ -234,7 +234,7 @@ export class GridRegion {
      */
     public isCellInRegion(cellCoordinate: GridCoordinate): boolean {
         if (cellCoordinate == null) {
-            throw new ArgumentNullError("cellCoordinate", "Cannot check a null coordinate");
+            throw new ArgumentNullError('cellCoordinate', 'Cannot check a null coordinate');
         }
 
         let columnRange = this.columnRange;
@@ -251,7 +251,7 @@ export class GridRegion {
      */
     public isOverlapping(region: GridRegion): boolean {
         if (region == null) {
-            throw new ArgumentNullError("region", "Cannot check a null region");
+            throw new ArgumentNullError('region', 'Cannot check a null region');
         }
 
         // if given region is outside the right end of current region, or outside the left end of the current region, there is no overlap
@@ -290,7 +290,7 @@ export class GridRegion {
      */
     public merge(other: GridRegion): GridRegion {
         if (other == null) {
-            throw new ArgumentNullError("other", "Cannot merge with a null region");
+            throw new ArgumentNullError('other', 'Cannot merge with a null region');
         }
 
         let rowRange: RowRange = {

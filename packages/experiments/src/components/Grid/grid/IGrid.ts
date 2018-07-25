@@ -1,7 +1,7 @@
 import {
     GridCoordinate,
     GridRegion
-} from "../common/Common";
+} from '../common/Common';
 
 /**
  * Public interface for working with the Grid control

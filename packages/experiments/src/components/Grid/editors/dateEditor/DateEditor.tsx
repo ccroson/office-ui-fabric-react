@@ -1,22 +1,22 @@
-import "./DateEditor.scss";
-import * as React from "react";
-import * as moment from "moment";
-import * as ReactDOM from "react-dom";
+import './DateEditor.scss';
+import * as React from 'react';
+import * as moment from 'moment';
+import * as ReactDOM from 'react-dom';
 
 // constants
-import { DateFormat, DateStrings } from "../../constants/DateConstants";
-import { GridTheme } from "../../common/Types";
+import { DateFormat, DateStrings } from '../../constants/DateConstants';
+import { GridTheme } from '../../common/Types';
 
 // controls
-import { BaseComponent } from "../../utilities/BaseComponent";
-import { elementContains } from "@uifabric/utilities/lib-commonjs/dom";
-import { Calendar, DayOfWeek } from "office-ui-fabric-react/lib-commonjs/Calendar";
-import { Callout, DirectionalHint } from "office-ui-fabric-react/lib-commonjs/Callout";
-import { GridAction, PickerOpenedAction } from "../../actions/GridActions";
+import { BaseComponent } from '../../utilities/BaseComponent';
+import { elementContains } from '@uifabric/utilities/lib-commonjs/dom';
+import { Calendar, DayOfWeek } from 'office-ui-fabric-react/lib-commonjs/Calendar';
+import { Callout, DirectionalHint } from 'office-ui-fabric-react/lib-commonjs/Callout';
+import { GridAction, PickerOpenedAction } from '../../actions/GridActions';
 
 // Utilities
-import { autobind } from "@uifabric/utilities/lib-commonjs/autobind";
-import { css } from "@uifabric/utilities/lib-commonjs/css";
+import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
+import { css } from '@uifabric/utilities/lib-commonjs/css';
 
 /**
  * The props for Date editor
@@ -45,17 +45,17 @@ export interface IDateEditorProps {
     value: moment.Moment | string;
 
     /**
-     * The localized label for "Today" to be used for the DatePicker
+     * The localized label for 'Today' to be used for the DatePicker
      */
     todayLabel: string;
 
     /**
-     * Aria-label for the "previous month" button.
+     * Aria-label for the 'previous month' button.
      */
     prevMonthAriaLabel?: string;
 
     /**
-     * Aria-label for the "next month" button.
+     * Aria-label for the 'next month' button.
      */
     nextMonthAriaLabel?: string;
 
@@ -117,7 +117,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
      * Name of the component
      */
     public name(): string {
-        return "DateEditor";
+        return 'DateEditor';
     }
 
     /**
@@ -146,7 +146,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
         } = this.state;
 
         let content: JSX.Element = isTextEditing ?
-            <input className="date-editor"
+            <input className='date-editor'
                 onChange={ this.onTextInputChanged }
                 onClick={ this.onInputClick }
                 onMouseDown={ (event: React.MouseEvent<HTMLElement>) => { event.stopPropagation(); } }
@@ -155,7 +155,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
                 onFocus={ this.moveCursorEnd }
                 onBlur={ this.onBlur }
             /> :
-            <div className="date-editor">{this.getInputValue()}</div>;
+            <div className='date-editor'>{this.getInputValue()}</div>;
 
         let iconStyle: React.CSSProperties = this.props.theme ? {
             color: this.props.theme.selectionBorderColor,
@@ -164,11 +164,11 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
 
         return (
             <div
-                ref={ this.resolveRef(this, "dateEditorContainer") }
-                className="date-editor-container"
+                ref={ this.resolveRef(this, 'dateEditorContainer') }
+                className='date-editor-container'
             >
                 { content }
-                <i className={css("ms-Icon ms-Icon--Calendar", { "calendar-open": isCalendarOpen })}
+                <i className={css('ms-Icon ms-Icon--Calendar', { 'calendar-open': isCalendarOpen })}
                     onMouseDown={(event: React.MouseEvent<HTMLElement>) => { event.preventDefault(); event.stopPropagation(); }}
                     onClick={this.onCalendarIconClick}
                     style={iconStyle}
@@ -203,7 +203,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
                     onPositioned={ () => this.calendar.focus() }
                 >
                     <Calendar
-                        ref={ this.resolveRef(this, "calendar") }
+                        ref={ this.resolveRef(this, 'calendar') }
                         onSelectDate={ this.onCalendarSelectDate }
                         onDismiss={ this.onCalendarDismissed }
                         isMonthPickerVisible={ false }
@@ -320,7 +320,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
             return (value as moment.Moment).format(dateFormat);
         }
         if (value == null) {
-            return "";
+            return '';
         }
 
         return value;
@@ -341,7 +341,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
         if (this.calendar) {
 
             // In chrome, we get next focused element through event.relatedTarget,
-            // while document.activeElement is "body" at this point,
+            // while document.activeElement is 'body' at this point,
             // whereas in IE, event.relatedTarget is always null and document.activeElement gives the correct element,
             // so we need a mix of both here
             let nextFocusedElement: HTMLElement = (event.relatedTarget || document.activeElement) as HTMLElement;

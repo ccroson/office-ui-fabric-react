@@ -1,5 +1,5 @@
 // Errors
-import { ArgumentNullError } from "../utilities/errors/Errors";
+import { ArgumentNullError } from '../utilities/errors/Errors';
 
 /**
  * Represents an individual cell position within the grid
@@ -11,12 +11,12 @@ export class GridCoordinate {
     public isRowHeaderCell: boolean;
 
     constructor(rowIndex: number, columnIndex: number, isColumnHeaderCell: boolean = false, isRowHeaderCell: boolean = false) {
-        if (rowIndex == null) {
-            throw new ArgumentNullError("rowIndex");
+        if (rowIndex === null) {
+            throw new ArgumentNullError('rowIndex');
         }
 
-        if (columnIndex == null) {
-            throw new ArgumentNullError("columnIndex");
+        if (columnIndex === null) {
+            throw new ArgumentNullError('columnIndex');
         }
 
         this.rowIndex = rowIndex;
@@ -30,7 +30,8 @@ export class GridCoordinate {
     }
 
     public equals(other: GridCoordinate): boolean {
-        return other != null && this.rowIndex === other.rowIndex && this.columnIndex === other.columnIndex && this.isColumnHeaderCell === other.isColumnHeaderCell;
+        return other !== null && this.rowIndex === other.rowIndex && this.columnIndex === other.columnIndex 
+            && this.isColumnHeaderCell === other.isColumnHeaderCell;
     }
 
     public toString(): string {

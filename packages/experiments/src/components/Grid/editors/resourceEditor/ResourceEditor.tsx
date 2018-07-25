@@ -1,30 +1,30 @@
-import "./ResourceEditor.scss";
+import './ResourceEditor.scss';
 
-import * as _ from "lodash";
-import * as React from "react";
+import * as _ from 'lodash';
+import * as React from 'react';
 
 // constants
-import { KeyCode } from "../../constants/KeyboardConstants";
-import { GridTheme } from "../../common/Types";
+import { KeyCode } from '../../constants/KeyboardConstants';
+import { GridTheme } from '../../common/Types';
 
 // controls
-import { Callout, DirectionalHint } from "office-ui-fabric-react/lib-commonjs/Callout";
-import { Button } from "office-ui-fabric-react/lib-commonjs/Button";
-import { IPersonaProps } from "office-ui-fabric-react/lib-commonjs/Persona";
-import { IResourceListProps } from "../../controls/resourcePicker/ResourceList";
-import { PeoplePicker } from "../../controls/resourcePicker/PeoplePicker";
-import { ResourcePile } from "./ResourcePile";
-import { Identifiable } from "../../controls/resourcePicker/Identifiable";
-import { IResource } from "../../controls/resourcePicker/IResource";
-import { ResourceEditorData, IAssignedResourcesList, IUnassignedResourcesList } from "./ResourceEditorData";
+import { Callout, DirectionalHint } from 'office-ui-fabric-react/lib-commonjs/Callout';
+import { Button } from 'office-ui-fabric-react/lib-commonjs/Button';
+import { IPersonaProps } from 'office-ui-fabric-react/lib-commonjs/Persona';
+import { IResourceListProps } from '../../controls/resourcePicker/ResourceList';
+import { PeoplePicker } from '../../controls/resourcePicker/PeoplePicker';
+import { ResourcePile } from './ResourcePile';
+import { Identifiable } from '../../controls/resourcePicker/Identifiable';
+import { IResource } from '../../controls/resourcePicker/IResource';
+import { ResourceEditorData, IAssignedResourcesList, IUnassignedResourcesList } from './ResourceEditorData';
 
 // utilities
-import { autobind } from "@uifabric/utilities/lib-commonjs/autobind";
-import { css } from "@uifabric/utilities/lib-commonjs/css";
-import { BaseComponent } from "../../utilities/BaseComponent";
-import { KeyboardUtils } from "../../utilities/KeyboardUtils";
+import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
+import { css } from '@uifabric/utilities/lib-commonjs/css';
+import { BaseComponent } from '../../utilities/BaseComponent';
+import { KeyboardUtils } from '../../utilities/KeyboardUtils';
 
-import { GridAction, PickerOpenedAction } from "../../actions/GridActions";
+import { GridAction, PickerOpenedAction } from '../../actions/GridActions';
 
 /**
  * The options needed for the the component.
@@ -182,7 +182,7 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
      * @returns {string} The name of this component
      */
     public name(): string {
-        return "ResourceEditor";
+        return 'ResourceEditor';
     }
 
     public componentDidMount() {
@@ -213,11 +213,11 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
             fontSize: this.props.theme.iconSize
         } : {};
         return (
-            <div className="resource-editor-container" ref={ this.resolveRef(this, "facepileWrapper") } onClick={ this.onCellClick }>
-                <div className="resource-editor-facepile">
+            <div className='resource-editor-container' ref={ this.resolveRef(this, 'facepileWrapper') } onClick={ this.onCellClick }>
+                <div className='resource-editor-facepile'>
                     <ResourcePile resources={ value.assignedResources } total={ value.total } width={ this.props.columnWidth } />
                 </div>
-                <i className={ css("ms-Icon ms-Icon--PeopleAdd") }
+                <i className={ css('ms-Icon ms-Icon--PeopleAdd') }
                     style={ iconStyle }/>
                 { this.renderCallout(value) }
             </div>
@@ -242,7 +242,7 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
                     target={ peoplePickerTargetElement }
                     onDismiss={ this.onDismiss }
                     calloutMaxHeight={ 600 }
-                    ref={ this.resolveRef(this, "callout") }
+                    ref={ this.resolveRef(this, 'callout') }
                 >
                     <PeoplePicker
                         resourceLists={ this.getUserResourceList() }
@@ -260,13 +260,13 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
                     { this.props.options.onCreate && (
                         <div
                             style={ {
-                                width: "100%",
-                                textAlign: "center",
-                                marginBottom: "3px"
+                                width: '100%',
+                                textAlign: 'center',
+                                marginBottom: '3px'
                             } }
                         >
                             <Button
-                                className="resource-create-assign-button"
+                                className='resource-create-assign-button'
                                 primary={ true }
                                 label={ this.labels.resourceCreateAndAssignLabel }
                                 text={ this.labels.resourceCreateAndAssignLabel }

@@ -1,8 +1,8 @@
-import * as React from "react";
-import { BaseComponent } from "../utilities/BaseComponent";
-import { css } from "@uifabric/utilities/lib-commonjs/css";
-import { getRTL } from "@uifabric/utilities/lib-commonjs/rtl";
-import { GridTheme } from "../common/Common";
+import * as React from 'react';
+import { BaseComponent } from '../utilities/BaseComponent';
+import { css } from '@uifabric/utilities/lib-commonjs/css';
+import { getRTL } from '@uifabric/utilities/lib-commonjs/rtl';
+import { GridTheme } from '../common/Common';
 import { GridConstants } from '../constants/GridConstants';
 
 export interface IHeaderStickyContainerProps extends React.Props<HeaderStickyContainer> {
@@ -59,7 +59,7 @@ export class HeaderStickyContainer extends BaseComponent<IHeaderStickyContainerP
     private placeHolderClientRect: ClientRect;
 
     public name(): string {
-        return "HeaderStickyContainer";
+        return 'HeaderStickyContainer';
     }
 
     /** Get the placeholder div reference */
@@ -119,16 +119,16 @@ export class HeaderStickyContainer extends BaseComponent<IHeaderStickyContainerP
             }
 
             return (
-                <div className="grid-header-container" style={ { width: width, height: height } } role={ GridConstants.ROWGROUP_ROLE }>
-                    <div className={ css("sticky-container") } style={ stickyContainerStyle }>
-                        <div className="grid-header-relative-container">
-                            <div style={ headerContentStyle } className={ css("grid-header grid-header--fixed", className) }>
+                <div className='grid-header-container' style={ { width: width, height: height } } role={ GridConstants.ROWGROUP_ROLE }>
+                    <div className={ css('sticky-container') } style={ stickyContainerStyle }>
+                        <div className='grid-header-relative-container'>
+                            <div style={ headerContentStyle } className={ css('grid-header grid-header--fixed', className) }>
                                 { children }
                             </div>
                         </div>
                     </div>
-                    <div className="grid-header-placeholder grid-header-placeholder--fixed"
-                        ref={ this.resolveRef(this, "headerPlaceHolderRef") }
+                    <div className='grid-header-placeholder grid-header-placeholder--fixed'
+                        ref={ this.resolveRef(this, 'headerPlaceHolderRef') }
                         style={ placeHolderElementStyle }>
                     </div>
                 </div>
@@ -136,15 +136,15 @@ export class HeaderStickyContainer extends BaseComponent<IHeaderStickyContainerP
         } else {
             // Render the container in regular mode
             return (
-                <div className="grid-header-container"
+                <div className='grid-header-container'
                     style={ { height: height } }
                     role={ GridConstants.ROWGROUP_ROLE }
                 >
-                    <div className={ css("grid-header", className) }>
+                    <div className={ css('grid-header', className) }>
                         { children }
                     </div>
-                    <div className="grid-header-placeholder"
-                        ref={ this.resolveRef(this, "headerPlaceHolderRef") }>
+                    <div className='grid-header-placeholder'
+                        ref={ this.resolveRef(this, 'headerPlaceHolderRef') }>
                     </div>
                 </div>
             );

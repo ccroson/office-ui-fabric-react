@@ -334,7 +334,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
             onRenderCell={() => placeholderText}
             onRenderRowHeaderCell={this.showRowHeader && this.renderRowHeaderCell}
             rowHeaderWidth={this.rowHeaderWidth}
-            cellClassName="grid-empty"
+            cellClassName='grid-empty'
             selectionState={selectionState}
           />
         );
@@ -489,7 +489,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     let arrowClassMapping: IDictionary = this.getColumnSortIcon(column.id);
 
     return (
-      <div className="grid-column-header-cell-content-parts">
+      <div className='grid-column-header-cell-content-parts'>
         <div>
           {arrowClassMapping && <i className={css('ms-Icon', arrowClassMapping)} />}
           {column.header.label}
@@ -497,9 +497,9 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
         {/* Render the context menu icon if enabled */
         this.getIsColumnHeaderClickable(columnIndex) && (
           <div
-            className="grid-column-header-context-menu-indicator"
+            className='grid-column-header-context-menu-indicator'
             onClick={(event: React.MouseEvent<HTMLElement>) => this.onColumnHeaderMenuClick(columnIndex, event)}
-            role="menuitem"
+            role='menuitem'
           >
             <i className={`ms-Icon ms-Icon--${Icons.ChevronDownMed}`} />
           </div>
@@ -1629,7 +1629,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
         }
       });
 
-      // finding all the columns with unique "id", by iterating through the columns using _.uniqBy
+      // finding all the columns with unique 'id', by iterating through the columns using _.uniqBy
       // and comparing the number of such columns with the columns in the props
       if (
         _.uniqBy(columnDefinitions, (columnDefinition: IColumnDefinition) => columnDefinition.id).length !==
@@ -1766,7 +1766,7 @@ export interface IColumnDefinition {
   sortable?: boolean;
 
   /**
-   * Width that will be set to the columns. Can be a pixel or a flexible value. EX. 200, "200", "200px", *, 2*
+   * Width that will be set to the columns. Can be a pixel or a flexible value. EX. 200, '200', '200px', *, 2*
    */
   width: number | string;
 }

@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Check } from "office-ui-fabric-react/lib-commonjs/Check";
-import { ICellType, CellContext } from "../grid/Grid";
+import { Check } from 'office-ui-fabric-react/lib-commonjs/Check';
+import { ICellType, CellContext } from '../grid/Grid';
 
 /**
  * The selection column used for the list type of grid
@@ -22,7 +22,7 @@ export class SelectionCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      */
     public getAriaAndDataAttributes(cellData: any): _.Dictionary<string> {
-        return { "aria-label": "" }; // ToDo (Bug 1509135): Replace with aria label
+        return { 'aria-label': '' }; // ToDo (Bug 1509135): Replace with aria label
     }
 
     /**
@@ -31,7 +31,7 @@ export class SelectionCell implements ICellType {
      * @param right The right object
      */
     public sortComparator(left: any, right: any): number {
-        throw new Error("Selection Cell column is not sortable");
+        throw new Error('Selection Cell column is not sortable');
     }
 
     /**
@@ -39,7 +39,7 @@ export class SelectionCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      */
     public toString(cellData: any): string {
-        return "";
+        return '';
     }
 
     /**
@@ -48,6 +48,6 @@ export class SelectionCell implements ICellType {
      * @param changedValue The raw input to parse to Object
      */
     public parseRawInput(originalValue: any, changedValue: any): any {
-        throw new Error("Selection cell is not editable");
+        throw new Error('Selection cell is not editable');
     }
 }

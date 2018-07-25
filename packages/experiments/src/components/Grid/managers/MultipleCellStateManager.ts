@@ -1,16 +1,16 @@
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 import {
     GridCoordinate,
     GridMode,
     GridRegion
-} from "../common/Common";
+} from '../common/Common';
 
 import {
     StateManager,
     SelectionState,
     StateManagerParameters
-} from "./StateManager";
+} from './StateManager';
 import { GridUtilities } from '../utilities/GridUtilities';
 import { GridConstants } from '../constants/GridConstants';
 

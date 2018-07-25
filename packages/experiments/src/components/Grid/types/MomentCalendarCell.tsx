@@ -1,23 +1,23 @@
-import * as moment from "moment";
-import * as React from "react";
+import * as moment from 'moment';
+import * as React from 'react';
 
-import { DateEditor } from "../editors/dateEditor/DateEditor";
-import { DateFormat } from "../constants/DateConstants";
-import { GridAction, PickerOpenedAction } from "../actions/GridActions";
-import { ICellType, CellContext } from "../grid/Grid";
+import { DateEditor } from '../editors/dateEditor/DateEditor';
+import { DateFormat } from '../constants/DateConstants';
+import { GridAction, PickerOpenedAction } from '../actions/GridActions';
+import { ICellType, CellContext } from '../grid/Grid';
 
 // Validators
-import { Validators } from "../validators/Validators";
+import { Validators } from '../validators/Validators';
 
 /**
  * The moment calendar date type for Grid which is also used by MomentDateCell.
  * Returns moment calendar string which is a different format depending on date.
  * e.g. new MomentCalendarCell({
- *                  sameDay: "[Today]",
- *                  nextDay: "[Tomorrow]",
- *                  nextWeek: "dddd",
- *                  lastDay: "[Yesterday]",
- *                  lastWeek: "[Last] dddd"
+ *                  sameDay: '[Today]',
+ *                  nextDay: '[Tomorrow]',
+ *                  nextWeek: 'dddd',
+ *                  lastDay: '[Yesterday]',
+ *                  lastWeek: '[Last] dddd'
  *              })
  * See https://momentjs.com/docs/#/displaying/calendar-time/
  *
@@ -43,14 +43,14 @@ export class MomentCalendarCell implements ICellType {
      * @param validationFailureErrorMessage is the localized validation error used for this cell
      * @param todayLabel is the localized today string used in dateEditor
      * @param calendarFormat an optional moment calendar format. Default Calendar:
-     * sameDay: "[Today]",
-     * nextDay: "[Tomorrow]",
-     * nextWeek: "dddd",
-     * lastDay: "[Yesterday]",
-     * lastWeek: "[Last] dddd",
-     * sameElse: "DD/MM/YYYY"
-     * @param prevMonthAriaLabel an optional Aria-label for the "previous month" button.
-     * @param nextMonthAriaLabel an optional Aria-label for the "next month" button.
+     * sameDay: '[Today]',
+     * nextDay: '[Tomorrow]',
+     * nextWeek: 'dddd',
+     * lastDay: '[Yesterday]',
+     * lastWeek: '[Last] dddd',
+     * sameElse: 'DD/MM/YYYY'
+     * @param prevMonthAriaLabel an optional Aria-label for the 'previous month' button.
+     * @param nextMonthAriaLabel an optional Aria-label for the 'next month' button.
      */
     constructor(validationFailureErrorMessage: string, todayLabel: string, calendarFormat?: moment.CalendarSpec, prevMonthAriaLabel?: string, nextMonthAriaLabel?: string) {
         if (calendarFormat) {
@@ -92,7 +92,7 @@ export class MomentCalendarCell implements ICellType {
         return (
             // sameElse is type string | moment.formatFunction so need to type check and use if a string otherwise undefined.
             <DateEditor
-                dateFormat={ (this.calendarFormat && typeof this.calendarFormat.sameElse === "string") ? this.calendarFormat.sameElse : undefined }
+                dateFormat={ (this.calendarFormat && typeof this.calendarFormat.sameElse === 'string') ? this.calendarFormat.sameElse : undefined }
                 value={ pendingUpdate != null ? pendingUpdate : cellData }
                 onValueUpdated={ onValueUpdated }
                 onEditConfirmed={ onEditConfirmed }
@@ -121,7 +121,7 @@ export class MomentCalendarCell implements ICellType {
             return (
                 // sameElse is type string | moment.formatFunction so need to type check and use if a string otherwise undefined.
                 <DateEditor
-                    dateFormat={ (this.calendarFormat && typeof this.calendarFormat.sameElse === "string") ? this.calendarFormat.sameElse : undefined }
+                    dateFormat={ (this.calendarFormat && typeof this.calendarFormat.sameElse === 'string') ? this.calendarFormat.sameElse : undefined }
                     value={ cellData }
                     onValueUpdated={ null }
                     onEditConfirmed={ null }
@@ -172,7 +172,7 @@ export class MomentCalendarCell implements ICellType {
             // if validate returns no error, this is a valid moment
             return cellData.calendar(null, this.calendarFormat ? this.calendarFormat : null);
         }
-        return "";
+        return '';
     }
 
     /**

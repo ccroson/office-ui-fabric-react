@@ -1,12 +1,12 @@
-import * as React from "react";
-import * as _ from "lodash";
+import * as React from 'react';
+import * as _ from 'lodash';
 
-import { BaseComponent } from "../utilities/BaseComponent";
-import { css } from "@uifabric/utilities/lib-commonjs/css";
+import { BaseComponent } from '../utilities/BaseComponent';
+import { css } from '@uifabric/utilities/lib-commonjs/css';
 import { getNativeProps } from '@uifabric/utilities/lib-commonjs/properties';
-import { GridCoordinate, CellRegionPosition, GridTheme } from "../common/Common";
-import { RtlUtils } from "../utilities/RtlUtils";
-import { PropUtils } from "../utilities/PropUtils";
+import { GridCoordinate, CellRegionPosition, GridTheme } from '../common/Common';
+import { RtlUtils } from '../utilities/RtlUtils';
+import { PropUtils } from '../utilities/PropUtils';
 import { GridConstants } from '../constants/GridConstants';
 
 export interface ICellProps extends React.Props<Cell> {
@@ -100,7 +100,7 @@ export class Cell extends BaseComponent<ICellProps, {}> {
     public readonly container: HTMLDivElement;
 
     public name(): string {
-        return "Cell";
+        return 'Cell';
     }
 
     public shouldComponentUpdate(nextProps: ICellProps, nextState: {}, nextContext: any): boolean {
@@ -156,7 +156,7 @@ export class Cell extends BaseComponent<ICellProps, {}> {
         let isCellEditableValue = PropUtils.getValueFromAccessor(isCellEditable, coordinate);
         isCellEditableValue = !(isCellEditableValue === false); // Make isCellEditableValue true if it's undefined
 
-        let cellClassName: string = css("grid-cell", borderClassNameMapping, className);
+        let cellClassName: string = css('grid-cell', borderClassNameMapping, className);
 
         if (!ariaAndDataAttributes) {
             ariaAndDataAttributes = {};
@@ -164,13 +164,13 @@ export class Cell extends BaseComponent<ICellProps, {}> {
 
         // Tree item is not allowed to have read only set
         if (role !== GridConstants.TREEITEM_ROLE && ariaAndDataAttributes[GridConstants.ARIA_READONLY] == null) {
-            ariaAndDataAttributes[GridConstants.ARIA_READONLY] = !isCellEditableValue ? "true" : "false";
+            ariaAndDataAttributes[GridConstants.ARIA_READONLY] = !isCellEditableValue ? 'true' : 'false';
         }
 
         return (
             <div
                 id={ id }
-                ref={ this.resolveRef(this, "container") }
+                ref={ this.resolveRef(this, 'container') }
                 { ...getNativeProps(ariaAndDataAttributes, []) }
                 aria-selected={ !!selectionPosition }
                 aria-describedby={ PropUtils.getValueFromAccessor(ariaDescribedBy, coordinate) }
@@ -189,14 +189,14 @@ export class Cell extends BaseComponent<ICellProps, {}> {
             >
                 {/* Render the cell content */ }
                 { children &&
-                    <div className="grid-cell-content">
+                    <div className='grid-cell-content'>
                         { children }
                     </div>
                 }
 
                 {/* Render the fill handle if it is enabled */ }
                 { isFillEnabled && selectionPosition && selectionPosition.right && selectionPosition.bottom &&
-                    <div className="grid-cell-fill-handle" onMouseDown={ onFillMouseDown }
+                    <div className='grid-cell-fill-handle' onMouseDown={ onFillMouseDown }
                         style={ { backgroundColor: theme.selectionBorderColor } } />
                 }
             </div>
@@ -213,11 +213,11 @@ export class Cell extends BaseComponent<ICellProps, {}> {
      */
     private getCellStyle(rowSpan: number, height: number, width: number, theme: GridTheme, cellClassMapping: CellClassMapping): React.CSSProperties {
         let style: React.CSSProperties = {
-            border: rowSpan === 0 ? 0 : "",
+            border: rowSpan === 0 ? 0 : '',
             height: height * rowSpan,
-            padding: rowSpan === 0 ? 0 : "",
+            padding: rowSpan === 0 ? 0 : '',
             width: width,
-            borderColor: rowSpan === 0 ? "" : theme.borderColor
+            borderColor: rowSpan === 0 ? '' : theme.borderColor
         };
 
         if (rowSpan !== 0) {

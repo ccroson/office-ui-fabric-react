@@ -231,7 +231,7 @@ export class Row extends BaseComponent<IRowProps, {}> {
         {...getNativeProps(ariaAndDataAttributes, [])}
         aria-rowindex={rowIndex + 1}
         className={css('grid-row', className)}
-        role="row"
+        role='row'
         style={rowStyle}
       >
         {this.renderCells()}

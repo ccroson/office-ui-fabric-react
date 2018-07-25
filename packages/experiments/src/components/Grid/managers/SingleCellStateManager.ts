@@ -2,10 +2,10 @@ import {
     GridCoordinate,
     GridMode,
     GridRegion
-} from "../common/Common";
+} from '../common/Common';
 
-import { MultipleCellStateManager } from "../managers/MultipleCellStateManager";
-import { SelectionState, StateManagerParameters } from "../managers/StateManager";
+import { MultipleCellStateManager } from '../managers/MultipleCellStateManager';
+import { SelectionState, StateManagerParameters } from '../managers/StateManager';
 
 /**
  * This state manager should be used when you want to allow selection

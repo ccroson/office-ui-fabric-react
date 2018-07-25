@@ -1,11 +1,11 @@
-import "./StringEditor.scss";
-import * as React from "react";
+import './StringEditor.scss';
+import * as React from 'react';
 
 // controls
-import { BaseComponent } from "../../utilities/BaseComponent";
+import { BaseComponent } from '../../utilities/BaseComponent';
 
 // Utilities
-import { autobind } from "@uifabric/utilities/lib-commonjs/autobind";
+import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
 
 /**
  * The props for String editor
@@ -48,7 +48,7 @@ export class StringEditor extends BaseComponent<IStringEditorProps, IStringEdito
      * Name of the component
      */
     public name(): string {
-        return "StringEditor";
+        return 'StringEditor';
     }
 
     /**
@@ -56,7 +56,7 @@ export class StringEditor extends BaseComponent<IStringEditorProps, IStringEdito
      */
     public renderComponent(): JSX.Element {
         return (
-            <input className="string-editor"
+            <input className='string-editor'
                 onChange={ (event: React.FormEvent<HTMLInputElement>) => this.props.onValueUpdated((event.target as HTMLInputElement).value) }
                 onClick={ (event: React.MouseEvent<HTMLInputElement>) => { event.stopPropagation(); } }
                 onMouseDown={ (event: React.MouseEvent<HTMLInputElement>) => { event.stopPropagation(); } }

@@ -1,8 +1,8 @@
-import * as React from "react";
-import * as  _ from "lodash";
+import * as React from 'react';
+import * as  _ from 'lodash';
 
-import { BaseComponent } from "../utilities/BaseComponent";
-import { GridCoordinate } from "../common/Common";
+import { BaseComponent } from '../utilities/BaseComponent';
+import { GridCoordinate } from '../common/Common';
 
 export interface ISpacerCellProps {
     /** The coordinate of the empty cell */
@@ -20,7 +20,7 @@ export interface ISpacerCellProps {
  */
 export class SpacerCell extends BaseComponent<ISpacerCellProps, {}> {
     public name(): string {
-        return "SpacerCell";
+        return 'SpacerCell';
     }
 
     /**
@@ -44,6 +44,7 @@ export class SpacerCell extends BaseComponent<ISpacerCellProps, {}> {
             <div
                 id={ id }
                 className="grid-cell grid-cell--hidden"
+                /* tslint:disable:jsx-ban-props */
                 style={ style }
             />
         );

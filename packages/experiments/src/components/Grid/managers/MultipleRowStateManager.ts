@@ -1,7 +1,7 @@
-import * as _ from "lodash";
-import { GridCoordinate, GridRegion } from "../common/Common";
-import { MultipleCellStateManager } from "../managers/MultipleCellStateManager";
-import { SelectionState, StateManagerParameters } from "../managers/StateManager";
+import * as _ from 'lodash';
+import { GridCoordinate, GridRegion } from '../common/Common';
+import { MultipleCellStateManager } from '../managers/MultipleCellStateManager';
+import { SelectionState, StateManagerParameters } from '../managers/StateManager';
 
 /**
  * This state manager should be used when you want to allow the selection of

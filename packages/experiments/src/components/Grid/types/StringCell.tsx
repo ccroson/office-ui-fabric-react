@@ -1,9 +1,9 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { ICellType, CellContext } from "../grid/Grid";
-import { GridAction } from "../actions/GridActions";
-import { StringUtils } from "../utilities/StringUtils";
-import { StringEditor } from "../editors/stringEditor/StringEditor";
+import { ICellType, CellContext } from '../grid/Grid';
+import { GridAction } from '../actions/GridActions';
+import { StringUtils } from '../utilities/StringUtils';
+import { StringEditor } from '../editors/stringEditor/StringEditor';
 
 /**
  * The default string type for Grid
@@ -50,7 +50,7 @@ export class StringCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      */
     public getAriaAndDataAttributes(cellData: any): _.Dictionary<string> {
-        return cellData && { "aria-label": cellData };
+        return cellData && { 'aria-label': cellData };
     }
 
     /**
@@ -68,7 +68,7 @@ export class StringCell implements ICellType {
      */
     public toString(cellData: string): string {
         if (cellData == null) {
-            return "";
+            return '';
         }
         return cellData.toString();
     }

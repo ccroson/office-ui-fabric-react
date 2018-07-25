@@ -1,8 +1,8 @@
-import * as React from "react";
-import { BaseComponent } from "../utilities/BaseComponent";
-import { css } from "@uifabric/utilities/lib-commonjs/css";
-import { getRTL } from "@uifabric/utilities/lib-commonjs/rtl";
-import { GridCoordinate, GridTheme } from "../common/Common";
+import * as React from 'react';
+import { BaseComponent } from '../utilities/BaseComponent';
+import { css } from '@uifabric/utilities/lib-commonjs/css';
+import { getRTL } from '@uifabric/utilities/lib-commonjs/rtl';
+import { GridCoordinate, GridTheme } from '../common/Common';
 
 export interface IColumnHeaderCellProps extends React.Props<ColumnHeaderCell> {
     /** The column index of this header */
@@ -72,7 +72,7 @@ export interface IColumnHeaderCellProps extends React.Props<ColumnHeaderCell> {
  */
 export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> {
     public name(): string {
-        return "ColumnHeaderCell";
+        return 'ColumnHeaderCell';
     }
 
     protected renderComponent(): JSX.Element {
@@ -109,7 +109,7 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
                 id={ id }
                 data-header-id={ columnIndex }
                 draggable={ isDragEnabled }
-                role="columnheader"
+                role='columnheader'
                 aria-colindex={ columnIndex + 1 }
                 aria-rowindex={ 0 }
                 aria-selected={ !!isSelected }
@@ -121,11 +121,11 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
                 onDrop={ (event: React.DragEvent<HTMLElement>) => onDrop(event) }
                 className={
                     css(
-                        "grid-column-header-cell",
+                        'grid-column-header-cell',
                         {
-                            "grid-column-header-cell--clickable": !!onClick || !!onRightClick,
-                            "grid-column-header-cell--dragover": draggedOver,
-                            "grid-column-header-cell--active": isColumnActive
+                            'grid-column-header-cell--clickable': !!onClick || !!onRightClick,
+                            'grid-column-header-cell--dragover': draggedOver,
+                            'grid-column-header-cell--active': isColumnActive
                         },
                         className
                     )
@@ -137,17 +137,17 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
                 onContextMenu={ (event: React.MouseEvent<HTMLElement>) => onRightClick && onRightClick(columnIndex, event) }
                 style={ this.getCellStyle() }>
                 {/* Render the header content */ }
-                <div className="grid-column-header-cell-content" style={ cellContentStyle }>
+                <div className='grid-column-header-cell-content' style={ cellContentStyle }>
                     { children }
                 </div>
 
                 {/* Render the drag handles if they are enabled */ }
                 <div
-                    className={ css("grid-column-header-drag-handle", { "drag-handle--draggable": isResizeEnabled }) }
+                    className={ css('grid-column-header-drag-handle', { 'drag-handle--draggable': isResizeEnabled }) }
                     onMouseDown={ isResizeEnabled ? (event: React.MouseEvent<HTMLElement>) => onResizeHandleMouseDown(columnIndex, event) : undefined }
                     onClick={ (event: React.MouseEvent<HTMLElement>) => event.stopPropagation() }
                     style={ { backgroundColor: theme.borderColor } }
-                    aria-hidden="true"
+                    aria-hidden='true'
                 />
             </div>
         );

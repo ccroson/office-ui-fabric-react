@@ -8,7 +8,7 @@ export namespace KeyboardUtils {
   /**
    * Check if key code is a valid selection key
    * @param {KeyCode} keycode The keyboard code to be evaluated
-   * @param {(keyCode: number) => number} [keycodeMapper] keycode mapper - e.g., "ENTER" key -> "End" key
+   * @param {(keyCode: number) => number} [keycodeMapper] keycode mapper - e.g., 'ENTER' key -> 'End' key
    */
   export function keyCodeIsSelectionKey(keyCode: KeyCode, keycodeMapper?: (keyCode: number) => number): boolean {
     let selectionKeys = [KeyCode.ENTER, KeyCode.SPACE];

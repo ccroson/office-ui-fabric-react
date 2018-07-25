@@ -1,23 +1,23 @@
-import "./ResourceList.scss";
+import './ResourceList.scss';
 
-import * as _ from "lodash";
-import * as React from "react";
+import * as _ from 'lodash';
+import * as React from 'react';
 
 // Components
-import { BaseComponent } from "../../utilities/BaseComponent";
-import { FocusZone, FocusZoneDirection } from "office-ui-fabric-react/lib-commonjs/components/FocusZone/index";
-import { IconButton } from "office-ui-fabric-react/lib-commonjs/components/Button/index";
-import { Persona } from "office-ui-fabric-react/lib-commonjs/components/Persona/index";
-import { IPersonaProps, PersonaInitialsColor, PersonaSize } from "office-ui-fabric-react/lib-commonjs/components/Persona/index";
+import { BaseComponent } from '../../utilities/BaseComponent';
+import { FocusZone, FocusZoneDirection } from 'office-ui-fabric-react/lib-commonjs/components/FocusZone/index';
+import { IconButton } from 'office-ui-fabric-react/lib-commonjs/components/Button/index';
+import { Persona } from 'office-ui-fabric-react/lib-commonjs/components/Persona/index';
+import { IPersonaProps, PersonaInitialsColor, PersonaSize } from 'office-ui-fabric-react/lib-commonjs/components/Persona/index';
 
 // Constants
-import { Icons } from "../../constants/IconConstants";
+import { Icons } from '../../constants/IconConstants';
 
 // Model
-import { Identifiable } from "./Identifiable";
+import { Identifiable } from './Identifiable';
 
 // Utilities
-import { css } from "@uifabric/utilities/lib-commonjs/css";
+import { css } from '@uifabric/utilities/lib-commonjs/css';
 
 export interface IResourceListProps {
     /** Use smaller personas size for this group */
@@ -65,18 +65,18 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
      * Name of the component
      */
     public name(): string {
-        return "ResourceList";
+        return 'ResourceList';
     }
 
     protected renderComponent(): JSX.Element {
         const { listHeaderText, resourceList } = this.props;
 
         return (
-            <div className="resource-list-result-group">
+            <div className='resource-list-result-group'>
                 { this.renderHeader() }
                 <FocusZone
                     aria-label={ listHeaderText }
-                    className="resource-list-results"
+                    className='resource-list-results'
                     direction={ FocusZoneDirection.vertical }
                     isCircularNavigation={ false }
                 >
@@ -101,7 +101,7 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
             <IconButton
                 iconProps={ { iconName: Icons.Cancel } }
                 aria-hidden={ true }
-                className={ css("resource-list-cancel", { hidden: !onItemRemoveClick }) }
+                className={ css('resource-list-cancel', { hidden: !onItemRemoveClick }) }
                 data-is-focusable={ false }
                 onClick={ () => {
                     if (onItemRemoveClick && resource) {
@@ -119,7 +119,7 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
         const { listHeaderText, resourceList, showHeaderIfNoData } = this.props;
 
         return (showHeaderIfNoData || _.size(resourceList)) && listHeaderText ? (
-            <div aria-label={ listHeaderText } className="resource-list-result-group-title" tabIndex={ 0 }>
+            <div aria-label={ listHeaderText } className='resource-list-result-group-title' tabIndex={ 0 }>
                 { listHeaderText }
             </div>
         ) : null;
@@ -155,11 +155,11 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
             };
 
         return (
-            <div key={ resource.id || resourceIndex } className="resource-list-result">
+            <div key={ resource.id || resourceIndex } className='resource-list-result'>
                 <button
                     title={ resource.text }
                     aria-label={ `${resource.text} ${resourceAriaLabel}` }
-                    className="resource-list-persona"
+                    className='resource-list-persona'
                     { ...buttonProps }
                 >
                     <Persona

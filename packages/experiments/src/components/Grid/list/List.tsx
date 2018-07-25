@@ -1,6 +1,6 @@
-import "./List.scss";
-import * as React from "react";
-import * as _ from "lodash";
+import './List.scss';
+import * as React from 'react';
+import * as _ from 'lodash';
 
 // Components
 import {
@@ -13,23 +13,23 @@ import {
     ICellDefinition,
     ICellType,
     IHeaderDefinition
-} from "../common/AbstractGrid";
-import { SelectionCell } from "../types/SelectionCell";
+} from '../common/AbstractGrid';
+import { SelectionCell } from '../types/SelectionCell';
 
 // Constants
-import { GridConstants, GridDefaultProps } from "../constants/GridConstants";
-import { GridThemes } from "../base/Themes";
+import { GridConstants, GridDefaultProps } from '../constants/GridConstants';
+import { GridThemes } from '../base/Themes';
 
 // Models
-import { GridCoordinate, GridMode, GridRegion, GridTheme, SelectionMode, VirtualizationMode } from "../common/Common";
+import { GridCoordinate, GridMode, GridRegion, GridTheme, SelectionMode, VirtualizationMode } from '../common/Common';
 
 // Utilities
-import { autobind } from "@uifabric/utilities/lib-commonjs/autobind";
-import { css, IDictionary } from "@uifabric/utilities/lib-commonjs/css";
-import { KeyCode } from "../constants/KeyboardConstants";
-import { PropUtils } from "../utilities/PropUtils";
-import { StateManager, SelectionState } from "../managers/StateManager";
-import { StateManagerFactory } from "../managers/StateManagerFactory";
+import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
+import { css, IDictionary } from '@uifabric/utilities/lib-commonjs/css';
+import { KeyCode } from '../constants/KeyboardConstants';
+import { PropUtils } from '../utilities/PropUtils';
+import { StateManager, SelectionState } from '../managers/StateManager';
+import { StateManagerFactory } from '../managers/StateManagerFactory';
 
 export {
     CellContext,
@@ -98,7 +98,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
 
     /** Definition for the selection column */
     private selectionColumnDefinition: IColumnDefinition = {
-        id: "SelectionColumn",
+        id: 'SelectionColumn',
         editable: false,
         draggable: false,
         resizable: false,
@@ -107,7 +107,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
         selectable: true,
         width: `${GridDefaultProps.RowHeaderWidth}px`,
         header: {
-            label: ""
+            label: ''
         },
         cell: {
             accessor: (rowData: Object) => rowData,
@@ -142,7 +142,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
     }
 
     public name(): string {
-        return "List";
+        return 'List';
     }
 
     /*---------------------
@@ -459,7 +459,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
             className
         } = this.props;
 
-        return css("grid-list", className);
+        return css('grid-list', className);
     }
 
     /*----------------

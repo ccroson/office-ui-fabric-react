@@ -1,24 +1,24 @@
 /*tslint:disable:member-ordering*/
-import "./BaseGrid.scss";
-import * as React from "react";
+import './BaseGrid.scss';
+import * as React from 'react';
 
 // Lodash
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 // Constants
-import { GridDefaultProps, GridConstants } from "../constants/GridConstants";
+import { GridDefaultProps, GridConstants } from '../constants/GridConstants';
 
 // Errors
-import { PropValidationError } from "../utilities/errors/Errors";
+import { PropValidationError } from '../utilities/errors/Errors';
 
 // Grid Components
-import { BaseComponent } from "../utilities/BaseComponent";
-import { ColumnHeaderCell } from "./ColumnHeaderCell";
-import { HeaderRow } from "./HeaderRow";
-import { HeaderContainer } from "./HeaderContainer";
-import { HeaderStickyContainer } from "./HeaderStickyContainer";
-import { Row } from "./Row";
-import { RowHeaderCell } from "./RowHeaderCell";
+import { BaseComponent } from '../utilities/BaseComponent';
+import { ColumnHeaderCell } from './ColumnHeaderCell';
+import { HeaderRow } from './HeaderRow';
+import { HeaderContainer } from './HeaderContainer';
+import { HeaderStickyContainer } from './HeaderStickyContainer';
+import { Row } from './Row';
+import { RowHeaderCell } from './RowHeaderCell';
 
 // Models
 import {
@@ -28,19 +28,19 @@ import {
     GridTheme,
     RowRange,
     SelectionMode
-} from "../common/Common";
+} from '../common/Common';
 
 // Utilities
 import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
-import { css } from "@uifabric/utilities/lib-commonjs/css";
-import { CSSUtils } from "../utilities/CSSUtils";
-import { FixedRowPositionManager } from "../virtualization/FixedRowPositionManager";
-import { getRTL } from "@uifabric/utilities/lib-commonjs/rtl";
-import { IRowPositionManager, VisibilityInformation, RowBoundaries } from "../virtualization/IRowPositionManager";
-import { PropUtils } from "../utilities/PropUtils";
-import { RangeRenderers, RangeRenderer } from "../renderers/RangeRenderers";
-import { RtlUtils } from "../utilities/RtlUtils";
-import { SelectionState } from "../managers/StateManager";
+import { css } from '@uifabric/utilities/lib-commonjs/css';
+import { CSSUtils } from '../utilities/CSSUtils';
+import { FixedRowPositionManager } from '../virtualization/FixedRowPositionManager';
+import { getRTL } from '@uifabric/utilities/lib-commonjs/rtl';
+import { IRowPositionManager, VisibilityInformation, RowBoundaries } from '../virtualization/IRowPositionManager';
+import { PropUtils } from '../utilities/PropUtils';
+import { RangeRenderers, RangeRenderer } from '../renderers/RangeRenderers';
+import { RtlUtils } from '../utilities/RtlUtils';
+import { SelectionState } from '../managers/StateManager';
 import { getNativeProps } from '@uifabric/utilities/lib-commonjs/properties';
 import { IGridAriaAttributes } from '../common/IGridAriaAttributes';
 
@@ -570,7 +570,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
     }
 
     public name(): string {
-        return "BaseGrid";
+        return 'BaseGrid';
     }
 
     /**
@@ -619,8 +619,8 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         };
 
         return (
-            <div className={ css("grid-container", gridClassName) }
-                ref={ this.resolveRef(this, "gridContainerRef") }
+            <div className={ css('grid-container', gridClassName) }
+                ref={ this.resolveRef(this, 'gridContainerRef') }
                 onKeyDown={ (event: React.KeyboardEvent<HTMLElement>) => { event.persist(); this.throttledOnKeyDown(event, event.currentTarget); } }
                 onKeyUp={ this.onKeyUp }
                 onKeyPress={ this.onKeyPress }
@@ -640,13 +640,13 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
                 } }
             >
                 {/* Render the virtual container at the desired scroll height */ }
-                <div className={ "grid-virtualized-container" }
+                <div className={ 'grid-virtualized-container' }
                     style={ { height: (rowHeight * numRows) + (onRenderColumnHeaderCell ? headerRowHeight : 0) } }>
 
                     { /* If the header rendered was provided, render the header */ }
                     { onRenderColumnHeaderCell && this.renderHeader() }
 
-                    <div className={ css("grid", { "scrolling": this.isScrolling }) }
+                    <div className={ css('grid', { 'scrolling': this.isScrolling }) }
                         style={ gridStyle }>
                         { this.renderBody() }
                     </div>
@@ -698,7 +698,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
      * When the component mounts, we attach handlers and update the closest scrollable ancestor
      */
     public componentDidMount(): void {
-        this.events.on(window, "resize", this.windowResizeEventHandler);
+        this.events.on(window, 'resize', this.windowResizeEventHandler);
         this.updateClosestScrollableAncestor();
         this.updateScrollableParentLayoutProperties();
         this.updateGridLayoutProperties();
@@ -781,7 +781,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         let headerCells: JSX.Element[] = [];
 
         if (onRenderRowHeaderCell) {
-            const id = "header-row-header";
+            const id = 'header-row-header';
 
             headerCells.push(
                 <RowHeaderCell
@@ -808,7 +808,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
 
         for (let columnIndex: number = 0; columnIndex < numColumns; columnIndex++) {
             let headerWidth = this.getColumnWidth(columnIndex);
-            let key: string = "ColumnHeaderCell_" + this.getColumnKey(columnIndex);
+            let key: string = 'ColumnHeaderCell_' + this.getColumnKey(columnIndex);
             const cellCoordinate: GridCoordinate = new GridCoordinate(GridConstants.HEADER_ROW_INDEX, columnIndex, true);
 
             headerCells.push(
@@ -842,8 +842,8 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
 
         let headerRow: JSX.Element = (
             <HeaderRow
-                ref={ this.resolveRef(this, "headerRowRef") }
-                key="header-row"
+                ref={ this.resolveRef(this, 'headerRowRef') }
+                key='header-row'
                 height={ headerRowHeight }
                 theme={ theme }
                 isHeaderFixed={ isHeaderFixed }
@@ -858,7 +858,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
 
             return (
                 <HeaderStickyContainer
-                    ref={ this.resolveRef(this, "stickyHeaderContainerRef") }
+                    ref={ this.resolveRef(this, 'stickyHeaderContainerRef') }
                     isFixed={ isHeaderFixed }
                     className={ headerClassName }
                     dirtyCanary={ dirtyCanary }
@@ -934,7 +934,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         return (
             <div
                 role={ this.getHeaderRole() }
-                className="grid-body"
+                className='grid-body'
                 style={ gridBodyStyle }
             >
                 { gridRows }
@@ -975,7 +975,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             visibleEnd
         } = this.state;
 
-        const resolvedRowKey: string = "row_" + this.getRowKey(rowIndex);
+        const resolvedRowKey: string = 'row_' + this.getRowKey(rowIndex);
 
         return (
             <Row
@@ -1167,7 +1167,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
 
         if (!this.gridContainerRef || !this.stickyHeaderContainerRef) {
             // Something went wrong, we should always be able to find these refs
-            console.error("StickyContainer: Could not find the required references, contents will not stick", null);
+            console.error('StickyContainer: Could not find the required references, contents will not stick', null);
             return;
         }
 
@@ -1257,7 +1257,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
                 );
             }
 
-            this.events.on(this.scrollableParent, "scroll", this.throttledOnScroll);
+            this.events.on(this.scrollableParent, 'scroll', this.throttledOnScroll);
         }
     }
 
@@ -1266,7 +1266,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
      */
     private removeScrollEventHandler(): void {
         if (this.scrollableParent) {
-            this.events.off(this.scrollableParent, "scroll", this.throttledOnScroll);
+            this.events.off(this.scrollableParent, 'scroll', this.throttledOnScroll);
         }
     }
 
@@ -1352,7 +1352,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             onCellMouseDown
         } = this.props;
 
-        this.events.on(window, "mouseup", this.onCellMouseUp);
+        this.events.on(window, 'mouseup', this.onCellMouseUp);
         if (onCellMouseDown) {
             onCellMouseDown(cellCoordinate, event);
         }
@@ -1394,7 +1394,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             onCellMouseUp
         } = this.props;
 
-        this.events.off(window, "mouseup", this.onCellMouseUp);
+        this.events.off(window, 'mouseup', this.onCellMouseUp);
         if (onCellMouseUp) {
             onCellMouseUp(event);
         }
@@ -1425,7 +1425,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         } = this.props;
 
         event.stopPropagation();
-        this.events.on(window, "mouseup", this.onFillMouseUp);
+        this.events.on(window, 'mouseup', this.onFillMouseUp);
         if (onFillMouseDown) {
             onFillMouseDown(event);
         }
@@ -1441,7 +1441,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             onFillMouseUp
         } = this.props;
 
-        this.events.off(window, "mouseup", this.onFillMouseUp);
+        this.events.off(window, 'mouseup', this.onFillMouseUp);
         if (onFillMouseUp) {
             onFillMouseUp(event);
         }
@@ -1475,8 +1475,8 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             this.resizingColumnDragAnchor = event.clientX;
             this.resizingColumnInitialWidth = resizingColumnCurrentWidth;
 
-            this.events.on(window, "mousemove", this.onColumnResizeMove);
-            this.events.on(window, "mouseup", this.onColumnResizeMouseUp);
+            this.events.on(window, 'mousemove', this.onColumnResizeMove);
+            this.events.on(window, 'mouseup', this.onColumnResizeMouseUp);
         }
     }
 
@@ -1516,8 +1516,8 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             resizingColumnIndex
         } = this.state;
 
-        this.events.off(window, "mouseup", this.onColumnResizeMouseUp);
-        this.events.off(window, "mousemove", this.onColumnResizeMove);
+        this.events.off(window, 'mouseup', this.onColumnResizeMouseUp);
+        this.events.off(window, 'mousemove', this.onColumnResizeMove);
 
         let newWidth = this.getNewWidth(this.resizingColumnInitialWidth, this.resizingColumnDragAnchor, event.clientX);
 
@@ -1546,7 +1546,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             onRowHeaderMouseDown
         } = this.props;
 
-        this.events.on(window, "mouseup", this.onRowHeaderMouseUp);
+        this.events.on(window, 'mouseup', this.onRowHeaderMouseUp);
         if (onRowHeaderMouseDown) {
             onRowHeaderMouseDown(rowIndex, event);
         }
@@ -1591,7 +1591,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
             onRowHeaderMouseUp
         } = this.props;
 
-        this.events.off(window, "mouseup", this.onRowHeaderMouseUp);
+        this.events.off(window, 'mouseup', this.onRowHeaderMouseUp);
         if (onRowHeaderMouseUp) {
             onRowHeaderMouseUp(event);
         }
@@ -2013,9 +2013,9 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
     @autobind
     private getCellIdentifier(cellCoordinate: GridCoordinate): string {
         if (cellCoordinate.isColumnHeaderCell) {
-            return "ColumnHeaderCell_" + this.getColumnKey(cellCoordinate.columnIndex);
+            return 'ColumnHeaderCell_' + this.getColumnKey(cellCoordinate.columnIndex);
         } else {
-            return "cell_" + this.getRowKey(cellCoordinate.rowIndex) + "_" + this.getColumnKey(cellCoordinate.columnIndex);
+            return 'cell_' + this.getRowKey(cellCoordinate.rowIndex) + '_' + this.getColumnKey(cellCoordinate.columnIndex);
         }
     }
 
@@ -2096,7 +2096,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         }
 
         if (rowSpan < 0) {
-            throw new Error("Rowspan must be a value greater than or equal to 0. Value was " + rowSpan);
+            throw new Error('Rowspan must be a value greater than or equal to 0. Value was ' + rowSpan);
         }
         return rowSpan;
     }
@@ -2275,7 +2275,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
 
         if (this.stickyHeaderSupported === undefined) {
             // test for sticky header
-            this.stickyHeaderSupported = CSSUtils.isPropertySupported("position", "sticky");
+            this.stickyHeaderSupported = CSSUtils.isPropertySupported('position', 'sticky');
         }
 
         return !this.stickyHeaderSupported;
@@ -2293,20 +2293,20 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
         } = props;
 
         if (!onRenderCell) {
-            throw new PropValidationError("BaseGrid", "onRenderCell", "Property is required");
+            throw new PropValidationError('BaseGrid', 'onRenderCell', 'Property is required');
         }
         if (numColumns <= 0) {
-            throw new PropValidationError("BaseGrid", "numColumns", "Value should be greater than 0");
+            throw new PropValidationError('BaseGrid', 'numColumns', 'Value should be greater than 0');
         }
         if (columnWidths) {
             if (columnWidths.length !== numColumns) {
-                throw new PropValidationError("BaseGrid", "columnWidths", "You must provide an array with the widths for each column");
+                throw new PropValidationError('BaseGrid', 'columnWidths', 'You must provide an array with the widths for each column');
             }
             if (!_.every(columnWidths, (width: number) => width != null && width >= 0)) {
-                throw new PropValidationError("BaseGrid", "columnWidths", "No null values are allowed");
+                throw new PropValidationError('BaseGrid', 'columnWidths', 'No null values are allowed');
             }
         } else {
-            throw new PropValidationError("BaseGrid", "columnWidths", "Column widths must not be null");
+            throw new PropValidationError('BaseGrid', 'columnWidths', 'Column widths must not be null');
         }
     }
 }

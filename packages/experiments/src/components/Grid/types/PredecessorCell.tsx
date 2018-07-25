@@ -1,10 +1,10 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { ICellType, CellContext } from "../grid/Grid";
-import { GridAction } from "../actions/GridActions";
-import { ITag } from "../editors/predecessorEditor/GridTagPicker";
-import { autobind } from "@uifabric/utilities/lib-commonjs/autobind";
-import { PredecessorEditor } from "../editors/predecessorEditor/PredecessorEditor";
+import { ICellType, CellContext } from '../grid/Grid';
+import { GridAction } from '../actions/GridActions';
+import { ITag } from '../editors/predecessorEditor/GridTagPicker';
+import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
+import { PredecessorEditor } from '../editors/predecessorEditor/PredecessorEditor';
 
 /**
  * The predecessor type for Grid
@@ -43,7 +43,7 @@ export class PredecessorCell implements ICellType {
         if (context.inFooterRow) {
             return;
         }
-        return cellData.predecessors ? cellData.predecessors.map((predecessor: ITag) => { return predecessor.name; }).join(",") : "";
+        return cellData.predecessors ? cellData.predecessors.map((predecessor: ITag) => { return predecessor.name; }).join(',') : '';
     }
 
     /**

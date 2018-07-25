@@ -1,6 +1,6 @@
 // OneDrive:IgnoreCodeCoverage
-import { IDatePickerStrings } from "office-ui-fabric-react/lib-commonjs/DatePicker";
-import * as moment from "moment";
+import { IDatePickerStrings } from 'office-ui-fabric-react/lib-commonjs/DatePicker';
+import * as moment from 'moment';
 
 /**
  * Date strings for use in fabric date pickers
@@ -29,9 +29,9 @@ export class DateStrings implements IDatePickerStrings {
 
 export class DateFormat {
     /** Format for dates in the grid, ie: 1/2/2034 */
-    public static readonly GridDate = "l";
+    public static readonly GridDate = 'l';
     /** Dates for Text fields from Project Server */
-    public static readonly TextDateTimeField = "L LT";
+    public static readonly TextDateTimeField = 'L LT';
     /** Format for 01/02/2034 */
-    public static readonly FullDigitDateFormat = "L";
+    public static readonly FullDigitDateFormat = 'L';
 }

@@ -1,24 +1,24 @@
-import "./EnumEditor.scss";
-import * as _ from "lodash";
-import * as React from "react";
+import './EnumEditor.scss';
+import * as _ from 'lodash';
+import * as React from 'react';
 
 // Constants
-import { Icons } from "../../constants/IconConstants";
-import { KeyCode } from "../../constants/KeyboardConstants";
-import { GridTheme } from "../../common/Types";
+import { Icons } from '../../constants/IconConstants';
+import { KeyCode } from '../../constants/KeyboardConstants';
+import { GridTheme } from '../../common/Types';
 
 // Controls
-import { BaseComponent } from "../../utilities/BaseComponent";
-import { Callout, DirectionalHint } from "office-ui-fabric-react/lib-commonjs/Callout";
-import { EnumCellData, EnumKey, EnumOption } from "../../types/EnumCell";
-import { FocusZone, FocusZoneDirection } from "office-ui-fabric-react/lib-commonjs/FocusZone";
+import { BaseComponent } from '../../utilities/BaseComponent';
+import { Callout, DirectionalHint } from 'office-ui-fabric-react/lib-commonjs/Callout';
+import { EnumCellData, EnumKey, EnumOption } from '../../types/EnumCell';
+import { FocusZone, FocusZoneDirection } from 'office-ui-fabric-react/lib-commonjs/FocusZone';
 
 // Others
-import { GridAction, PickerOpenedAction } from "../../actions/GridActions";
+import { GridAction, PickerOpenedAction } from '../../actions/GridActions';
 
 // Utilities
-import { autobind } from "@uifabric/utilities/lib-commonjs/autobind";
-import { css } from "@uifabric/utilities/lib-commonjs/css";
+import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
+import { css } from '@uifabric/utilities/lib-commonjs/css';
 /**
  * The props for Enum editor
  */
@@ -109,7 +109,7 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
      * Name of the component
      */
     public name(): string {
-        return "EnumEditor";
+        return 'EnumEditor';
     }
 
     /**
@@ -161,15 +161,15 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
         return (
             <div
                 onClick={ this.onCellClick }
-                className="enum-editor"
-                ref={ this.resolveRef(this, "EnumEditorContainerRef") } >
+                className='enum-editor'
+                ref={ this.resolveRef(this, 'EnumEditorContainerRef') } >
                 <div
-                    className="enum-editor-value"
+                    className='enum-editor-value'
                     onKeyDown={ this.onKeyDown }
                     onKeyPress={ this.onKeyPress }
                     onMouseDown={ (event: React.MouseEvent<HTMLElement | HTMLInputElement>) => { /*is this needed?*/event.stopPropagation(); } }>{ val }</div>
                 <i
-                    className={ css("ms-Icon ms-Icon--" + Icons.ChevronDownMed, "arrow-icon") }
+                    className={ css('ms-Icon ms-Icon--' + Icons.ChevronDownMed, 'arrow-icon') }
                     style={ iconStyle }
                     onMouseDown={ (event: React.MouseEvent<HTMLElement>) => { event.preventDefault(); event.stopPropagation(); } }
                 />
@@ -204,27 +204,27 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
                 } }
             >
                 <div
-                    className="enum-editor-options"
+                    className='enum-editor-options'
                     style={ { width: width } }>
                     <FocusZone
-                        className="enum-editor-focus-zone"
+                        className='enum-editor-focus-zone'
                         direction={ FocusZoneDirection.vertical }
                         isCircularNavigation={ true }
                         onKeyPress={ this.onKeyPress }
                         onKeyDown={ this.onKeyDown }
-                        ref={ this.resolveRef(this, "OptionsRef") }
-                        role="menu">
+                        ref={ this.resolveRef(this, 'OptionsRef') }
+                        role='menu'>
                         {
                             _.map(enumOptions, (option: EnumOption) => {
-                                let className: string = css("enum-editor-option", { "selected": option.key === value.selectedEnumKey });
+                                let className: string = css('enum-editor-option', { 'selected': option.key === value.selectedEnumKey });
                                 return (
                                     <div
                                         className={ className }
                                         data-is-focusable={ true }
                                         key={ `${option.key}` }
                                         onClick={ (event: React.MouseEvent<HTMLElement>) => { this.onOptionSelected(event, option.key); } }
-                                        ref={ option.key === value.selectedEnumKey && this.resolveRef(this, "SelectedElementRef") }
-                                        role="menuitem">
+                                        ref={ option.key === value.selectedEnumKey && this.resolveRef(this, 'SelectedElementRef') }
+                                        role='menuitem'>
                                         { option.text }
                                     </div>
                                 );

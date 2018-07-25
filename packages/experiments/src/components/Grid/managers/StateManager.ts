@@ -2,7 +2,7 @@ import {
     GridCoordinate,
     GridMode,
     GridRegion
-} from "../common/Common";
+} from '../common/Common';
 import { GridConstants } from '../constants/GridConstants';
 
 /** Parameters for all State Managers */

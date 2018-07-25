@@ -1,8 +1,8 @@
-import * as React from "react";
-import { BaseComponent } from "../utilities/BaseComponent";
-import { css } from "@uifabric/utilities/lib-commonjs/css";
-import { RtlUtils } from "../utilities/RtlUtils";
-import { GridTheme } from "../common/Common";
+import * as React from 'react';
+import { BaseComponent } from '../utilities/BaseComponent';
+import { css } from '@uifabric/utilities/lib-commonjs/css';
+import { RtlUtils } from '../utilities/RtlUtils';
+import { GridTheme } from '../common/Common';
 
 export interface IRowHeaderCellProps extends React.Props<RowHeaderCell> {
     /** Optional class name to be added to this cell */
@@ -47,7 +47,7 @@ export interface IRowHeaderCellProps extends React.Props<RowHeaderCell> {
  */
 export class RowHeaderCell extends BaseComponent<IRowHeaderCellProps, {}> {
     public name(): string {
-        return "RowHeaderCell";
+        return 'RowHeaderCell';
     }
 
     protected renderComponent(): JSX.Element {
@@ -83,20 +83,20 @@ export class RowHeaderCell extends BaseComponent<IRowHeaderCellProps, {}> {
         return (
             <div
                 id={ id }
-                className={ css("grid-row-header-cell",
+                className={ css('grid-row-header-cell',
                     {
-                        "grid-row-header-cell--active": isRowActive
+                        'grid-row-header-cell--active': isRowActive
                     },
                     className
                 ) }
                 aria-rowindex={ rowIndex }
-                role="rowheader"
+                role='rowheader'
                 style={ cellStyle }
                 onMouseDown={ onMouseDown }
                 onMouseEnter={ onMouseEnter }
                 onContextMenu={ onContextMenu }
             >
-                <div className="grid-row-header-cell-content"
+                <div className='grid-row-header-cell-content'
                     style={ cellContentStyle }>
                     { children }
                 </div>

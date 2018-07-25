@@ -1,6 +1,6 @@
-import * as React from "react";
-import { BaseComponent } from "../utilities/BaseComponent";
-import { GridTheme } from "../common/Common";
+import * as React from 'react';
+import { BaseComponent } from '../utilities/BaseComponent';
+import { GridTheme } from '../common/Common';
 
 export interface IHeaderRowProps extends React.Props<HeaderRow> {
     /** The height of this header row */
@@ -33,7 +33,7 @@ export class HeaderRow extends BaseComponent<IHeaderRowProps, {}> {
     private innerDivClientRect: ClientRect;
 
     public name(): string {
-        return "HeaderRow";
+        return 'HeaderRow';
     }
 
     /** Get the rendered row height */
@@ -77,10 +77,10 @@ export class HeaderRow extends BaseComponent<IHeaderRowProps, {}> {
         };
 
         return (
-            <div className="grid-header-row"
-                role="row"
+            <div className='grid-header-row'
+                role='row'
                 style={ style }
-                ref={ this.resolveRef(this, "innerDiv") }
+                ref={ this.resolveRef(this, 'innerDiv') }
             >
                 { children }
             </div>

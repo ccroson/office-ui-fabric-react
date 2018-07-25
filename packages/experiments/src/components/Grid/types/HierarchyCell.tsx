@@ -1,11 +1,11 @@
-import "./HierarchyCell.scss";
-import * as React from "react";
-import * as _ from "lodash";
+import './HierarchyCell.scss';
+import * as React from 'react';
+import * as _ from 'lodash';
 
-import { css, IDictionary } from "@uifabric/utilities/lib-commonjs/css";
-import { ICellType, CellContext } from "../grid/Grid";
-import { getRTL } from "@uifabric/utilities/lib-commonjs/rtl";
-import { GridAction } from "../actions/GridActions";
+import { css, IDictionary } from '@uifabric/utilities/lib-commonjs/css';
+import { ICellType, CellContext } from '../grid/Grid';
+import { getRTL } from '@uifabric/utilities/lib-commonjs/rtl';
+import { GridAction } from '../actions/GridActions';
 
 /**
  * Type that contains hierarchy data necessary for rendering
@@ -156,16 +156,16 @@ export class HierarchyCell implements ICellType {
      */
     public getAriaAndDataAttributes(cellData: HierarchyCellData): _.Dictionary<string> {
         let hierarchyCellAria = {
-            "aria-expanded": cellData && cellData.expanded,
-            "aria-level": cellData && cellData.indentationLevel + 1  //Indentation level is 0 based, but the intial level is 1
+            'aria-expanded': cellData && cellData.expanded,
+            'aria-level': cellData && cellData.indentationLevel + 1  //Indentation level is 0 based, but the intial level is 1
         };
 
         if (cellData && cellData.siblingCount != null) {
-            hierarchyCellAria["aria-setsize"] = cellData.siblingCount;
+            hierarchyCellAria['aria-setsize'] = cellData.siblingCount;
         }
 
         if (cellData && cellData.siblingPosition != null) {
-            hierarchyCellAria["aria-posinset"] = cellData.siblingPosition;
+            hierarchyCellAria['aria-posinset'] = cellData.siblingPosition;
         }
 
         return _.merge(this.underlyingCellType.getAriaAndDataAttributes(cellData && cellData.cellData), hierarchyCellAria);
@@ -196,9 +196,9 @@ export class HierarchyCell implements ICellType {
      */
     private renderWrapper(cellData: HierarchyCellData, children: JSX.Element | string, context: CellContext): JSX.Element {
         return (
-            <div className="hierarchy-cell" style={ getRTL() ? { paddingRight: cellData && cellData.indentationLevel + "em" } : { paddingLeft: cellData && cellData.indentationLevel + "em" } }>
+            <div className='hierarchy-cell' style={ getRTL() ? { paddingRight: cellData && cellData.indentationLevel + 'em' } : { paddingLeft: cellData && cellData.indentationLevel + 'em' } }>
                 { this.renderTreeChevron(cellData, context) }
-                <span className="wrapped-content">
+                <span className='wrapped-content'>
                     { children }
                 </span>
             </div>
@@ -214,14 +214,14 @@ export class HierarchyCell implements ICellType {
         let showChevron: boolean = node && node.hasChildren;
         let rtl: boolean = getRTL();
         let chevronCssMapping: IDictionary = {
-            "ms-Icon--ChevronRightMed": !rtl,
-            "ms-Icon--ChevronLeftMed": rtl,
-            "expanded": node && node.expanded,
-            "chevron-hidden": !showChevron
+            'ms-Icon--ChevronRightMed': !rtl,
+            'ms-Icon--ChevronLeftMed': rtl,
+            'expanded': node && node.expanded,
+            'chevron-hidden': !showChevron
         };
         return (
             <div
-                className={ css("chevron-wrapper", { "has-children": showChevron }) }
+                className={ css('chevron-wrapper', { 'has-children': showChevron }) }
                 onClick={ showChevron ? (event: React.MouseEvent<HTMLElement>) => {
                     event.stopPropagation(); //stop onRowClick from being fired
                     this.toggleRowExpansion(node);
@@ -234,7 +234,7 @@ export class HierarchyCell implements ICellType {
                     }
                 } }
             >
-                <i className={ css("chevron", "ms-Icon", chevronCssMapping) } />
+                <i className={ css('chevron', 'ms-Icon', chevronCssMapping) } />
             </div>
         );
     }

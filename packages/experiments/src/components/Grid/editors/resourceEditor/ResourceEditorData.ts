@@ -1,4 +1,4 @@
-import { IResource } from "../../controls/resourcePicker/IResource";
+import { IResource } from '../../controls/resourcePicker/IResource';
 
 /**
  * Type that contains information for rendering the resource cell.

@@ -356,7 +356,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
         >
           <div className={gridStyles.validationCalloutContent}>
             <i className={'ms-Icon ms-Icon--ErrorBadge'} />
-            <div className={gridStyles.validationMessage} role="alert" aria-live="assertive" aria-atomic="true">
+            <div className={gridStyles.validationMessage} role='alert' aria-live='assertive' aria-atomic='true'>
               {validationError.errorMessage}
             </div>
           </div>

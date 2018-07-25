@@ -1,6 +1,6 @@
-import * as React from "react";
-import { BaseComponent } from "../utilities/BaseComponent";
-import { css } from "@uifabric/utilities/lib-commonjs/css";
+import * as React from 'react';
+import { BaseComponent } from '../utilities/BaseComponent';
+import { css } from '@uifabric/utilities/lib-commonjs/css';
 
 export interface IHeaderContainerProps extends React.Props<HeaderContainer> {
     /** The class name for the grid header */
@@ -24,7 +24,7 @@ export interface IHeaderContainerProps extends React.Props<HeaderContainer> {
 export class HeaderContainer extends BaseComponent<IHeaderContainerProps, {}> {
 
     public name(): string {
-        return "HeaderContainer";
+        return 'HeaderContainer';
     }
 
     protected renderComponent(): JSX.Element {
@@ -37,11 +37,13 @@ export class HeaderContainer extends BaseComponent<IHeaderContainerProps, {}> {
         } = this.props;
 
         return (
-            <div className={ css("grid-header-container", { "grid-header-container--sticky": isSticky }) }
+            <div 
+                className={ css('grid-header-container', { 'grid-header-container--sticky': isSticky }) }
                 style={ { height: height } }
                 role={ role }
             >
-                <div className={ css("grid-header", className) }>
+                <div 
+                    className={ css('grid-header', className) }>
                     { children }
                 </div>
             </div>

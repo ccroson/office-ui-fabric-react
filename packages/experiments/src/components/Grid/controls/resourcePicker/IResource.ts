@@ -1,4 +1,4 @@
-import { PersonaPresence } from "office-ui-fabric-react";
+import { PersonaPresence } from 'office-ui-fabric-react';
 /**
  * Representation of resource.
  */

@@ -1,14 +1,14 @@
-import * as _ from "lodash";
-import * as React from "react";
+import * as _ from 'lodash';
+import * as React from 'react';
 
 // components
-import { Facepile, IFacepilePersona, OverflowButtonType } from "office-ui-fabric-react/lib-commonjs/Facepile";
-import { PersonaSize, PersonaInitialsColor } from "office-ui-fabric-react/lib-commonjs/Persona";
-import { IResource } from "../../controls/resourcePicker/IResource";
-import { StringUtils } from "../../utilities/StringUtils";
+import { Facepile, IFacepilePersona, OverflowButtonType } from 'office-ui-fabric-react/lib-commonjs/Facepile';
+import { PersonaSize, PersonaInitialsColor } from 'office-ui-fabric-react/lib-commonjs/Persona';
+import { IResource } from '../../controls/resourcePicker/IResource';
+import { StringUtils } from '../../utilities/StringUtils';
 
 // controls
-import { BaseComponent } from "../../utilities/BaseComponent";
+import { BaseComponent } from '../../utilities/BaseComponent';
 
 /**
  * Maximum number of personas to show in the grid cell.
@@ -44,7 +44,7 @@ export class ResourcePile extends BaseComponent<IResourcePileProps, {}> {
      * @returns {string} The name of this component
      */
     public name(): string {
-        return "ResourcePile";
+        return 'ResourcePile';
     }
     protected renderComponent(): JSX.Element {
         const { resources, width, total } = this.props;

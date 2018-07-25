@@ -4,8 +4,8 @@ import {
     css
 } from 'office-ui-fabric-react/lib-commonjs/Utilities';
 /* tslint:enable */
-import { BasePicker, IBasePickerProps } from "office-ui-fabric-react/lib-commonjs/Pickers";
-import { TagItem, IPickerItemProps } from "office-ui-fabric-react/lib-commonjs/Pickers";
+import { BasePicker, IBasePickerProps } from 'office-ui-fabric-react/lib-commonjs/Pickers';
+import { TagItem, IPickerItemProps } from 'office-ui-fabric-react/lib-commonjs/Pickers';
 import * as stylesImport from 'office-ui-fabric-react/lib-commonjs/components/pickers/TagPicker/TagItem.scss';
 const styles: any = stylesImport;
 

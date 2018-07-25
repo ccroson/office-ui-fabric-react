@@ -1,7 +1,7 @@
 // OneDrive:IgnoreCodeCoverage
 
-import { GridCoordinate } from "../common/Common";
-import { StateManager, SelectionState } from "../managers/StateManager";
+import { GridCoordinate } from '../common/Common';
+import { StateManager, SelectionState } from '../managers/StateManager';
 
 /**
  * This state manager ignores all events. It should be used when you

@@ -13,10 +13,10 @@
 // $direction - row | row-reverse | column | column-reverse
 // $wrap - nowrap | wrap | wrap-reverse
 @mixin flex-parent($direction: row, $wrap: nowrap) {
-    display: "-webkit-flex";
-    display: "-moz-flex";
-    display: "-ms-flexbox"; // IE10 uses -ms-flexbox
-    display: "-ms-flex"; // IE11
+    display: '-webkit-flex';
+    display: '-moz-flex';
+    display: '-ms-flexbox'; // IE10 uses -ms-flexbox
+    display: '-ms-flex'; // IE11
     display: flex;
     -webkit-flex-direction: $direction;
     -moz-flex-direction: $direction;
@@ -126,12 +126,12 @@
 /** Central location for keeping track of all z-indexes on the app. */
 
 $z-layers: (
-    "grid-fill-handle" : 1,
-    "grid-header-container--sticky": 2,
-    "sticky-container": 2
+    'grid-fill-handle' : 1,
+    'grid-header-container--sticky': 2,
+    'sticky-container': 2
 );
 
-/** Function that returns a z-index for a specific layer. You can set z-indexes relative to a layer too. E.g If you want a z-index greater than grid use z-index: setzindex("grid") + 1 */
+/** Function that returns a z-index for a specific layer. You can set z-indexes relative to a layer too. E.g If you want a z-index greater than grid use z-index: setzindex('grid') + 1 */
 
 @function getzindex($layer) {
     @return map-get($z-layers, $layer);

@@ -1,23 +1,23 @@
-import "./ResourceCell.scss";
-import * as _ from "lodash";
-import * as React from "react";
+import './ResourceCell.scss';
+import * as _ from 'lodash';
+import * as React from 'react';
 
 // Controls
-import { ICellType, CellContext } from "../grid/Grid";
-import { ArgumentNullError } from "../utilities/errors/ArgumentNullError";
-import { ResourceEditor, IResourceEditorOptions } from "../editors/resourceEditor/ResourceEditor";
-import { IResource } from "../controls/resourcePicker/IResource";
-import { ResourceEditorData } from "../editors/resourceEditor/ResourceEditorData";
-import { ResourcePile } from "../editors/resourceEditor/ResourcePile";
+import { ICellType, CellContext } from '../grid/Grid';
+import { ArgumentNullError } from '../utilities/errors/ArgumentNullError';
+import { ResourceEditor, IResourceEditorOptions } from '../editors/resourceEditor/ResourceEditor';
+import { IResource } from '../controls/resourcePicker/IResource';
+import { ResourceEditorData } from '../editors/resourceEditor/ResourceEditorData';
+import { ResourcePile } from '../editors/resourceEditor/ResourcePile';
 
 // Utilities
-import { GridAction, PickerOpenedAction } from "../actions/GridActions";
+import { GridAction, PickerOpenedAction } from '../actions/GridActions';
 
 /**
  * Class that handles rendering of the Facepile control inside the grid
  */
 export class ResourceCell implements ICellType {
-    public name: string = "ResourceCell";
+    public name: string = 'ResourceCell';
 
     private options: IResourceEditorOptions;
 
@@ -49,31 +49,31 @@ export class ResourceCell implements ICellType {
             return;
         }
         if (!cellData) {
-            throw new ArgumentNullError("cellData");
+            throw new ArgumentNullError('cellData');
         }
 
         if (!cellData.rowId) {
-            throw new ArgumentNullError("cellData.rowId");
+            throw new ArgumentNullError('cellData.rowId');
         }
 
         if (!cellData.assignedResources) {
-            throw new ArgumentNullError("cellData.assignedResources");
+            throw new ArgumentNullError('cellData.assignedResources');
         }
 
         if (!cellData.assignedResourcesSearchList) {
-            throw new ArgumentNullError("cellData.assignedResourcesSearchList");
+            throw new ArgumentNullError('cellData.assignedResourcesSearchList');
         }
 
         if (!cellData.unassignedResourcesSearchLists) {
-            throw new ArgumentNullError("cellData.unassignedResourcesSearchLists");
+            throw new ArgumentNullError('cellData.unassignedResourcesSearchLists');
         }
 
         if (!context) {
-            throw new ArgumentNullError("context");
+            throw new ArgumentNullError('context');
         }
 
         return (
-            <div className="resource-container" style={{ pointerEvents: "none" }}>
+            <div className='resource-container' style={{ pointerEvents: 'none' }}>
                 <ResourcePile resources={cellData.assignedResources} total={cellData.total} width={context.columnWidth} />
             </div>
         );
@@ -154,7 +154,7 @@ export class ResourceCell implements ICellType {
      */
     public toString(data: ResourceEditorData): string {
         if (data == null) {
-            return "";
+            return '';
         }
         return _.map(data.assignedResources, (resource: IResource) => resource.name).toString();
     }
@@ -171,4 +171,4 @@ export class ResourceCell implements ICellType {
     }
 }
 
-export { ResourceEditorData as ResourceCellData } from "../editors/resourceEditor/ResourceEditorData";
+export { ResourceEditorData as ResourceCellData } from '../editors/resourceEditor/ResourceEditorData';

@@ -1,6 +1,6 @@
-import { GridCoordinate, GridMode } from "../common/Common";
-import { MultipleRowStateManager } from "./MultipleRowStateManager";
-import { SelectionState, StateManagerParameters } from "./StateManager";
+import { GridCoordinate, GridMode } from '../common/Common';
+import { MultipleRowStateManager } from './MultipleRowStateManager';
+import { SelectionState, StateManagerParameters } from './StateManager';
 
 /**
  * This state manager should be used when you want to allow selection

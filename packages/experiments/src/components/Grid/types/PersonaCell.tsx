@@ -1,13 +1,13 @@
-import * as React from "react";
-import * as _ from "lodash";
+import * as React from 'react';
+import * as _ from 'lodash';
 
 // fabric react components
-import { Persona, PersonaSize } from "office-ui-fabric-react/lib-commonjs/Persona";
+import { Persona, PersonaSize } from 'office-ui-fabric-react/lib-commonjs/Persona';
 
 // models
-import { ICellType, CellContext } from "../grid/Grid";
+import { ICellType, CellContext } from '../grid/Grid';
 
-import { StringUtils } from "../utilities/StringUtils";
+import { StringUtils } from '../utilities/StringUtils';
 
 /**
  * Contains the user information needed to render Persona
@@ -43,9 +43,11 @@ export class PersonaCell implements ICellType {
     public render(cellData: User, context: CellContext): JSX.Element {
         if (cellData) {
             return (
-                <Persona imageUrl={ cellData && cellData.imageUrl }
+                <Persona 
+                    imageUrl={ cellData && cellData.imageUrl }
                     text={ cellData && cellData.name }
-                    size={ PersonaSize.size32 } />
+                    size={ PersonaSize.size32 } 
+                />
             );
         }
     }
@@ -55,7 +57,7 @@ export class PersonaCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      */
     public getAriaAndDataAttributes(cellData: User): _.Dictionary<string> {
-        return { "aria-label": this.toString(cellData) };
+        return { 'aria-label': this.toString(cellData) };
     }
 
     /**
@@ -72,6 +74,6 @@ export class PersonaCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      */
     public toString(cellData: User): string {
-        return cellData ? cellData.name : "";
+        return cellData ? cellData.name : '';
     }
 }

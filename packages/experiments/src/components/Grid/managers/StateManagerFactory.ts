@@ -1,10 +1,10 @@
-import { SelectionMode } from "../common/Common";
-import { StateManager, StateManagerParameters } from "./StateManager";
-import { NoOpStateManager } from "./NoOpStateManager";
-import { SingleRowStateManager } from "./SingleRowStateManager";
-import { MultipleRowStateManager } from "./MultipleRowStateManager";
-import { SingleCellStateManager } from "./SingleCellStateManager";
-import { MultipleCellStateManager } from "./MultipleCellStateManager";
+import { SelectionMode } from '../common/Common';
+import { StateManager, StateManagerParameters } from './StateManager';
+import { NoOpStateManager } from './NoOpStateManager';
+import { SingleRowStateManager } from './SingleRowStateManager';
+import { MultipleRowStateManager } from './MultipleRowStateManager';
+import { SingleCellStateManager } from './SingleCellStateManager';
+import { MultipleCellStateManager } from './MultipleCellStateManager';
 
 /**
  * The StateManagerFactory selects a StateManager based on a SelectionMode

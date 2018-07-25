@@ -1,19 +1,19 @@
-import "./PeoplePicker.scss";
+import './PeoplePicker.scss';
 
-import * as _ from "lodash";
-import * as React from "react";
+import * as _ from 'lodash';
+import * as React from 'react';
 
 // Components
-import { BaseComponent } from "../../utilities/BaseComponent";
-import { ResourceList, IResourceListProps } from "./ResourceList";
-import { SearchBox, ISearchBox } from "office-ui-fabric-react/lib-commonjs/SearchBox";
+import { BaseComponent } from '../../utilities/BaseComponent';
+import { ResourceList, IResourceListProps } from './ResourceList';
+import { SearchBox, ISearchBox } from 'office-ui-fabric-react/lib-commonjs/SearchBox';
 
 // Constants
-import { KeyCode } from "../../constants/KeyboardConstants";
+import { KeyCode } from '../../constants/KeyboardConstants';
 
 // Models
-import { Identifiable } from "./Identifiable";
-import { IPersonaProps } from "office-ui-fabric-react/lib-commonjs/components/Persona/index";
+import { Identifiable } from './Identifiable';
+import { IPersonaProps } from 'office-ui-fabric-react/lib-commonjs/components/Persona/index';
 
 export interface IPeoplePickerProps {
     /** Resource lists to display */
@@ -77,7 +77,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
         searchBoxMinimumSearchableLength: DEFAULT_MIN_SEARCHABLE_LENGTH,
         searchBoxResponseDelayTime: DEFAULT_SEARCH_DELAY,
         shouldFocusOnMount: false,
-        filterBoxPlaceholderText: ""
+        filterBoxPlaceholderText: ''
     };
 
     /**
@@ -97,7 +97,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
 
         // initialize state
         this.state = {
-            searchBoxText: "",
+            searchBoxText: '',
             isSearchFilterTextReady: false
         };
     }
@@ -122,7 +122,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
      * Name of the component
      */
     public name(): string {
-        return "PeoplePicker";
+        return 'PeoplePicker';
     }
 
     protected renderComponent(): JSX.Element {
@@ -138,17 +138,17 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
         let resourceListKeys: number = 0;
         this.filteredResourceListCount = 0;
         return (
-            <div className="peoplePicker" ref={ this.resolveRef(this, "root") } onKeyUp={ this.onKeyUp }>
+            <div className='peoplePicker' ref={ this.resolveRef(this, 'root') } onKeyUp={ this.onKeyUp }>
                 <SearchBox
                     { ...{ autofocus: true } }
-                    componentRef={ this.resolveRef(this, "textInput") }
+                    componentRef={ this.resolveRef(this, 'textInput') }
                     placeholder={ filterBoxPlaceholderText }
                     onChange={ _.throttle(this.onFilter, searchBoxResponseDelayTime) }
                     value={ searchBoxText }
                     onFocus={ this.moveCursorEnd }
                 />
-                <div className="peoplePicker-results">
-                    <div className="peoplePicker-resultGroups">
+                <div className='peoplePicker-results'>
+                    <div className='peoplePicker-resultGroups'>
                         { _.map(resourceLists, (resourceListGroup: IResourceListProps) =>
                             this.renderResourceGroup(resourceListGroup, resourceListKeys++)
                         ) }
@@ -156,7 +156,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
                 </div>
                 {
                     this.filteredResourceListCount === 0 && searchedResourcesFetched &&
-                    <div className="peoplePicker-noresults">{ searchBoxNoResultsText }</div>
+                    <div className='peoplePicker-noresults'>{ searchBoxNoResultsText }</div>
                 }
             </div>
         );
@@ -238,7 +238,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
             if (this.textInput != null) {
                 this.textInput.focus();
             }
-            this.setState({ searchBoxText: "", isSearchFilterTextReady: false });
+            this.setState({ searchBoxText: '', isSearchFilterTextReady: false });
         }
         return success;
     }
@@ -253,7 +253,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
         if (this.textInput != null) {
             this.textInput.focus();
         }
-        this.setState({ searchBoxText: "", isSearchFilterTextReady: false });
+        this.setState({ searchBoxText: '', isSearchFilterTextReady: false });
         action(resourceId);
     }
 
@@ -273,7 +273,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
         let onFilter = this.curriedOnFilter(searchBoxText);
 
         if (isSearchFilterTextReady) {
-            if (searchBoxText.trim() !== "") {
+            if (searchBoxText.trim() !== '') {
                 filteredResourceList = onFilter ? _.filter(resourceListGroup.resourceList, onFilter) : resourceListGroup.resourceList;
 
                 if (resourceListGroup.maxSearchResults) {
@@ -328,7 +328,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
                 isSearchFilterTextReady = true;
             }
 
-            let newSearchString = newValue || "";
+            let newSearchString = newValue || '';
             if (onSearchStringChanged) {
                 onSearchStringChanged(newSearchString);
             }

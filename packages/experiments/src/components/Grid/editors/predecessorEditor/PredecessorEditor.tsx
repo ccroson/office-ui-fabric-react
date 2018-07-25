@@ -1,16 +1,16 @@
-import * as React from "react";
-import * as _ from "lodash";
+import * as React from 'react';
+import * as _ from 'lodash';
 import { initializeIcons } from '@uifabric/icons/lib-commonjs/index';
 
-import "./PredecessorEditor.scss";
+import './PredecessorEditor.scss';
 
 // controls
-import { BaseComponent } from "../../utilities/BaseComponent";
+import { BaseComponent } from '../../utilities/BaseComponent';
 import { GridTagPicker, ITag, ITagPickerProps } from './GridTagPicker';
 import { BasePicker } from 'office-ui-fabric-react/lib-commonjs/components/pickers';
 
 // Utilities
-import { autobind } from "@uifabric/utilities/lib-commonjs/autobind";
+import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
 initializeIcons();
 
 /**
@@ -80,7 +80,7 @@ export class PredecessorEditor extends BaseComponent<IPredecessorEditorProps, IP
      * Name of the component
      */
     public name(): string {
-        return "PredecessorEditor";
+        return 'PredecessorEditor';
     }
 
     public componentDidMount() {
@@ -92,7 +92,7 @@ export class PredecessorEditor extends BaseComponent<IPredecessorEditorProps, IP
      */
     public renderComponent(): JSX.Element {
         return (
-            <div className="tag-editor-container">
+            <div className='tag-editor-container'>
                 <GridTagPicker
                     ref={ this.resolveRef(this, 'tagPicker') }
                     onResolveSuggestions={ this.onFilterChanged }

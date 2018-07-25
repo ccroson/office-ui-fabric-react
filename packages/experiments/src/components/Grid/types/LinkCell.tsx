@@ -1,11 +1,11 @@
-import "./LinkCell.scss";
-import * as React from "react";
-import * as _ from "lodash";
+import './LinkCell.scss';
+import * as React from 'react';
+import * as _ from 'lodash';
 
-import { ICellType, CellContext } from "../grid/Grid";
-import { GridAction } from "../actions/GridActions";
-import { StringEditor } from "../editors/stringEditor/StringEditor";
-import { StringUtils } from "../utilities/StringUtils";
+import { ICellType, CellContext } from '../grid/Grid';
+import { GridAction } from '../actions/GridActions';
+import { StringEditor } from '../editors/stringEditor/StringEditor';
+import { StringUtils } from '../utilities/StringUtils';
 
 /**
  * Struct that contains link information
@@ -32,7 +32,7 @@ export class LinkCell implements ICellType {
         return (
             cellData &&
             <a
-                className="grid-link"
+                className='grid-link'
                 tabIndex={ -1 }
                 href={ cellData.href }
                 onClick={ (event: React.MouseEvent<HTMLElement>) => {
@@ -80,7 +80,7 @@ export class LinkCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      */
     public getAriaAndDataAttributes(cellData: LinkCellData): _.Dictionary<string> {
-        return cellData && { "aria-label": cellData.linkText };
+        return cellData && { 'aria-label': cellData.linkText };
     }
 
     /**

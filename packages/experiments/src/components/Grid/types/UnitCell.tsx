@@ -1,20 +1,20 @@
-import * as React from "react";
-import _ = require("lodash");
+import * as React from 'react';
+import _ = require('lodash');
 
 // controls
-import { ICellType, CellContext } from "../grid/Grid";
-import { __InlineAutoCompleteBox as UnitEditor } from "../controls/inlineAutoCompleteBox/__InlineAutoCompleteBox";
+import { ICellType, CellContext } from '../grid/Grid';
+import { __InlineAutoCompleteBox as UnitEditor } from '../controls/inlineAutoCompleteBox/__InlineAutoCompleteBox';
 
 // utils
-import { ArgumentError } from "../utilities/errors/Errors";
-import { autobind } from "@uifabric/utilities/lib-commonjs/autobind";
-import { GridAction } from "../actions/GridActions";
-import { ParseUtils } from "../utilities/ParseUtils";
+import { ArgumentError } from '../utilities/errors/Errors';
+import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
+import { GridAction } from '../actions/GridActions';
+import { ParseUtils } from '../utilities/ParseUtils';
 
 /**
  * Default value to set the cell to if it is null or undefined
  */
-const DEFAULT_CELL_VALUE: string = "";
+const DEFAULT_CELL_VALUE: string = '';
 
 /**
  * Class that handles rendering of 'unit' types in the grid where the value is a number
@@ -46,7 +46,7 @@ export class UnitCell implements ICellType {
         getDisplayValue: (data: UnitCellData) => string,
         parser: (data: UnitCellData) => string | number) {
         if (!_.isFunction(getDisplayValue)) {
-            throw new ArgumentError("getDisplayValue", "Should be a valid function");
+            throw new ArgumentError('getDisplayValue', 'Should be a valid function');
         }
 
         this.acceptableOptions = acceptableOptions;

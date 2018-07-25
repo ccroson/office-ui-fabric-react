@@ -1,7 +1,18 @@
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 /** Regex for parsing out width values */
 const widthRegex = /^(-?\d*(\.\d+)?)(px|\*)?$/i;
+
+    
+/**
+ * Possible Grid width units
+ */
+export enum GridSizeUnit {
+    /** Pixels (px) */
+    Pixel = 1,
+    /** A proportional, flexible unit (*) */
+    Flexible = 2
+}
 
 /**
  * Represents a size value in the Grid
@@ -12,18 +23,18 @@ export class GridSize {
     public unit: GridSizeUnit;
 
     /**
-     * Parse a width string ("200px") into a GridWidth
+     * Parse a width string ('200px') into a GridWidth
      * @param width The width string
      */
     public static parseSize(width: number | string): GridSize {
         if (_.isNumber(width)) {
-            let widthValue = width as number;
+            const widthValue = width as number;
             return new GridSize(widthValue, GridSizeUnit.Pixel);
         } else {
-            let widthString: string = width as string;
-            let matches = widthRegex.exec(widthString);
-            if (matches != null) {
-                let value = matches[1] ? Number(matches[1]) : null;
+            const widthString: string = width as string;
+            const matches = widthRegex.exec(widthString);
+            if (matches !== null) {
+                const value = matches[1] ? Number(matches[1]) : null;
                 return new GridSize(value, this.parseUnitString(matches[3]));
             }
         }
@@ -38,9 +49,9 @@ export class GridSize {
     public static parseUnitString(unit: string): GridSizeUnit {
         if (unit) {
             switch (unit.toLowerCase()) {
-                case "*":
+                case '*':
                     return GridSizeUnit.Flexible;
-                case "px":
+                case 'px':
                     return GridSizeUnit.Pixel;
             }
         }
@@ -51,21 +62,11 @@ export class GridSize {
     private constructor(value: number, unit: GridSizeUnit) {
         this.unit = unit;
         if (this.unit === GridSizeUnit.Pixel) {
-            this.value = value != null && value >= 0 ? value : 0;
+            this.value = value !== null && value >= 0 ? value : 0;
         } else if (this.unit === GridSizeUnit.Flexible) {
-            this.value = value != null && value >= 0 ? value : 1;
+            this.value = value !== null && value >= 0 ? value : 1;
         } else {
             this.value = 0;
         }
     }
-}
-
-/**
- * Possible Grid width units
- */
-export enum GridSizeUnit {
-    /** Pixels (px) */
-    Pixel = 1,
-    /** A proportional, flexible unit (*) */
-    Flexible = 2
 }
