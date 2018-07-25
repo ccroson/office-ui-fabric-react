@@ -32,7 +32,7 @@ import { PropValidationError } from '../utilities/errors/Errors';
 import { GridCoordinate, GridMode, GridRegion, GridTheme, SelectionMode, VirtualizationMode } from '../common/Common';
 
 // Utilities
-import { autobind, css } from '@uifabric/utilities/lib-commonjs/autobind';
+import { autobind } from '../../../../../utilities/lib-commonjs';
 import { GridAction, PickerOpenedAction } from '../actions/GridActions';
 import { GridUtilities } from '../utilities/GridUtilities';
 import { KeyCode } from '../constants/KeyboardConstants';
