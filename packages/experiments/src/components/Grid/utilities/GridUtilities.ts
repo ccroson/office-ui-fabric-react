@@ -5,7 +5,6 @@ import { CellRegionPosition, GridCoordinate, GridRegion } from "../common/Common
 import { IColumnDefinition, ICellDefinition } from "../grid/Grid";
 
 export namespace GridUtilities {
-    "use strict";
     /**
      * Gets the data to render using the column definition.
      * Either uses the property name or the accessor method
@@ -13,7 +12,6 @@ export namespace GridUtilities {
      * @param columnDefinition The column definition to use
      */
     export function getDataFromColumnDefinition(data: Object, columnDefinition: IColumnDefinition): any {
-        'use strict';
         let cellDefinition: ICellDefinition = columnDefinition.cell;
         let dataToRender: any = null;
         // 1st Pri: Use the property name if it is defined
@@ -37,7 +35,6 @@ export namespace GridUtilities {
      * @param propertyName The property string
      */
     function getNestedData(data: Object, propertyName: string): any {
-        'use strict';
         return _.get(data, propertyName);
     }
 
@@ -67,12 +64,12 @@ export namespace GridUtilities {
      * @returns {CellRegionPosition} corresponding to the first region which contains the cell, null if no region contains the cell
      * @throws if cellCoordinate is null
      */
-    export function getCellRegionPositionIfSelected(cellCoordinate: GridCoordinate, selections: GridRegion[], cellRowSpan: number): CellRegionPosition {
+    export function getCellRegionPositionIfSelected(cellCoordinate: GridCoordinate, selections: GridRegion[], cellRowSpan: number): CellRegionPosition | null {
         if (!cellCoordinate) {
             throw new ArgumentNullError("cellCoordinate");
         }
 
-        let containingSelection: GridRegion = _.find(selections, (selection: GridRegion) => selection.isCellInRegion(cellCoordinate));
+        let containingSelection = _.find(selections, (selection: GridRegion) => selection.isCellInRegion(cellCoordinate));
         if (containingSelection) {
             return containingSelection.getCellPosition(cellCoordinate, cellRowSpan);
         }

@@ -8,7 +8,7 @@ export interface IRowPositionManager {
      * @param The number of rows in the manager
      * @param estimatedSize The estimated size of any given row
      */
-    setConfiguration(rowCount: number, estimatedSize: number);
+    setConfiguration(rowCount: number, estimatedSize: number): any;
 
     /**
      * Get the information needed to render visible items on the page

@@ -1,15 +1,13 @@
 import * as moment from "moment";
 
 export namespace Validators {
-    "use strict";
 
     /**
      * Returns a validator that checks for null and whitespace
      * @param errorMessage Required error message to display
      */
-    export function required(errorMessage: string): (value: any) => string {
-        'use strict';
-        return (value: any): string => {
+    export function required(errorMessage: string): (value: any) => string|undefined {
+        return (value: any): string|undefined => {
             if (value == null || value === "") {
                 return errorMessage;
             }
@@ -21,9 +19,8 @@ export namespace Validators {
      * @param length The length of the string
      * @param formatError a callback which takes the length and formats an appropriate error message for validation failed
      */
-    export function length(length: number, formatError: (length: number) => string): (value: string) => string {
-        'use strict';
-        return (value: string): string => {
+    export function length(length: number, formatError: (length: number) => string): (value: string) => string|undefined {
+        return (value: string): string|undefined => {
             value = (value != null ? value : "");
             if (value.length !== length) {
                 return formatError(value.length);
@@ -36,9 +33,8 @@ export namespace Validators {
      * @param length The min length of the string
      * @param formatError a callback which takes the values Length and formats an appropriate error message for validation failed
      */
-    export function minLength(length: number, formatError: (length: number) => string): (value: string) => string {
-        'use strict';
-        return (value: string): string => {
+    export function minLength(length: number, formatError: (length: number) => string): (value: string) => string|undefined {
+        return (value: string): string|undefined => {
             value = (value != null ? value : "");
             if (value.length < length) {
                 return formatError(value.length);
@@ -51,9 +47,8 @@ export namespace Validators {
      * @param length The max length of the string
      * @param formatError a callback which takes the values length and formats an appropriate error message for validation failed
      */
-    export function maxLength(length: number, formatError: (length: number) => string): (value: string) => string {
-        'use strict';
-        return (value: string): string => {
+    export function maxLength(length: number, formatError: (length: number) => string): (value: string) => string|undefined {
+        return (value: string): string|undefined => {
             value = (value != null ? value : "");
             if (value.length > length) {
                 return formatError(value.length);
@@ -66,9 +61,8 @@ export namespace Validators {
      * @param regex The regular expression to use.
      * @param errorMessage Required error message to display
      */
-    export function regex(regex: RegExp, errorMessage: string): (value: string) => string {
-        'use strict';
-        return (value: string): string => {
+    export function regex(regex: RegExp, errorMessage: string): (value: string) => string|undefined {
+        return (value: string): string|undefined => {
             if (value) {
                 if (regex.exec((value)) == null) {
                     return errorMessage;
@@ -82,9 +76,8 @@ export namespace Validators {
      * @param bound The bound
      * @param formatError a callback which takes the length and formats an appropriate error message for validation failed
      */
-    export function minValue(bound: number, formatError: (length: number) => string): (value: string) => string {
-        'use strict';
-        return (value: string): string => {
+    export function minValue(bound: number, formatError: (length: number) => string): (value: string) => string|undefined {
+        return (value: string): string|undefined => {
             if (value) {
                 let intValue: number = Number(value);
                 if (!isNaN(intValue) && intValue < bound) {
@@ -99,9 +92,8 @@ export namespace Validators {
      * @param bound The bound
      * @param formatError a callback which takes the length and formats an appropriate error message for validation failed
      */
-    export function maxValue(bound: number, formatError: (length: number) => string): (value: string) => string {
-        'use strict';
-        return (value: string): string => {
+    export function maxValue(bound: number, formatError: (length: number) => string): (value: string) => string|undefined {
+        return (value: string): string|undefined => {
             if (value) {
                 let intValue: number = Number(value);
                 if (!isNaN(intValue) && intValue > bound) {
@@ -115,9 +107,8 @@ export namespace Validators {
      * Returns a validator that checks if a number is an integer
      * @param errorMessage Required error message to display
      */
-    export function isInteger(errorMessage: string): (value: string) => string {
-        'use strict';
-        return (value: string): string => {
+    export function isInteger(errorMessage: string): (value: string) => string|undefined {
+        return (value: string): string|undefined => {
             if (value) {
                 if (Number(value) % 1 !== 0) {
                     return errorMessage;
@@ -130,9 +121,8 @@ export namespace Validators {
      * Returns a validator that ensures the value is a number
      * @param errorMessage Required error message to display
      */
-    export function isNumber(errorMessage: string): (value: string) => string {
-        'use strict';
-        return (value: string): string => {
+    export function isNumber(errorMessage: string): (value: string) => string|undefined {
+        return (value: string): string|undefined => {
             if (value) {
                 if (isNaN(Number(value))) {
                     return errorMessage;
@@ -145,9 +135,8 @@ export namespace Validators {
      * Returns a validator that ensures the value is a valid moment
      * @param errorMessage Required error message to display
      */
-    export function validMoment(errorMessage: string): (value: moment.Moment) => string {
-        'use strict';
-        return (value: moment.Moment): string => {
+    export function validMoment(errorMessage: string): (value: moment.Moment) => string|undefined {
+        return (value: moment.Moment): string|undefined => {
             if (value) {
                 if (!value.isValid || !value.isValid()) {
                     return errorMessage;
@@ -156,5 +145,5 @@ export namespace Validators {
         };
     }
 
-    export type Validator = (value: any) => string;
+    export type Validator = (value: any) => string|undefined;
 }
