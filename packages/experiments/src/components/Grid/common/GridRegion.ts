@@ -121,7 +121,8 @@ export class GridRegion {
         let movedPastPrimary = false;
 
         // Bottom row
-        let cellToMove: GridCoordinate = this._secondaryCoordinate.rowIndex === this.rowRange.end ? this._secondaryCoordinate : this._primaryCoordinate;
+        let cellToMove: GridCoordinate = this._secondaryCoordinate.rowIndex === this.rowRange.end ?
+            this._secondaryCoordinate : this._primaryCoordinate;
         let foundPartialCell = false;
         do {
             foundPartialCell = false;

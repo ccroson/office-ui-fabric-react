@@ -39,7 +39,7 @@ export class StringCell implements ICellType {
     ): JSX.Element {
         return (
             <StringEditor
-                value={ pendingUpdate != null ? pendingUpdate : cellData }
+                value={ pendingUpdate !== null ? pendingUpdate : cellData }
                 onValueUpdated={ onValueUpdated }
                 onEditConfirmed={ onEditConfirmed }
             />
