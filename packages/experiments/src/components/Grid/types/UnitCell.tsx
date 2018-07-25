@@ -83,8 +83,9 @@ export class UnitCell implements ICellType {
     ): JSX.Element {
         return (
             <UnitEditor
-                value={ pendingUpdate != null ? pendingUpdate.toString() : (cellData ? this.getDisplayValue(cellData) : DEFAULT_CELL_VALUE) }
-                suggestedValue={ pendingUpdate != null ? this.getSuggestedValue(pendingUpdate.toString()) : DEFAULT_CELL_VALUE }
+                value={ pendingUpdate !== null ? pendingUpdate.toString() : (cellData ? this.getDisplayValue(cellData) :
+                    DEFAULT_CELL_VALUE) }
+                suggestedValue={ pendingUpdate !== null ? this.getSuggestedValue(pendingUpdate.toString()) : DEFAULT_CELL_VALUE }
                 onChange={ onValueUpdated }
             />
         );
@@ -95,6 +96,7 @@ export class UnitCell implements ICellType {
      * @param originalValue The cell data extracted through property or accessor
      * @param changedValue The raw input to parse to Object (string when editing, UnitCellData for fillhandles)
      */
+    // tslint:disable-next-line:no-any
     public parseRawInput(originalValue: string, changedValue: string | UnitCellData | any): string | number {
         if (changedValue) {
             // Verify if the update already has the value
@@ -102,7 +104,9 @@ export class UnitCell implements ICellType {
                 return changedValue.value;
             }
             const value = parseFloat(changedValue);
-            const updatedOption: UnitOption = _.find(this.acceptableOptions, (option: UnitOption) => { return _.startsWith(option.text, ParseUtils.extractAlphaString(changedValue)); });
+            const updatedOption: UnitOption = _.find(this.acceptableOptions, (option: UnitOption) => {
+                return _.startsWith(option.text, ParseUtils.extractAlphaString(changedValue));
+            });
             if (this.parser) {
                 return this.parser({ selectedUnitOption: updatedOption, value: value });
             } else {
@@ -120,7 +124,9 @@ export class UnitCell implements ICellType {
         if (currentValue) {
             const inputUnits: string = ParseUtils.extractAlphaString(currentValue);
             if (inputUnits && this.acceptableOptions) {
-                const suggestedUnit: UnitOption = _.first(_.filter(this.acceptableOptions, (format: UnitOption) => { return _.startsWith(format.text.toLocaleUpperCase(), inputUnits.toLocaleUpperCase()); }));
+                const suggestedUnit: UnitOption = _.first(_.filter(this.acceptableOptions, (format: UnitOption) => {
+                    return _.startsWith(format.text.toLocaleUpperCase(), inputUnits.toLocaleUpperCase());
+                }));
                 if (suggestedUnit) {
                     return _.replace(currentValue, inputUnits, suggestedUnit.text); // Remove the units we found and use only the value
                 }

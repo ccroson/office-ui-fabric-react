@@ -1,3 +1,4 @@
+/* tslint:disable:no-any */
 import * as React from 'react';
 
 import { ICellType, CellContext } from '../grid/Grid';
@@ -69,12 +70,15 @@ export class PredecessorCell implements ICellType {
             return;
         }
 
+        const onFetch = (searchString: string) => this.onFetchPredecessorSuggestions(cellData.taskId, searchString);
+        const onAdd = (itemId: string) => this.addRemovePrdecessor(cellData.taskId, itemId, true);
+        const onRemove = (itemId: string) => this.addRemovePrdecessor(cellData.taskId, itemId, false);
         return (
             <PredecessorEditor
                 predecessors={ cellData.predecessors }
-                onFetchPredecessorSuggestions={ (searchString: string) => this.onFetchPredecessorSuggestions(cellData.taskId, searchString) }
-                onAddPredecessor={ (itemId: string) => this.addRemovePrdecessor(cellData.taskId, itemId, true) }
-                onRemovePredecessor={ (itemId: string) => this.addRemovePrdecessor(cellData.taskId, itemId, false) }
+                onFetchPredecessorSuggestions={ onFetch }
+                onAddPredecessor={ onAdd }
+                onRemovePredecessor={ onRemove }
                 suggestionsHeaderText={ this.suggestionsHeaderText }
                 noResultsFoundText={ this.noResultsFoundText }
             />
