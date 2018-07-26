@@ -190,7 +190,7 @@ export interface IAbstractGridState {
 export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbstractGridState> extends BaseComponent<
   P,
   S
-> {
+  > {
   /** The BaseGrid ref */
   public readonly baseGrid: BaseGrid;
 
@@ -321,85 +321,85 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
       if (this.sortedRows.length === 0) {
         baseGrid = (
           <BaseGrid
-            gridAriaRoleAndAriaAttributes={this.gridRoleAndAriaAttributes}
-            headerRowHeight={headerRowHeight}
-            headerClassName={headerClassName}
-            gridAriaLabel={ariaLabel}
-            gridClassName={this.getGridClassName()}
-            numColumns={1}
-            dirtyCanary={this.baseGridDirtyCanary}
-            columnHeaderCellClassName={this.getColumnHeaderCellClassName}
-            columnWidths={[columnWidths.reduce((a: number, b: number) => a + b, 0)]}
-            numRows={1}
-            onRenderCell={() => placeholderText}
-            onRenderRowHeaderCell={this.showRowHeader && this.renderRowHeaderCell}
-            rowHeaderWidth={this.rowHeaderWidth}
+            gridAriaRoleAndAriaAttributes={ this.gridRoleAndAriaAttributes }
+            headerRowHeight={ headerRowHeight }
+            headerClassName={ headerClassName }
+            gridAriaLabel={ ariaLabel }
+            gridClassName={ this.getGridClassName() }
+            numColumns={ 1 }
+            dirtyCanary={ this.baseGridDirtyCanary }
+            columnHeaderCellClassName={ this.getColumnHeaderCellClassName }
+            columnWidths={ [columnWidths.reduce((a: number, b: number) => a + b, 0)] }
+            numRows={ 1 }
+            onRenderCell={ () => placeholderText }
+            onRenderRowHeaderCell={ this.showRowHeader && this.renderRowHeaderCell }
+            rowHeaderWidth={ this.rowHeaderWidth }
             cellClassName="grid-empty"
-            selectionState={selectionState}
+            selectionState={ selectionState }
           />
         );
       } else {
         baseGrid = (
           <div>
             <BaseGrid
-              gridAriaRoleAndAriaAttributes={this.gridRoleAndAriaAttributes}
-              ref={this.resolveRef(this, 'baseGrid')}
+              gridAriaRoleAndAriaAttributes={ this.gridRoleAndAriaAttributes }
+              ref={ this.resolveRef(this, 'baseGrid') }
               // Rendering information
-              cellAriaAndDataAttributes={this.getCellAriaAndDataAttributes}
-              cellClassName={this.getCellClassName}
-              columnHeaderCellClassName={this.getColumnHeaderCellClassName}
-              columnWidths={columnWidths}
-              dirtyCanary={this.baseGridDirtyCanary}
-              getColumnKey={this.getColumnKey}
-              getRowKey={this.getRowKey}
-              getRowSpan={this.getRowSpan}
-              gridAriaLabel={ariaLabel}
-              gridClassName={this.getGridClassName()}
-              headerClassName={headerClassName}
-              numColumns={this.columnDefinitions.length}
-              numRows={this.sortedRows.length}
-              rowAriaAndDataAttributes={this.getRowAriaAndDataAttributes}
-              rowClassName={this.getRowClassName}
-              headerRowHeight={headerRowHeight}
-              rowHeight={rowHeight}
-              rowHeaderWidth={this.rowHeaderWidth}
-              selectionState={selectionState}
-              theme={this.gridTheme}
+              cellAriaAndDataAttributes={ this.getCellAriaAndDataAttributes }
+              cellClassName={ this.getCellClassName }
+              columnHeaderCellClassName={ this.getColumnHeaderCellClassName }
+              columnWidths={ columnWidths }
+              dirtyCanary={ this.baseGridDirtyCanary }
+              getColumnKey={ this.getColumnKey }
+              getRowKey={ this.getRowKey }
+              getRowSpan={ this.getRowSpan }
+              gridAriaLabel={ ariaLabel }
+              gridClassName={ this.getGridClassName() }
+              headerClassName={ headerClassName }
+              numColumns={ this.columnDefinitions.length }
+              numRows={ this.sortedRows.length }
+              rowAriaAndDataAttributes={ this.getRowAriaAndDataAttributes }
+              rowClassName={ this.getRowClassName }
+              headerRowHeight={ headerRowHeight }
+              rowHeight={ rowHeight }
+              rowHeaderWidth={ this.rowHeaderWidth }
+              selectionState={ selectionState }
+              theme={ this.gridTheme }
               // Feature flags
-              isCellEditable={this.isCellEditable}
-              isColumnDraggable={this.getIsColumnDraggable}
-              isColumnHeaderClickable={this.getIsColumnHeaderClickable}
-              isColumnResizable={this.getIsColumnResizable}
-              isColumnSelectable={this.getIsColumnSelectable}
-              isFillEnabled={this.shouldShowFillHandle()}
-              isHeaderSticky={isHeaderSticky}
-              selectionMode={this.selectionMode}
-              virtualized={virtualizationMode !== VirtualizationMode.None}
-              getIsColumnHierarchyCell={this.getIsColumnHierarchyCell}
+              isCellEditable={ this.isCellEditable }
+              isColumnDraggable={ this.getIsColumnDraggable }
+              isColumnHeaderClickable={ this.getIsColumnHeaderClickable }
+              isColumnResizable={ this.getIsColumnResizable }
+              isColumnSelectable={ this.getIsColumnSelectable }
+              isFillEnabled={ this.shouldShowFillHandle() }
+              isHeaderSticky={ isHeaderSticky }
+              selectionMode={ this.selectionMode }
+              virtualized={ virtualizationMode !== VirtualizationMode.None }
+              getIsColumnHierarchyCell={ this.getIsColumnHierarchyCell }
               // Event handlers
-              onCellClick={this.onCellClick}
-              onCellRightClick={this.onCellRightClick}
-              onCellMouseDown={this.onCellMouseDown}
-              onCellMouseEnter={this.onCellMouseEnter}
-              onCellMouseUp={this.onCellMouseUp}
-              onColumnReorder={this.onColumnReorder}
-              onColumnResize={this.onColumnResize}
-              onFillMouseDown={this.onFillMouseDown}
-              onFillMouseUp={this.onFillMouseUp}
-              onRowHeaderRightClick={this.onRowHeaderRightClick}
-              onRowHeaderMouseDown={this.onRowHeaderMouseDown}
-              onRowHeaderMouseEnter={this.onRowHeaderMouseEnter}
-              onRowHeaderMouseUp={this.onRowHeaderMouseUp}
-              onKeyDown={this.onKeyDown}
-              onKeyUp={this.onKeyUp}
-              onKeyPress={this.onKeyPress}
-              onRenderCell={this.renderCell}
-              onRenderColumnHeaderCell={!hideColumnHeader && this.renderColumnHeaderCell}
-              onRenderRowHeaderCell={this.showRowHeader && this.renderRowHeaderCell}
+              onCellClick={ this.onCellClick }
+              onCellRightClick={ this.onCellRightClick }
+              onCellMouseDown={ this.onCellMouseDown }
+              onCellMouseEnter={ this.onCellMouseEnter }
+              onCellMouseUp={ this.onCellMouseUp }
+              onColumnReorder={ this.onColumnReorder }
+              onColumnResize={ this.onColumnResize }
+              onFillMouseDown={ this.onFillMouseDown }
+              onFillMouseUp={ this.onFillMouseUp }
+              onRowHeaderRightClick={ this.onRowHeaderRightClick }
+              onRowHeaderMouseDown={ this.onRowHeaderMouseDown }
+              onRowHeaderMouseEnter={ this.onRowHeaderMouseEnter }
+              onRowHeaderMouseUp={ this.onRowHeaderMouseUp }
+              onKeyDown={ this.onKeyDown }
+              onKeyUp={ this.onKeyUp }
+              onKeyPress={ this.onKeyPress }
+              onRenderCell={ this.renderCell }
+              onRenderColumnHeaderCell={ !hideColumnHeader && this.renderColumnHeaderCell }
+              onRenderRowHeaderCell={ this.showRowHeader && this.renderRowHeaderCell }
             />
-            {this.renderHeaderContextMenu(this.columnDefinitions, headerContextMenuIndex)}
-            {this.renderCellContextMenu(cellContextMenuCoordinate)}
-            {this.renderValidationError()}
+            { this.renderHeaderContextMenu(this.columnDefinitions, headerContextMenuIndex) }
+            { this.renderCellContextMenu(cellContextMenuCoordinate) }
+            { this.renderValidationError() }
           </div>
         );
       }
@@ -407,13 +407,13 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
 
     return (
       <div
-        className={css('grid-width-container', {
+        className={ css('grid-width-container', {
           'virtualized-self': virtualizationMode === VirtualizationMode.Self,
           'virtualized-parent': virtualizationMode === VirtualizationMode.ScrollableParent
-        })}
-        ref={this.resolveRef(this, 'gridWidthContainer')}
+        }) }
+        ref={ this.resolveRef(this, 'gridWidthContainer') }
       >
-        {baseGrid}
+        { baseGrid }
       </div>
     );
   }
@@ -491,19 +491,19 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     return (
       <div className="grid-column-header-cell-content-parts">
         <div>
-          {arrowClassMapping && <i className={css('ms-Icon', arrowClassMapping)} />}
-          {column.header.label}
+          { arrowClassMapping && <i className={ css('ms-Icon', arrowClassMapping) } /> }
+          { column.header.label }
         </div>
         {/* Render the context menu icon if enabled */
-        this.getIsColumnHeaderClickable(columnIndex) && (
-          <div
-            className="grid-column-header-context-menu-indicator"
-            onClick={(event: React.MouseEvent<HTMLElement>) => this.onColumnHeaderMenuClick(columnIndex, event)}
-            role="menuitem"
-          >
-            <i className={`ms-Icon ms-Icon--${Icons.ChevronDownMed}`} />
-          </div>
-        )}
+          this.getIsColumnHeaderClickable(columnIndex) && (
+            <div
+              className="grid-column-header-context-menu-indicator"
+              onClick={ (event: React.MouseEvent<HTMLElement>) => this.onColumnHeaderMenuClick(columnIndex, event) }
+              role="menuitem"
+            >
+              <i className={ `ms-Icon ms-Icon--${Icons.ChevronDownMed}` } />
+            </div>
+          ) }
       </div>
     );
   }
@@ -550,10 +550,10 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
       const contextMenuItems = this.getHeaderContextMenuItems(columnDefinition);
       return (
         <ContextualMenu
-          items={contextMenuItems}
-          onDismiss={() => this.closeHeaderContextMenu()}
-          target={this.headerContextMenuTarget}
-          directionalHint={!getRTL() ? DirectionalHint.bottomRightEdge : DirectionalHint.bottomLeftEdge}
+          items={ contextMenuItems }
+          onDismiss={ () => this.closeHeaderContextMenu() }
+          target={ this.headerContextMenuTarget }
+          directionalHint={ !getRTL() ? DirectionalHint.bottomRightEdge : DirectionalHint.bottomLeftEdge }
         />
       );
     }
@@ -567,10 +567,10 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
       const contextMenuItems = this.getCellContextMenuItemsFromCoordinate(cellContextMenuCoordinate);
       return (
         <ContextualMenu
-          className={'grid-context-menu'}
-          items={contextMenuItems}
-          onDismiss={() => this.closeCellContextMenu()}
-          target={this.cellContextMenuTarget}
+          className={ 'grid-context-menu' }
+          items={ contextMenuItems }
+          onDismiss={ () => this.closeCellContextMenu() }
+          target={ this.cellContextMenuTarget }
         />
       );
     }
@@ -1596,7 +1596,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
             componentName,
             'columnDefinition',
             'Cell definition provides both accessor delegate and property name. Only one can be used at a time. Column definition: ' +
-              JSON.stringify(columnDefinition)
+            JSON.stringify(columnDefinition)
           );
         }
 
@@ -1605,7 +1605,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
             componentName,
             'columnDefinition',
             'Cell definition must provide either an accessor delegate or a property name. Column Definition: ' +
-              JSON.stringify(columnDefinition)
+            JSON.stringify(columnDefinition)
           );
         }
 
@@ -1615,7 +1615,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
             componentName,
             'columnDefinition',
             'Column definition marked as sortable, but there are no props for onColumnSort and onColumnSortClear : ' +
-              JSON.stringify(columnDefinition)
+            JSON.stringify(columnDefinition)
           );
         }
 
@@ -1955,7 +1955,7 @@ export interface ICellType {
    * @param originalValue The cell data extracted through property or accessor
    * @param changedValue The raw input to parse to Object
    */
-  parseRawInput?: (originalValue: Object, changedValue: Object);: any => Object;
+  parseRawInput?: (originalValue: Object, changedValue: Object) => Object;
 
   /**
    * Validate a piece of data. Should provide some default validations for the type
