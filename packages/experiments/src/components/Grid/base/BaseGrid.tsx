@@ -32,17 +32,15 @@ import {
 } from '../common/Common';
 
 // Utilities
-import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
-import { css } from '@uifabric/utilities/lib-commonjs/css';
+
+import { autobind, css, getNativeProps, getRTL } from '../../../../lib-commonjs/Utilities';
 import { CSSUtils } from '../utilities/CSSUtils';
 import { FixedRowPositionManager } from '../virtualization/FixedRowPositionManager';
-import { getRTL } from '@uifabric/utilities/lib-commonjs/rtl';
 import { IRowPositionManager, VisibilityInformation, RowBoundaries } from '../virtualization/IRowPositionManager';
 import { PropUtils } from '../utilities/PropUtils';
 import { RangeRenderers, RangeRenderer } from '../renderers/RangeRenderers';
 import { RtlUtils } from '../utilities/RtlUtils';
 import { SelectionState } from '../managers/StateManager';
-import { getNativeProps } from '@uifabric/utilities/lib-commonjs/properties';
 import { IGridAriaAttributes } from '../common/IGridAriaAttributes';
 
 export interface IBaseGridProps {
@@ -566,7 +564,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
       visibleEnd: initialEndRow,
       isHeaderFixed: false,
       resizingColumnIndex: GridConstants.NOT_SET_INDEX,
-      resizingColumnWidth: null
+      resizingColumnWidth: 0
     };
   }
 
@@ -578,7 +576,7 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
    * Get the ref of the cell at the provided coordinate
    * @param cellCoordinate The coordinate
    */
-  public getCellRef(cellCoordinate: GridCoordinate): HTMLDivElement {
+  public getCellRef(cellCoordinate: GridCoordinate): HTMLDivElement | undefined {
     const row = this.refs[`${cellCoordinate.rowIndex}`] as Row;
     if (row) {
       const cell = row.getCellRef(cellCoordinate.columnIndex);
@@ -658,7 +656,8 @@ export class BaseGrid extends BaseComponent<IBaseGridProps, IBaseGridState> {
           <div
             className={ css('grid', { 'scrolling': this.isScrolling }) }
             // tslint:disable-next-line:jsx-ban-props
-            style={ gridStyle }>
+            style={ gridStyle }
+          >
             { this._renderBody() }
           </div>
         </div>

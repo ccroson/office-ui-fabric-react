@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BaseComponent } from '../utilities/BaseComponent';
-import { css } from '@uifabric/utilities/lib-commonjs/css';
-import { getRTL } from '@uifabric/utilities/lib-commonjs/rtl';
+
+import { css, getRTL } from '../../../../lib-commonjs/Utilities';
 import { GridCoordinate, GridTheme } from '../common/Common';
 
 // tslint:disable:jsx-no-lambda
@@ -105,6 +105,10 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
       cellContentStyle.color = theme.selectedHeaderTextColor;
     }
 
+    let onDragLeaveCall;
+    onDragLeave ? onDragLeaveCall = (event: React.DragEvent<HTMLElement>) => onDragLeave(event) :
+      onDragLeaveCall = (event: React.DragEvent<HTMLElement>) => null;
+
     return (
       <div
         id={ id }
@@ -118,7 +122,7 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
         onDragEnd={ (event: React.DragEvent<HTMLElement>) => onDragFinish(event) }
         onDragEnter={ (event: React.DragEvent<HTMLElement>) => onDragEnter(event) }
         onDragOver={ (event: React.DragEvent<HTMLElement>) => onDragOver(event) }
-        onDragLeave={ (event: React.DragEvent<HTMLElement>) => onDragLeave(event) }
+        onDragLeave={ onDragLeaveCall }
         onDrop={ (event: React.DragEvent<HTMLElement>) => onDrop(event) }
         className={
           css(

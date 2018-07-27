@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { BaseComponent } from '../utilities/BaseComponent';
-import { css } from '@uifabric/utilities/lib-commonjs/css';
+import { css } from '../../../../lib-commonjs/Utilities';
 
 export interface IHeaderContainerProps extends React.Props<HeaderContainer> {
-    /** The class name for the grid header */
-    className: string;
+  /** The class name for the grid header */
+  className: string;
 
-    /** The height of the container */
-    height: number;
+  /** The height of the container */
+  height: number;
 
-    /** Is the header container sticky */
-    isSticky: boolean;
+  /** Is the header container sticky */
+  isSticky: boolean;
 
-    /** Role of the header */
-    role?: string;
+  /** Role of the header */
+  role?: string;
 }
 
 /**
@@ -23,30 +23,32 @@ export interface IHeaderContainerProps extends React.Props<HeaderContainer> {
  */
 export class HeaderContainer extends BaseComponent<IHeaderContainerProps, {}> {
 
-    public name(): string {
-        return 'HeaderContainer';
-    }
+  public name(): string {
+    return 'HeaderContainer';
+  }
 
-    protected renderComponent(): JSX.Element {
-        const {
-            children,
-            className,
-            height,
-            isSticky,
-            role
-        } = this.props;
+  protected renderComponent(): JSX.Element {
+    const {
+      children,
+      className,
+      height,
+      isSticky,
+      role
+    } = this.props;
 
-        return (
-            <div
-                className={ css('grid-header-container', { 'grid-header-container--sticky': isSticky }) }
-                style={ { height: height } }
-                role={ role }
-            >
-                <div
-                    className={ css('grid-header', className) }>
-                    { children }
-                </div>
-            </div>
-        );
-    }
+    return (
+      <div
+        className={ css('grid-header-container', { 'grid-header-container--sticky': isSticky }) }
+        // tslint:disable-next-line:jsx-ban-props
+        style={ { height: height } }
+        role={ role }
+      >
+        <div
+          className={ css('grid-header', className) }
+        >
+          { children }
+        </div>
+      </div>
+    );
+  }
 }
