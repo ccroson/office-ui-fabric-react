@@ -6,7 +6,7 @@ export namespace PropUtils {
    * Utility function to process value or accessor types
    * @returns The value
    */
-  export function getValueFromAccessor<T>(accessor: T | ((...args: any[]) => T), ...args: any[]): T {
+  export function getValueFromAccessor<T>(accessor: undefined | T | ((...args: any[]) => T), ...args: any[]): T | undefined {
     if (_.isFunction(accessor)) {
       return accessor(...args);
     }
@@ -23,7 +23,7 @@ export namespace PropUtils {
     accessor: T | ((...args: any[]) => T),
     ...args: any[]
   ): T {
-    const value: T = getValueFromAccessor<T>(accessor, args);
+    const value = getValueFromAccessor<T>(accessor, args);
 
     if (value === null || value === undefined) {
       return defaultValue;

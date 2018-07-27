@@ -11,171 +11,171 @@ export class NoOpStateManager extends StateManager {
 
     constructor() {
         super({
-            getMappedCell: null,
-            getMaxColumnIndex: null,
-            getMaxRowIndex: null,
-            getMaxSelectableColumnIndex: null,
-            getMinSelectableColumnIndex: null,
-            getRowSpan: null,
-            isCellEditable: null,
-            isColumnSelectable: null,
-            isColumnHeaderHidden: null
+            getMappedCell: null!,
+            getMaxColumnIndex: null!,
+            getMaxRowIndex: null!,
+            getMaxSelectableColumnIndex: null!,
+            getMinSelectableColumnIndex: null!,
+            getRowSpan: null!,
+            isCellEditable: null!,
+            isColumnSelectable: null!,
+            isColumnHeaderHidden: null!
         });
     }
 
-    public handleFocus(prevState: SelectionState): SelectionState {
+    public handleFocus(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleCancelKey(prevState: SelectionState): SelectionState {
+    public handleCancelKey(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleEditKey(prevState: SelectionState): SelectionState {
+    public handleEditKey(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleKeyPress(prevState: SelectionState): SelectionState {
+    public handleKeyPress(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleEnter(prevState: SelectionState): SelectionState {
+    public handleEnter(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleShiftEnter(prevState: SelectionState): SelectionState {
+    public handleShiftEnter(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleTab(prevState: SelectionState): SelectionState {
+    public handleTab(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleShiftTab(prevState: SelectionState): SelectionState {
+    public handleShiftTab(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleHome(prevState: SelectionState): SelectionState {
+    public handleHome(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlHome(prevState: SelectionState): SelectionState {
+    public handleControlHome(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleShiftHome(prevState: SelectionState): SelectionState {
+    public handleShiftHome(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlShiftHome(prevState: SelectionState): SelectionState {
+    public handleControlShiftHome(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleEnd(prevState: SelectionState): SelectionState {
+    public handleEnd(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlEnd(prevState: SelectionState): SelectionState {
+    public handleControlEnd(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleShiftEnd(prevState: SelectionState): SelectionState {
+    public handleShiftEnd(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlShiftEnd(prevState: SelectionState): SelectionState {
+    public handleControlShiftEnd(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleLeft(prevState: SelectionState): SelectionState {
+    public handleLeft(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleShiftLeft(prevState: SelectionState): SelectionState {
+    public handleShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleAltShiftLeft(prevState: SelectionState): SelectionState {
+    public handleAltShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlLeft(prevState: SelectionState): SelectionState {
+    public handleControlLeft(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlShiftLeft(prevState: SelectionState): SelectionState {
+    public handleControlShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleRight(prevState: SelectionState): SelectionState {
+    public handleRight(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleShiftRight(prevState: SelectionState): SelectionState {
+    public handleShiftRight(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleAltShiftRight(prevState: SelectionState): SelectionState {
+    public handleAltShiftRight(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlRight(prevState: SelectionState): SelectionState {
+    public handleControlRight(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlShiftRight(prevState: SelectionState): SelectionState {
+    public handleControlShiftRight(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleDown(prevState: SelectionState): SelectionState {
+    public handleDown(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleShiftDown(prevState: SelectionState): SelectionState {
+    public handleShiftDown(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlDown(prevState: SelectionState): SelectionState {
+    public handleControlDown(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlShiftDown(prevState: SelectionState): SelectionState {
+    public handleControlShiftDown(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleUp(prevState: SelectionState): SelectionState {
+    public handleUp(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlUp(prevState: SelectionState): SelectionState {
+    public handleControlUp(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleControlShiftUp(prevState: SelectionState): SelectionState {
+    public handleControlShiftUp(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleShiftUp(prevState: SelectionState): SelectionState {
+    public handleShiftUp(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
-    public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         return;
     }
 
-    public handleShiftCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleShiftCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         return;
     }
 
-    public handleControlCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleControlCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         return;
     }
 
-    public handleCellMouseEnter(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleCellMouseEnter(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         return;
     }
 
-    public handleCellRightClick(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleCellRightClick(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         return;
     }
 }

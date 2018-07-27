@@ -2,19 +2,20 @@ import * as React from 'react';
 import * as _ from 'lodash';
 
 import { BaseComponent } from '../utilities/BaseComponent';
-import { css } from '@uifabric/utilities/lib-commonjs/css';
-import { getNativeProps } from '@uifabric/utilities/lib-commonjs/properties';
+import { css } from '../../../../../utilities/lib-commonjs/css';
+import { getNativeProps } from '../../../../../utilities/lib-commonjs/properties';
 import { GridCoordinate, CellRegionPosition, GridTheme } from '../common/Common';
 import { RtlUtils } from '../utilities/RtlUtils';
 import { PropUtils } from '../utilities/PropUtils';
 import { GridConstants } from '../constants/GridConstants';
+import {ICssInput} from "../../../../../utilities/lib-commonjs";
 
 export interface ICellProps extends React.Props<Cell> {
     /** The aria and data attributes for this cell */
-    ariaAndDataAttributes: _.Dictionary<string>;
+    ariaAndDataAttributes?: _.Dictionary<string>;
 
     /** The class name for this cell */
-    className: string;
+    className?: string;
 
     /** The coordinate where this cell is located */
     coordinate: GridCoordinate;
@@ -23,7 +24,7 @@ export interface ICellProps extends React.Props<Cell> {
     editing: boolean;
 
     /** Position of the cell within the fill region. Null if there is no fill region or the cell is not within the region */
-    fillPosition: CellRegionPosition;
+    fillPosition: CellRegionPosition | null;
 
     /** The height of the cell in pixels */
     height: number;
@@ -38,22 +39,22 @@ export interface ICellProps extends React.Props<Cell> {
     isPrimary: boolean;
 
     /** Cell clicked */
-    onClick: (cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>) => void;
+    onClick?: (cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>) => void;
 
     /** Cell right clicked */
-    onRightClick: (cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>) => void;
+    onRightClick?: (cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>) => void;
 
     /** Cell double clicked */
-    onDoubleClick: (cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>) => void;
+    onDoubleClick?: (cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>) => void;
 
     /** Fill handle activated */
-    onFillMouseDown: (event: React.MouseEvent<HTMLElement>) => void;
+    onFillMouseDown?: (event: React.MouseEvent<HTMLElement>) => void;
 
     /** Cell mouse down */
-    onMouseDown: (cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>) => void;
+    onMouseDown?: (cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>) => void;
 
     /** Cell mouse enter */
-    onMouseEnter: (cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>) => void;
+    onMouseEnter?: (cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>) => void;
 
     /** Delegate to get if the cell is editable */
     isCellEditable?: (cellCoordinate: GridCoordinate) => boolean;
@@ -65,7 +66,7 @@ export interface ICellProps extends React.Props<Cell> {
     rowSpan: number;
 
     /** The position of the cell within the selection. Null if there is no selection or the cell is not within one */
-    selectionPosition: CellRegionPosition;
+    selectionPosition: CellRegionPosition | null;
 
     /** Is the cell selectable? */
     selectable: boolean;
@@ -86,7 +87,7 @@ export interface ICellProps extends React.Props<Cell> {
     dirtyCanary: any;
 
     /** The type of the grid cell. */
-    role: string;
+    role?: string;
 }
 
 /**
@@ -118,7 +119,7 @@ export class Cell extends BaseComponent<ICellProps, {}> {
             !_.isEqual(nextProps.selectionPosition, this.props.selectionPosition);
     }
 
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode {
         const {
             children,
             coordinate,
@@ -153,10 +154,10 @@ export class Cell extends BaseComponent<ICellProps, {}> {
 
         const style: React.CSSProperties = this.getCellStyle(rowSpan, height, width, theme, borderClassNameMapping);
 
-        let isCellEditableValue = PropUtils.getValueFromAccessor(isCellEditable, coordinate);
-        isCellEditableValue = !(isCellEditableValue === false); // Make isCellEditableValue true if it's undefined
+        let isCellEditableValue = PropUtils.getValueFromAccessor<boolean|undefined>(isCellEditable, coordinate);
+        isCellEditableValue = isCellEditableValue !== false; // Make isCellEditableValue true if it's undefined
 
-        const cellClassName: string = css('grid-cell', borderClassNameMapping, className);
+        const cellClassName: string = css('grid-cell', borderClassNameMapping as ICssInput, className);
 
         if (!ariaAndDataAttributes) {
             ariaAndDataAttributes = {};
@@ -251,7 +252,7 @@ export class Cell extends BaseComponent<ICellProps, {}> {
      * @param isPrimary Is the cell the primary cell?
      * @param selectable Is the cell selectable?
      */
-    private getBorderClassName(fillPosition: CellRegionPosition, selectionPosition: CellRegionPosition, editing: boolean, isPrimary: boolean, selectable: boolean): CellClassMapping {
+    private getBorderClassName(fillPosition: CellRegionPosition | null, selectionPosition: CellRegionPosition | null, editing: boolean, isPrimary: boolean, selectable: boolean): CellClassMapping {
         if (editing) {
             return {
                 editing: true

@@ -7,55 +7,55 @@ import { SelectionState } from '../managers/StateManager';
  */
 export namespace GridDefaultProps {
     /** The default height for the header row */
-    export const HeaderRowHeight = 40;
+    export const HeaderRowHeight: number = 40;
 
     /** The default height for the data rows */
-    export const RowHeight = 50;
+    export const RowHeight: number = 50;
 
     /** The default width for the row header */
-    export const RowHeaderWidth = 50;
+    export const RowHeaderWidth: number = 50;
 
     /** Default column header clickable */
-    export const ColumnHeaderClickable = false;
+    export const ColumnHeaderClickable: boolean = false;
 
     /** Default column drag and drop behavior */
-    export const DragEnabled = false;
+    export const DragEnabled: boolean = false;
 
     /** Default column resize behavior */
-    export const ResizeEnabled = false;
+    export const ResizeEnabled: boolean = false;
 
     /** Default cell fill behavior */
-    export const FillEnabled = false;
+    export const FillEnabled: boolean = false;
 
     /** Default column header visibility */
-    export const HideColumnHeader = false;
+    export const HideColumnHeader: boolean = false;
 
     /** Default theme to style the grid */
     export const Theme: GridTheme = GridThemes.NoBorder;
 
     /** Default sticky header behavior */
-    export const StickyHeaderEnabled = false;
+    export const StickyHeaderEnabled: boolean = false;
 
     /** Default selection behavior */
-    export const SelectionEnabled = false;
+    export const SelectionEnabled: boolean = false;
 
     /** Default selection mode */
     export const SelectionMode: SelectionModeEnum = SelectionModeEnum.None;
 
     /** Default caching choice */
-    export const ShouldCacheOnScroll = true;
+    export const ShouldCacheOnScroll: boolean = true;
 
     /** Default grid lines style */
-    export const ShowGridLines = false;
+    export const ShowGridLines: boolean = false;
 
     /** Default row header visibility */
-    export const ShowRowHeader = false;
+    export const ShowRowHeader: boolean = false;
 
     /** Default show footer row */
-    export const ShowFooterRow = false;
+    export const ShowFooterRow: boolean = false;
 
     /** Default virtualization behavior */
-    export const Virtualized = false;
+    export const Virtualized: boolean = false;
 }
 
 export namespace GridConstants {

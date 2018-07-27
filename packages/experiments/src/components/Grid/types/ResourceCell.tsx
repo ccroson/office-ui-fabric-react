@@ -44,7 +44,7 @@ export class ResourceCell implements ICellType {
      * @param {CellContext} context The cell context which provides additional properties, usable for rendering
      * @returns {JSX.Element} the cell JSX.Element
      */
-    public render(cellData: ResourceEditorData, context: CellContext): JSX.Element {
+    public render(cellData: ResourceEditorData, context: CellContext): React.ReactNode {
         if (context && context.inFooterRow) {
             return;
         }
@@ -74,7 +74,11 @@ export class ResourceCell implements ICellType {
 
         return (
             <div className="resource-container" style={{ pointerEvents: 'none' }}>
-                <ResourcePile resources={cellData.assignedResources} total={cellData.total} width={context.columnWidth} />
+                <ResourcePile
+                    resources={cellData.assignedResources}
+                    total={cellData.total}
+                    width={context.columnWidth}
+                />
             </div>
         );
     }
@@ -90,7 +94,7 @@ export class ResourceCell implements ICellType {
         cellData: ResourceEditorData,
         transitionToEditMode: (action?: GridAction) => void,
         context: CellContext
-    ): JSX.Element {
+    ): React.ReactNode {
         if (context.inFooterRow) {
             return;
         }
@@ -128,7 +132,7 @@ export class ResourceCell implements ICellType {
         onEditCancelled: () => void,
         onEditConfirmed: (finalValue: any) => void,
         context: CellContext
-    ): JSX.Element {
+    ): React.ReactNode {
         if (context.inFooterRow) {
             return;
         }
@@ -167,7 +171,7 @@ export class ResourceCell implements ICellType {
      */
     public parseRawInput(originalValue: ResourceEditorData, changedValue: any): ResourceEditorData {
         // No need to implement this for ResourceCell for user input because ResourceCell doesn't accept text input.
-        return null;
+        return null!;
     }
 }
 

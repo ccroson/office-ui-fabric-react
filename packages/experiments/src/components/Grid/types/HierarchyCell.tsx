@@ -2,9 +2,9 @@ import './HierarchyCell.scss';
 import * as React from 'react';
 import * as _ from 'lodash';
 
-import { css, IDictionary } from '@uifabric/utilities/lib-commonjs/css';
+import { css, IDictionary } from '../../../../../utilities/lib-commonjs/css';
 import { ICellType, CellContext } from '../grid/Grid';
-import { getRTL } from '@uifabric/utilities/lib-commonjs/rtl';
+import { getRTL } from '../../../../../utilities/lib-commonjs/rtl';
 import { GridAction } from '../actions/GridActions';
 
 /**
@@ -59,7 +59,7 @@ export class HierarchyCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      * @param context The cell context which provides additional properties, usable for rendering
      */
-    public render(cellData: HierarchyCellData, context: CellContext): JSX.Element | string {
+    public render(cellData: HierarchyCellData, context: CellContext): React.ReactNode {
         return this.renderWrapper(
             cellData,
             this.underlyingCellType.render(cellData && cellData.cellData, context),
@@ -74,13 +74,14 @@ export class HierarchyCell implements ICellType {
         if (this.underlyingCellType.sortComparator) {
             return this.underlyingCellType.sortComparator(left.cellData, right.cellData);
         }
+        return NaN;
     }
 
     /**
      * Calls the underlying default validator
      * @param value The value to validate
      */
-    public validate(value: HierarchyCellData): string {
+    public validate(value: HierarchyCellData): string | undefined {
         if (this.underlyingCellType.validate) {
             return this.underlyingCellType.validate(value.cellData);
         }
@@ -104,7 +105,7 @@ export class HierarchyCell implements ICellType {
         onEditCancelled: () => void,
         onEditConfirmed: (finalValue: Object) => void,
         context: CellContext
-    ): JSX.Element {
+    ): React.ReactNode {
         if (this.underlyingCellType.renderEditor) {
             return this.renderWrapper(
                 cellData,
@@ -138,7 +139,7 @@ export class HierarchyCell implements ICellType {
         cellData: HierarchyCellData,
         transitionToEditMode: (action?: GridAction) => void,
         context: CellContext
-    ): JSX.Element | string {
+    ): React.ReactNode {
         if (this.underlyingCellType.renderSelected) {
             return this.renderWrapper(
                 cellData,
@@ -155,7 +156,7 @@ export class HierarchyCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      */
     public getAriaAndDataAttributes(cellData: HierarchyCellData): _.Dictionary<string> {
-        const hierarchyCellAria = {
+        const hierarchyCellAria:any = {
             'aria-expanded': cellData && cellData.expanded,
             'aria-level': cellData && cellData.indentationLevel + 1  // Indentation level is 0 based, but the intial level is 1
         };
@@ -168,7 +169,11 @@ export class HierarchyCell implements ICellType {
             hierarchyCellAria['aria-posinset'] = cellData.siblingPosition;
         }
 
-        return _.merge(this.underlyingCellType.getAriaAndDataAttributes(cellData && cellData.cellData), hierarchyCellAria);
+        const attrs = (
+            this.underlyingCellType.getAriaAndDataAttributes
+            && this.underlyingCellType.getAriaAndDataAttributes(cellData && cellData.cellData)
+        );
+        return _.merge(attrs, hierarchyCellAria);
     }
 
     /**
@@ -194,7 +199,7 @@ export class HierarchyCell implements ICellType {
      * @param children The element to wrap
      * @param context The cell context which provides additional properties, usable for rendering
      */
-    private renderWrapper(cellData: HierarchyCellData, children: JSX.Element | string, context: CellContext): JSX.Element {
+    private renderWrapper(cellData: HierarchyCellData, children: React.ReactNode, context: CellContext): React.ReactNode {
         return (
             <div className="hierarchy-cell" style={ getRTL() ? { paddingRight: cellData && cellData.indentationLevel + 'em' } : { paddingLeft: cellData && cellData.indentationLevel + 'em' } }>
                 { this.renderTreeChevron(cellData, context) }
@@ -210,7 +215,7 @@ export class HierarchyCell implements ICellType {
      * @param node The hierarchy data
      * @param context The cell context which provides additional properties, usable for rendering
      */
-    private renderTreeChevron(node: HierarchyCellData, context: CellContext): JSX.Element {
+    private renderTreeChevron(node: HierarchyCellData, context: CellContext): React.ReactNode {
         const showChevron: boolean = node && node.hasChildren;
         const rtl: boolean = getRTL();
         const chevronCssMapping: IDictionary = {
@@ -225,7 +230,7 @@ export class HierarchyCell implements ICellType {
                 onClick={ showChevron ? (event: React.MouseEvent<HTMLElement>) => {
                     event.stopPropagation(); // stop onRowClick from being fired
                     this.toggleRowExpansion(node);
-                } : null }
+                } : undefined }
                 onMouseDown={ (event: React.MouseEvent<HTMLElement>) => {
                     // If this is the only selected cell, we want to stop the event propagation,
                     // since we do not want to put the cell in edit mode.

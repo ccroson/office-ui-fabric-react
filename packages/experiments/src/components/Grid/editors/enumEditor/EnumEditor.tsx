@@ -17,8 +17,8 @@ import { FocusZone, FocusZoneDirection } from 'office-ui-fabric-react/lib-common
 import { GridAction, PickerOpenedAction } from '../../actions/GridActions';
 
 // Utilities
-import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
-import { css } from '@uifabric/utilities/lib-commonjs/css';
+import { autobind } from '../../../../../../utilities/lib-commonjs/autobind';
+import { css } from '../../../../../../utilities/lib-commonjs/css';
 /**
  * The props for Enum editor
  */
@@ -30,7 +30,7 @@ export interface IEnumEditorProps {
     forceCalloutOpen: boolean;
 
     /** Pending value for the cell to possible render */
-    pendingValue: string | EnumCellData;
+    pendingValue: string | EnumCellData | null;
 
     /** The value to display in the editor when no pendingValue is specified */
     value: EnumCellData;
@@ -42,13 +42,13 @@ export interface IEnumEditorProps {
      * The delegate to be called when the value has been updated by the user
      * @param updatedValue The updated value
      */
-    onValueUpdated: (updatedValue: EnumCellData) => void;
+    onValueUpdated: ((updatedValue: EnumCellData) => void) | null;
 
     /**
      * The delegate to be called when the value is updated by the dropdown, or the editor loses focus outside the cell
      * @param optionKey Key of EnumOption selected
      */
-    onEditConfirmed: (optionKey: EnumKey) => void;
+    onEditConfirmed: ((optionKey: EnumKey) => void) | null;
 
     /** The delegate to call to request the cancelling of any updates */
     onEditCancelled?: () => void;
@@ -125,7 +125,7 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
         } = this.props;
         // If we get a new pending value due to type over, we want to exit edit mode afterwards.
         if (!_.isEqual(prevProps.pendingValue, pendingValue) && onEditConfirmed && onEditCancelled) {
-            const found: EnumOption = this.getOptionFromPending();
+            const found = this.getOptionFromPending();
             if (found) {
                 // Use the option if found
                 onEditConfirmed(found.key);
@@ -152,7 +152,7 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
     /**
      * Render a text input with a dropdown callout
      */
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode {
         const val = this.getDisplayedValue();
         const iconStyle: React.CSSProperties = this.props.theme ? {
             color: this.props.theme.selectionBorderColor,
@@ -181,7 +181,7 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
     /**
      * Render the dropdown callout if visible
      */
-    private renderCallout(): JSX.Element {
+    private renderCallout(): React.ReactNode {
         const {
             enumOptions,
             forceCalloutOpen,
@@ -223,7 +223,7 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
                                         data-is-focusable={ true }
                                         key={ `${option.key}` }
                                         onClick={ (event: React.MouseEvent<HTMLElement>) => { this.onOptionSelected(event, option.key); } }
-                                        ref={ option.key === value.selectedEnumKey && this.resolveRef(this, 'SelectedElementRef') }
+                                        ref={ option.key === value.selectedEnumKey ? this.resolveRef(this, 'SelectedElementRef') : undefined }
                                         role="menuitem">
                                         { option.text }
                                     </div>
@@ -248,28 +248,29 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
             pendingValue
         } = this.props;
         if (pendingValue) {
-            const found: EnumOption = this.getOptionFromPending();
+            const found = this.getOptionFromPending();
             if (found) {
                 return found.text;
             }
         }
-        return value && _.find(enumOptions, (option: EnumOption) => { return option.key === value.selectedEnumKey; }).text;
+        const found = _.find(enumOptions, (option: EnumOption) => { return option.key === value.selectedEnumKey; });
+        return value && (found ? found.text : '');
     }
 
     /**
      * Get the EnumOption from the pending value.
      * @returns {EnumOption} The EnumOption that pending value is for. null if not found.
      */
-    private getOptionFromPending(): EnumOption {
+    private getOptionFromPending(): EnumOption | null {
         const {
             enumOptions,
             pendingValue
         } = this.props;
         if (pendingValue) {
             if (_.isString(pendingValue)) {
-                return _.find(enumOptions, (option: EnumOption) => { return option.text.charAt(0).toLowerCase() === pendingValue.toLowerCase(); });
+                return _.find(enumOptions, (option: EnumOption) => { return option.text.charAt(0).toLowerCase() === pendingValue.toLowerCase(); }) || null;
             } else {
-                return _.find(enumOptions, (option: EnumOption) => { return option.key === pendingValue.selectedEnumKey; });
+                return _.find(enumOptions, (option: EnumOption) => { return option.key === pendingValue.selectedEnumKey; }) || null;
             }
         }
         return null;
@@ -304,11 +305,12 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
             onValueUpdated,
             value
         } = this.props;
-        const val: EnumOption = _.find(enumOptions, (option: EnumOption) => { return option.text.charAt(0).toLowerCase() === character.charAt(0).toLowerCase(); });
+        const val = _.find(enumOptions, (option: EnumOption) => { return option.text.charAt(0).toLowerCase() === character.charAt(0).toLowerCase(); });
         if (val) {
             const newValue = value;
             newValue.selectedEnumKey = val.key;
-            onValueUpdated(newValue);
+            if (onValueUpdated)
+                onValueUpdated(newValue);
         }
     }
 
@@ -345,7 +347,8 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
         event.stopPropagation();
 
         // Send the pending update to the Grid
-        onEditConfirmed(optionKey);
+        if (onEditConfirmed)
+            onEditConfirmed(optionKey);
 
         // Dismiss the callout
         this.onCalloutDismissed();
@@ -361,6 +364,7 @@ export class EnumEditor extends BaseComponent<IEnumEditorProps, IEnumEditorState
         } = this.props;
 
         this.setState({ calloutOpened: false });
-        onEditCancelled();
+        if (onEditCancelled)
+            onEditCancelled();
     }
 }

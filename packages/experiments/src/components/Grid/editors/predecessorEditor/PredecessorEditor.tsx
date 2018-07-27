@@ -10,7 +10,7 @@ import { GridTagPicker, ITag, ITagPickerProps } from './GridTagPicker';
 import { BasePicker } from 'office-ui-fabric-react/lib-commonjs/components/pickers';
 
 // Utilities
-import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
+import { autobind } from '../../../../../../utilities/lib-commonjs/autobind';
 initializeIcons();
 
 /**
@@ -91,7 +91,7 @@ export class PredecessorEditor extends BaseComponent<IPredecessorEditorProps, IP
   /**
    * Render a predecessor editor
    */
-  public renderComponent(): JSX.Element {
+  public renderComponent(): React.ReactNode {
     return (
       <div className="tag-editor-container">
         <GridTagPicker

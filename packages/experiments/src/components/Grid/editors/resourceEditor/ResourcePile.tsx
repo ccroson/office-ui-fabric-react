@@ -30,7 +30,7 @@ export const FACEPILE_LENGTH_TO_SHOW_DETAILS_AT = 1;
 
 export interface IResourcePileProps {
     resources: IResource[];
-    total: number;
+    total?: number;
     width: number;
 }
 
@@ -47,7 +47,7 @@ export class ResourcePile extends BaseComponent<IResourcePileProps, {}> {
     public name(): string {
         return 'ResourcePile';
     }
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode {
         const { resources, width, total } = this.props;
         // show details only if number of assigned resources equals to FACEPILE_LENGTH_TO_SHOW_DETAILS_AT
         const showPersonalDetails: boolean = resources.length === FACEPILE_LENGTH_TO_SHOW_DETAILS_AT;

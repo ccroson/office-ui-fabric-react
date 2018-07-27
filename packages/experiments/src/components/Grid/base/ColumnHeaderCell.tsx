@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BaseComponent } from '../utilities/BaseComponent';
-import { css } from '@uifabric/utilities/lib-commonjs/css';
-import { getRTL } from '@uifabric/utilities/lib-commonjs/rtl';
+import { css } from '../../../../../utilities/lib-commonjs/css';
+import { getRTL } from '../../../../../utilities/lib-commonjs/rtl';
 import { GridCoordinate, GridTheme } from '../common/Common';
 
 // tslint:disable:jsx-no-lambda
@@ -10,7 +10,7 @@ export interface IColumnHeaderCellProps extends React.Props<ColumnHeaderCell> {
   columnIndex: number;
 
   /** The class name for this header */
-  className: string;
+  className?: string;
 
   /** Is the header cell being dragged over? */
   draggedOver: boolean;
@@ -76,7 +76,7 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
     return 'ColumnHeaderCell';
   }
 
-  protected renderComponent(): JSX.Element {
+  protected renderComponent(): React.ReactNode {
     const {
       children,
       className,
@@ -118,7 +118,7 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
         onDragEnd={ (event: React.DragEvent<HTMLElement>) => onDragFinish(event) }
         onDragEnter={ (event: React.DragEvent<HTMLElement>) => onDragEnter(event) }
         onDragOver={ (event: React.DragEvent<HTMLElement>) => onDragOver(event) }
-        onDragLeave={ (event: React.DragEvent<HTMLElement>) => onDragLeave(event) }
+        onDragLeave={ onDragLeave && ((event: React.DragEvent<HTMLElement>) => onDragLeave(event)) }
         onDrop={ (event: React.DragEvent<HTMLElement>) => onDrop(event) }
         className={
           css(
@@ -188,7 +188,7 @@ export class ColumnHeaderCell extends BaseComponent<IColumnHeaderCellProps, {}> 
    * Set the css style for a header cell being dragged
    * @param cellStyle CSSProperties object to set style for
    */
-  private decorateWithDragTargetIndicator(cellStyle) {
+  private decorateWithDragTargetIndicator(cellStyle:React.CSSProperties) {
     const {
       theme
     } = this.props;

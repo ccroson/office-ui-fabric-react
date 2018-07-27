@@ -14,7 +14,7 @@ export class SelectionCell implements ICellType {
      * @param cellData The cell data extracted through property or accessor
      * @param context The cell context which provides additional properties, like isSelected in this case
      */
-    public render(cellData: any, context: CellContext): JSX.Element | string {
+    public render(cellData: any, context: CellContext): React.ReactNode {
         return <Check checked={ context.isSelected(context.coordinate) } />;
     }
 

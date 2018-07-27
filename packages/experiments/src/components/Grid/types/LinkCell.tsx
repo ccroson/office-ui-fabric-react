@@ -29,7 +29,7 @@ export class LinkCell implements ICellType {
     /**
      * Return a Fabric Link element
      */
-    public render(cellData: LinkCellData, context: CellContext): JSX.Element | string {
+    public render(cellData: LinkCellData, context: CellContext): React.ReactNode {
         const onClick = (event: React.MouseEvent<HTMLElement>) => {
             event.stopPropagation();
             if (cellData.onClick) {
@@ -67,7 +67,7 @@ export class LinkCell implements ICellType {
         onEditCancelled: () => void,
         onEditConfirmed: (finalValue: string) => void,
         context: CellContext
-    ): JSX.Element {
+    ): React.ReactNode {
         return (
             <StringEditor
                 value={ pendingUpdate || cellData && this.toString(cellData) }
@@ -107,7 +107,7 @@ export class LinkCell implements ICellType {
      * @param originalValue The cell data extracted through property or accessor
      * @param changedValue The raw input to parse to Object
      */
-    public parseRawInput(originalValue: LinkCellData, changedValue: any): LinkCellData {
+    public parseRawInput(originalValue: LinkCellData, changedValue: any): LinkCellData | undefined {
         if (changedValue) {
             return {
                 href: originalValue && originalValue.href,

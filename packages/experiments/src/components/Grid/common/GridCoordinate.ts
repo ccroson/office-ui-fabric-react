@@ -29,7 +29,7 @@ export class GridCoordinate {
         return new GridCoordinate(this.rowIndex, this.columnIndex, this.isColumnHeaderCell, this.isRowHeaderCell);
     }
 
-    public equals(other: GridCoordinate): boolean {
+    public equals(other: GridCoordinate | null): boolean {
         return other !== null && this.rowIndex === other.rowIndex && this.columnIndex === other.columnIndex
             && this.isColumnHeaderCell === other.isColumnHeaderCell;
     }

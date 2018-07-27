@@ -1,5 +1,5 @@
 import * as React from 'react';
-import _ = require('lodash');
+import * as _ from 'lodash';
 
 // controls
 import { ICellType, CellContext } from '../grid/Grid';
@@ -7,7 +7,7 @@ import { __InlineAutoCompleteBox as UnitEditor } from '../controls/inlineAutoCom
 
 // utils
 import { ArgumentError } from '../utilities/errors/Errors';
-import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
+import { autobind } from '../../../../../utilities/lib-commonjs/autobind';
 import { GridAction } from '../actions/GridActions';
 import { ParseUtils } from '../utilities/ParseUtils';
 
@@ -80,7 +80,7 @@ export class UnitCell implements ICellType {
         onEditCancelled: () => void,
         onEditConfirmed: (finalValue: string) => void,
         context: CellContext
-    ): JSX.Element {
+    ): React.ReactNode {
         return (
             <UnitEditor
                 value={ pendingUpdate !== null ? pendingUpdate.toString() : (cellData ? this.getDisplayValue(cellData) :
@@ -97,20 +97,20 @@ export class UnitCell implements ICellType {
      * @param changedValue The raw input to parse to Object (string when editing, UnitCellData for fillhandles)
      */
     // tslint:disable-next-line:no-any
-    public parseRawInput(originalValue: string, changedValue: string | UnitCellData | any): string | number {
+    public parseRawInput(originalValue: string, changedValue: string | UnitCellData | any): string | number | undefined {
         if (changedValue) {
             // Verify if the update already has the value
             if (changedValue.value) {
                 return changedValue.value;
             }
             const value = parseFloat(changedValue);
-            const updatedOption: UnitOption = _.find(this.acceptableOptions, (option: UnitOption) => {
-                return _.startsWith(option.text, ParseUtils.extractAlphaString(changedValue));
+            const updatedOption = _.find(this.acceptableOptions, (option: UnitOption) => {
+                return _.startsWith(option.text, ParseUtils.extractAlphaString(changedValue) as string);
             });
-            if (this.parser) {
+            if (this.parser && updatedOption) {
                 return this.parser({ selectedUnitOption: updatedOption, value: value });
             } else {
-                return updatedOption.text || DEFAULT_CELL_VALUE;
+                return updatedOption && updatedOption.text || DEFAULT_CELL_VALUE;
             }
         }
     }
@@ -122,9 +122,9 @@ export class UnitCell implements ICellType {
     @autobind
     public getSuggestedValue(currentValue: string): string {
         if (currentValue) {
-            const inputUnits: string = ParseUtils.extractAlphaString(currentValue);
+            const inputUnits = ParseUtils.extractAlphaString(currentValue);
             if (inputUnits && this.acceptableOptions) {
-                const suggestedUnit: UnitOption = _.first(_.filter(this.acceptableOptions, (format: UnitOption) => {
+                const suggestedUnit  = _.first(_.filter(this.acceptableOptions, (format: UnitOption) => {
                     return _.startsWith(format.text.toLocaleUpperCase(), inputUnits.toLocaleUpperCase());
                 }));
                 if (suggestedUnit) {

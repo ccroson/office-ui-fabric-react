@@ -24,7 +24,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Shift + Home shortcut should behave the same as Home
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftHome(prevState: SelectionState): SelectionState {
+    public handleShiftHome(prevState: SelectionState): SelectionState | undefined {
         return super.handleHome(prevState);
     }
 
@@ -32,7 +32,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Control + Shift + Home shortcut should behave the same as Control + Home
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftHome(prevState: SelectionState): SelectionState {
+    public handleControlShiftHome(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlHome(prevState);
     }
 
@@ -40,7 +40,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Shift + End shortcut should behave the same as End
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftEnd(prevState: SelectionState): SelectionState {
+    public handleShiftEnd(prevState: SelectionState): SelectionState | undefined {
         return super.handleEnd(prevState);
     }
 
@@ -48,7 +48,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Control + Shift + End shortcut should behave the same as Control + End
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftEnd(prevState: SelectionState): SelectionState {
+    public handleControlShiftEnd(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlEnd(prevState);
     }
 
@@ -56,7 +56,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Shift + Left shortcut selects the previous cell in the row
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftLeft(prevState: SelectionState): SelectionState {
+    public handleShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return super.handleLeft(prevState);
     }
 
@@ -64,7 +64,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Control + Shift + Left shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleAltShiftLeft(prevState: SelectionState): SelectionState {
+    public handleAltShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return super.handleAltShiftLeft(prevState);
     }
 
@@ -72,7 +72,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Control + Shift + Left shortcut selects the first cell in the row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftLeft(prevState: SelectionState): SelectionState {
+    public handleControlShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlLeft(prevState);
     }
 
@@ -80,7 +80,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Shift + Right shortcut selects the next cell in the row
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftRight(prevState: SelectionState): SelectionState {
+    public handleShiftRight(prevState: SelectionState): SelectionState | undefined {
         return super.handleRight(prevState);
     }
 
@@ -88,7 +88,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Control + Shift + Right shortcut selects the last cell in the row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftRight(prevState: SelectionState): SelectionState {
+    public handleControlShiftRight(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlRight(prevState);
     }
 
@@ -96,7 +96,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Alt + Shift + Right shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleAltShiftRight(prevState: SelectionState): SelectionState {
+    public handleAltShiftRight(prevState: SelectionState): SelectionState | undefined {
         return super.handleAltShiftRight(prevState);
     }
 
@@ -104,7 +104,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Shift + Up shortcut selects the previous cell in the column
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftUp(prevState: SelectionState): SelectionState {
+    public handleShiftUp(prevState: SelectionState): SelectionState | undefined {
         return super.handleUp(prevState);
     }
 
@@ -112,7 +112,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Control + Shift + Up shortcut selects the first cell in the column
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftUp(prevState: SelectionState): SelectionState {
+    public handleControlShiftUp(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlUp(prevState);
     }
 
@@ -120,7 +120,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Shift + Down shortcut selects the next cell in the column
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftDown(prevState: SelectionState): SelectionState {
+    public handleShiftDown(prevState: SelectionState): SelectionState | undefined {
         return super.handleDown(prevState);
     }
 
@@ -128,7 +128,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * The Control + Shift + Down shortcut selects the last cell in the column
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftDown(prevState: SelectionState): SelectionState {
+    public handleControlShiftDown(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlDown(prevState);
     }
 
@@ -137,7 +137,7 @@ export class SingleCellStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      * @param target The moused down cell
      */
-    public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         return {
             ...prevState,
             mode: GridMode.Select,

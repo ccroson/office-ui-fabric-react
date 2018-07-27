@@ -36,8 +36,8 @@ export abstract class BaseComponent<P, S> extends React.Component<P, S> {
    * React's render() method with error logging. Deriving components should define the renderComponent() method instead of
    * overriding this so that they benefit from the error handling and logging.
    */
-  public render(): JSX.Element | null {
-    let result: JSX.Element | null;
+  public render(): React.ReactNode {
+    let result: React.ReactNode;
 
     try {
       result = this.renderComponent();
@@ -79,7 +79,7 @@ export abstract class BaseComponent<P, S> extends React.Component<P, S> {
    * Abstract method to be overridden by derived component. This method should do everything you would normally put in
    * React's render() method.
    */
-  protected abstract renderComponent(): JSX.Element;
+  protected abstract renderComponent(): React.ReactNode;
 
   /**
    * Get the Async manager for this component
@@ -131,7 +131,7 @@ export abstract class BaseComponent<P, S> extends React.Component<P, S> {
    *
    *      ...
    *
-   *      protected renderComponent(): JSX.Element {
+   *      protected renderComponent(): React.ReactNode {
    *          return <div ref={this.resolveRef(this, 'contentContainer')}/>;
    *      }
    *

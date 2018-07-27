@@ -63,7 +63,7 @@ export class HeaderRow extends BaseComponent<IHeaderRowProps, {}> {
         }
     }
 
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode {
         const {
             children,
             height,

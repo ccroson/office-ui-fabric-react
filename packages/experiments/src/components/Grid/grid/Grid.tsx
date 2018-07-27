@@ -1,4 +1,5 @@
-import * as gridStyles from './Grid.scss';
+import * as _gridStyles from './Grid.scss';
+const gridStyles = _gridStyles as any;
 import * as React from 'react';
 import * as _ from 'lodash';
 
@@ -67,7 +68,7 @@ export interface IGridProps extends IAbstractGridProps {
    * Renderer for custom content in the row header
    * @param rowData The data corresponding to the row for which to render the custom header content
    */
-  onRenderRowHeaderContent?: (rowData: Object) => JSX.Element | string;
+  onRenderRowHeaderContent?: (rowData: Object) => React.ReactNode;
 
   /** Context menu items for row header */
   rowHeaderContextMenuItems?: (rowData: Object) => IContextualMenuItem[];
@@ -133,7 +134,7 @@ export interface IGridState extends IAbstractGridState {
   pendingUpdates: _.Dictionary<DataUpdateInternal>;
 
   /** The current validation error */
-  validationError: __ValidationResult;
+  validationError: __ValidationResult | null;
 }
 
 /**
@@ -150,13 +151,13 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   protected stateManager: StateManager;
 
   /** The current validation clear timeout function */
-  private validationTimeoutId: number;
+  private validationTimeoutId: number | null;
 
   /** Should the grid be set to edit mode after selecting */
   private transitionToEditModeAfterSelecting: boolean;
 
   /** The user action performed to transition to edit mode */
-  private transitionToEditModeAction: GridAction;
+  private transitionToEditModeAction: GridAction | null;
 
   constructor(props: IGridProps, context?: any) {
     super(props, context);
@@ -256,7 +257,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
 
   /** Returns the fill enabled flag to be used by the BaseGrid */
   protected get isFillEnabled(): boolean {
-    return this.props.isFillEnabled;
+    return !!this.props.isFillEnabled;
   }
 
   /** Returns the theme to use for styling the BaseGrid, @default Green */
@@ -274,12 +275,12 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
 
   /** Returns the show row header flag to be used by the BaseGrid */
   protected get showRowHeader(): boolean {
-    return this.props.showRowHeader;
+    return !!this.props.showRowHeader;
   }
 
   /** Returns the row header width to be used by the BaseGrid, @default 50 */
   protected get rowHeaderWidth(): number {
-    return this.props.rowHeaderWidth;
+    return this.props.rowHeaderWidth as number;
   }
 
   /**
@@ -292,7 +293,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
 
     // if the selection mode has changed, reset the selection state
     if (nextProps.selectionMode !== this.props.selectionMode) {
-      this.resetStateManager(selectionMode, hideColumnHeader);
+      this.resetStateManager(selectionMode, !!hideColumnHeader);
     }
   }
 
@@ -327,7 +328,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    * @param rowIndex The index of the row for which to render the header cell
    */
   @autobind
-  protected renderRowHeaderCell(rowIndex: number): JSX.Element | string {
+  protected renderRowHeaderCell(rowIndex: number): React.ReactNode {
     const { onRenderRowHeaderContent } = this.props;
     if (onRenderRowHeaderContent) {
       const rowData: Object = this.getRowDataAtIndex(rowIndex);
@@ -338,11 +339,11 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   /**
    * Render the current validation error in a callout above the cell
    */
-  protected renderValidationError(): JSX.Element {
+  protected renderValidationError(): React.ReactNode {
     const { validationError } = this.state;
 
     if (validationError) {
-      const cellRef: HTMLDivElement = this.baseGrid.getCellRef(validationError.dataUpdate.cellCoordinate);
+      const cellRef = this.baseGrid.getCellRef(validationError.dataUpdate.cellCoordinate);
 
       return (
         <Callout
@@ -375,7 +376,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     cellCoordinate: GridCoordinate,
     extractedCellData: any,
     columnWidth: number
-  ): JSX.Element | string {
+  ): React.ReactNode {
     const { pendingUpdates, selectionState } = this.state;
 
     const rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
@@ -383,7 +384,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
 
     const cellDefinition: ICellDefinition = columnDefinition.cell;
     const cellIdentifier: string = this.getCellIdentifier(rowData, columnDefinition);
-    let renderedData: JSX.Element | string = null;
+    let renderedData: React.ReactNode = null;
 
     let pendingUpdate: any = null;
     if (pendingUpdates[cellIdentifier]) {
@@ -392,27 +393,29 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
 
     const shouldRenderEditor: boolean =
       selectionState.mode === GridMode.Edit &&
+      !!selectionState.primaryCell &&
       selectionState.primaryCell.equals(cellCoordinate) &&
       cellDefinition.type.renderEditor != null;
 
     const shouldRenderSelected: boolean =
       (selectionState.mode === GridMode.Select || selectionState.mode === GridMode.Selecting) &&
+      !!selectionState.primaryCell &&
       selectionState.primaryCell.equals(cellCoordinate) &&
       cellDefinition.type.renderSelected != null;
 
     const cellContext: CellContext = this.getCellContext(cellCoordinate, columnWidth);
     if (shouldRenderEditor) {
-      renderedData = cellDefinition.type.renderEditor(
+      renderedData = cellDefinition.type.renderEditor!(
         extractedCellData,
         pendingUpdate,
-        this.transitionToEditModeAction,
+        this.transitionToEditModeAction!,
         (updatedValue: any) => this.onEditorValueUpdated(cellCoordinate, updatedValue),
         () => this.onEditCancelled(cellCoordinate),
         (finalValue: any) => this.onEditConfirmed(cellCoordinate, finalValue),
         cellContext
       );
     } else if (shouldRenderSelected) {
-      renderedData = cellDefinition.type.renderSelected(
+      renderedData = cellDefinition.type.renderSelected!(
         extractedCellData,
         (action?: GridAction) => this.transitionToEditMode(action),
         cellContext
@@ -440,7 +443,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     const { selectionState } = this.state;
 
     if (selectionState.mode === GridMode.Edit) {
-      if (!selectionState.primaryCell.equals(cellCoordinate)) {
+      if (selectionState.primaryCell && !selectionState.primaryCell.equals(cellCoordinate)) {
         this.confirmPendingUpdates(selectionState.primaryCell);
       } else {
         // If we are mousing down on a cell already in edit mode, ignore it
@@ -469,7 +472,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   protected onCellMouseEnter(cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>): void {
     const { selectionState } = this.state;
 
-    const newState: SelectionState = this.stateManager.handleCellMouseEnter(selectionState, cellCoordinate);
+    const newState = this.stateManager.handleCellMouseEnter(selectionState, cellCoordinate);
     if (newState) {
       this.updateFromMouseEvent(event, newState);
 
@@ -503,7 +506,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   protected onFillMouseDown(event: React.MouseEvent<HTMLElement>): void {
     const { selectionState } = this.state;
 
-    if (selectionState.mode === GridMode.Edit) {
+    if (selectionState.mode === GridMode.Edit && selectionState.primaryCell) {
       const updateCommitted: boolean = this.confirmPendingUpdates(selectionState.primaryCell);
       if (!updateCommitted) {
         return;
@@ -523,7 +526,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   protected onFillMouseUp(event: React.MouseEvent<HTMLElement>): void {
     const { selectionState } = this.state;
 
-    const newState: SelectionState = this.stateManager.handleFillMouseUp(selectionState);
+    const newState = this.stateManager.handleFillMouseUp(selectionState);
     if (newState) {
       this.updateFromMouseEvent(event, newState);
       if (selectionState.fillSelection && selectionState.selections.length === 1) {
@@ -537,7 +540,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     const { selectionState } = this.state;
 
     super.onCellRightClick(cellCoordinate, event);
-    this.updateFromMouseEvent(event, this.stateManager._handleCellRightClick(selectionState, cellCoordinate));
+    this.updateFromMouseEvent(event, this.stateManager.handleCellRightClick(selectionState, cellCoordinate));
   }
 
   /**
@@ -551,7 +554,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
 
     const { hideColumnHeader } = this.props;
 
-    if (selectionState.mode === GridMode.Edit) {
+    if (selectionState.mode === GridMode.Edit && selectionState.primaryCell) {
       this.confirmPendingUpdates(selectionState.primaryCell);
     }
 
@@ -625,7 +628,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     // We could not use onFocus event here, since that would be called on click on the cell as well
     // (setting first cell as focused before the setting the clicked cell as focused, so listening for keyUp to avoid that)
     if (event.keyCode === KeyCode.TAB) {
-      const newState: SelectionState = this.stateManager.handleFocus(selectionState);
+      const newState = this.stateManager.handleFocus(selectionState);
       if (newState) {
         this.onSelectionStateChanged(newState);
       }
@@ -644,10 +647,10 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     // so putting a check on the trimmed value
     inputValue = inputValue.trim();
     if (inputValue.length > 0) {
-      const newState: SelectionState = this.stateManager.handleKeyPress(selectionState);
+      const newState = this.stateManager.handleKeyPress(selectionState);
       if (newState) {
         // if switching to edit mode due to key press, preserve the input key and set that as pending update on the primary cell
-        if (selectionState.mode === GridMode.Select && newState.mode === GridMode.Edit) {
+        if (selectionState.mode === GridMode.Select && newState.mode === GridMode.Edit && selectionState.primaryCell) {
           this.onEditorValueUpdated(selectionState.primaryCell, inputValue);
         }
 
@@ -680,7 +683,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     const { selectionState } = this.state;
 
     // We should clear any pending edits if we are in Edit mode
-    if (selectionState.mode === GridMode.Edit) {
+    if (selectionState.mode === GridMode.Edit && selectionState.primaryCell) {
       this.clearPendingUpdates(selectionState.primaryCell);
     }
 
@@ -731,7 +734,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
 
     const { selectionState } = this.state;
 
-    if (selectionState.mode === GridMode.Edit) {
+    if (selectionState.mode === GridMode.Edit && selectionState.primaryCell) {
       const updatesCommitted = this.confirmPendingUpdates(selectionState.primaryCell);
       if (updatesCommitted && this.shouldAddFooterRow(this.props)) {
         // if last row then add in-memory blank row
@@ -764,7 +767,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   protected handleTabKeyDown(event: React.KeyboardEvent<HTMLElement>) {
     const { selectionState } = this.state;
 
-    if (selectionState.mode === GridMode.Edit) {
+    if (selectionState.mode === GridMode.Edit && selectionState.primaryCell) {
       this.confirmPendingUpdates(selectionState.primaryCell);
     }
 
@@ -836,9 +839,9 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   protected handleDownArrowKeyDown(event: React.KeyboardEvent<HTMLElement>) {
     const { selectionState } = this.state;
 
-    if (event.altKey && selectionState.primaryCell.isColumnHeaderCell) {
+    if (event.altKey && selectionState.primaryCell && this.state.selectionState.primaryCell && selectionState.primaryCell.isColumnHeaderCell) {
       this.onColumnHeaderAltDown(this.state.selectionState.primaryCell.columnIndex, event);
-    } else if (event.altKey && (selectionState.mode === GridMode.Select || selectionState.mode === GridMode.Edit)) {
+    } else if (event.altKey && (selectionState.mode === GridMode.Select || selectionState.mode === GridMode.Edit) && selectionState.primaryCell) {
       const columnDef: IColumnDefinition = this.getColumnDefinitionAtIndex(selectionState.primaryCell.columnIndex);
       if (this.isCellEditable(selectionState.primaryCell) && columnDef.cell.type.supportsCalloutForEditing) {
         this.transitionToEditMode(new PickerOpenedAction());
@@ -1013,7 +1016,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    * @param {Object} rowData The rowData object ot check
    * @returns {boolean} True if it is the footer row
    */
-  private isFooterRow(rowData: Object): boolean {
+  private isFooterRow(rowData: any): boolean {
     return rowData && rowData[GridConstants.__FOOTER_ROW_KEY] === true;
   }
 
@@ -1036,11 +1039,11 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
   private transitionToEditMode(action?: GridAction): void {
     this.setState(
       (prevState: IGridState) => {
-        this.transitionToEditModeAction = action;
+        this.transitionToEditModeAction = action || null;
         prevState.selectionState = {
           ...prevState.selectionState,
           mode: GridMode.Edit,
-          selections: [new GridRegion(prevState.selectionState.primaryCell)]
+          selections: prevState.selectionState.primaryCell ? [new GridRegion(prevState.selectionState.primaryCell)] : []
         };
         return prevState;
       },
@@ -1332,7 +1335,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
     const validationResults: __ValidationResult[] = [];
     for (const dataUpdate of dataUpdates) {
       const cellDefinition: ICellDefinition = dataUpdate.columnDefinition.cell;
-      let validationError: string;
+      let validationError;
 
       // If the cell type defines a default validator, use that first
       if (cellDefinition.type.validate) {
@@ -1370,7 +1373,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    * @param selectionState The updated selection state
    */
   @autobind
-  private onSelectionStateChanged(selectionState: SelectionState): void {
+  private onSelectionStateChanged(selectionState: SelectionState | undefined): void {
     const { onPrimaryCellChanged, onSelectionChanged } = this.props;
 
     if (selectionState) {
@@ -1407,7 +1410,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    * @param event The event that triggered the update
    * @param newState The new selection state acquired from a state manager
    */
-  private updateFromMouseEvent(event: React.SyntheticEvent<HTMLElement>, newState: SelectionState): void {
+  private updateFromMouseEvent(event: React.SyntheticEvent<HTMLElement>, newState: SelectionState | undefined): void {
     if (newState) {
       event.stopPropagation();
       this.onSelectionStateChanged(newState);
@@ -1421,7 +1424,7 @@ export class Grid extends AbstractGrid<IGridProps, IGridState> implements IGrid 
    * @param event The event that triggered the update
    * @param newState The new selection state acquired from a state manager
    */
-  private updateFromKeyboardEvent(event: React.SyntheticEvent<HTMLElement>, newState: SelectionState): void {
+  private updateFromKeyboardEvent(event: React.SyntheticEvent<HTMLElement>, newState: SelectionState | undefined): void {
     if (newState) {
       event.stopPropagation();
       event.preventDefault();

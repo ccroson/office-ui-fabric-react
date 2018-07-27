@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { BaseComponent } from '../utilities/BaseComponent';
-import { css } from '@uifabric/utilities/lib-commonjs/css';
+import { css } from '../../../../../utilities/lib-commonjs/css';
 
 export interface IHeaderContainerProps extends React.Props<HeaderContainer> {
     /** The class name for the grid header */
-    className: string;
+    className?: string;
 
     /** The height of the container */
     height: number;
@@ -27,7 +27,7 @@ export class HeaderContainer extends BaseComponent<IHeaderContainerProps, {}> {
         return 'HeaderContainer';
     }
 
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode {
         const {
             children,
             className,

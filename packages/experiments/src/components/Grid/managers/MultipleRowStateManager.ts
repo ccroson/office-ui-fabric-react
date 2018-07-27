@@ -23,7 +23,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The first row should be selected
      * @param prevState The previous selection state to transition from
      */
-    public handleFocus(prevState: SelectionState): SelectionState {
+    public handleFocus(prevState: SelectionState): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleFocus(prevState));
     }
 
@@ -31,7 +31,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Enter key should select the next row and exit Edit mode
      * @param prevState The previous selection state to transition from
      */
-    public handleEnter(prevState: SelectionState): SelectionState {
+    public handleEnter(prevState: SelectionState): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleEnter(prevState));
     }
 
@@ -39,7 +39,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Shift + Enter shortcut should select the previous row and exit Edit mode
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftEnter(prevState: SelectionState): SelectionState {
+    public handleShiftEnter(prevState: SelectionState): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleShiftEnter(prevState));
     }
 
@@ -47,7 +47,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Tab key should do nothing
      * @param prevState The previous selection state to transition from
      */
-    public handleTab(prevState: SelectionState): SelectionState {
+    public handleTab(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -55,7 +55,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Shift + Tab shortcut should do nothing
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftTab(prevState: SelectionState): SelectionState {
+    public handleShiftTab(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -63,7 +63,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Home key should select the first row
      * @param prevState The previous selection state to transition from
      */
-    public handleHome(prevState: SelectionState): SelectionState {
+    public handleHome(prevState: SelectionState): SelectionState | undefined {
         return this.handleControlHome(prevState);
     }
 
@@ -71,7 +71,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Home shortcut should select the first row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlHome(prevState: SelectionState): SelectionState {
+    public handleControlHome(prevState: SelectionState): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleControlHome(prevState));
     }
 
@@ -79,7 +79,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Shift + Home shortcut should select all the rows between the primary cell and the first row.
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftHome(prevState: SelectionState): SelectionState {
+    public handleShiftHome(prevState: SelectionState): SelectionState | undefined {
         return this.handleControlShiftHome(prevState);
     }
 
@@ -87,7 +87,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Shift + Home shortcut should move the end of the selection to the first row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftHome(prevState: SelectionState): SelectionState {
+    public handleControlShiftHome(prevState: SelectionState): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleControlShiftHome(prevState));
     }
 
@@ -95,7 +95,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The End key should select the last row
      * @param prevState The previous selection state to transition from
      */
-    public handleEnd(prevState: SelectionState): SelectionState {
+    public handleEnd(prevState: SelectionState): SelectionState | undefined {
         return this.handleControlEnd(prevState);
     }
 
@@ -103,7 +103,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + End shortcut should select the last row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlEnd(prevState: SelectionState): SelectionState {
+    public handleControlEnd(prevState: SelectionState): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleControlEnd(prevState));
     }
 
@@ -111,7 +111,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Shift + End shortcut should select all the rows between the primary cell and the last row.
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftEnd(prevState: SelectionState): SelectionState {
+    public handleShiftEnd(prevState: SelectionState): SelectionState | undefined {
         return this.handleControlShiftEnd(prevState);
     }
 
@@ -119,7 +119,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Shift + End shortcut should move the end of the selection to the last row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftEnd(prevState: SelectionState): SelectionState {
+    public handleControlShiftEnd(prevState: SelectionState): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleControlShiftEnd(prevState));
     }
 
@@ -127,7 +127,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Left arrow key has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleLeft(prevState: SelectionState): SelectionState {
+    public handleLeft(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -135,7 +135,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Left shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleControlLeft(prevState: SelectionState): SelectionState {
+    public handleControlLeft(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -143,7 +143,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Shift + Left shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftLeft(prevState: SelectionState): SelectionState {
+    public handleShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -151,7 +151,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Shift + Left shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleAltShiftLeft(prevState: SelectionState): SelectionState {
+    public handleAltShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -159,7 +159,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Shift + Left shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftLeft(prevState: SelectionState): SelectionState {
+    public handleControlShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -167,7 +167,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Right arrow key has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleRight(prevState: SelectionState): SelectionState {
+    public handleRight(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -175,7 +175,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Right shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleControlRight(prevState: SelectionState): SelectionState {
+    public handleControlRight(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -183,7 +183,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Shift + Right shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftRight(prevState: SelectionState): SelectionState {
+    public handleShiftRight(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -191,7 +191,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Shift + Right shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftRight(prevState: SelectionState): SelectionState {
+    public handleControlShiftRight(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -199,7 +199,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Shift + Right shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleAltShiftRight(prevState: SelectionState): SelectionState {
+    public handleAltShiftRight(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -207,7 +207,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Up arrow key selects the previous row
      * @param prevState The previous selection state to transition from
      */
-    public handleUp(prevState: SelectionState): SelectionState {
+    public handleUp(prevState: SelectionState): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleUp(prevState));
     }
 
@@ -215,7 +215,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Up shortcut should select the first row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlUp(prevState: SelectionState): SelectionState {
+    public handleControlUp(prevState: SelectionState): SelectionState | undefined {
         return this.handleHome(prevState);
     }
 
@@ -223,7 +223,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Shift + Up arrow key expands (or collapses) the selection to the previous row
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftUp(prevState: SelectionState): SelectionState {
+    public handleShiftUp(prevState: SelectionState): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleShiftUp(prevState));
     }
 
@@ -231,7 +231,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Shift + Up shortcut should move the end of the selection to the first row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftUp(prevState: SelectionState): SelectionState {
+    public handleControlShiftUp(prevState: SelectionState): SelectionState | undefined {
         return this.handleShiftHome(prevState);
     }
 
@@ -239,7 +239,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Down arrow key selects the next row
      * @param prevState The previous selection state to transition from
      */
-    public handleDown(prevState: SelectionState): SelectionState {
+    public handleDown(prevState: SelectionState): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleDown(prevState));
     }
 
@@ -247,7 +247,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Down shortcut should select the last row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlDown(prevState: SelectionState): SelectionState {
+    public handleControlDown(prevState: SelectionState): SelectionState | undefined {
         return this.handleEnd(prevState);
     }
 
@@ -255,7 +255,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Shift + Down shorcut expands (or collapses) the selection to the next row
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftDown(prevState: SelectionState): SelectionState {
+    public handleShiftDown(prevState: SelectionState): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleShiftDown(prevState));
     }
 
@@ -263,7 +263,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * The Control + Shift + Down shortcut should move the end of the selection to the last row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftDown(prevState: SelectionState): SelectionState {
+    public handleControlShiftDown(prevState: SelectionState): SelectionState | undefined {
         return this.handleShiftEnd(prevState);
     }
 
@@ -275,7 +275,7 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      * @param target The pressed cell
      */
-    public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleCellMouseDown(prevState, target));
     }
 
@@ -285,22 +285,22 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous selection state to transition from
      * @param target The moused enter cell
      */
-    public handleCellMouseEnter(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleCellMouseEnter(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleCellMouseEnter(prevState, target));
     }
 
     /** Handle the event when a Cell is right clicked */
-    public handleCellRightClick(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleCellRightClick(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleCellRightClick(prevState, target));
     }
 
     /** Handle the event when a mousedown occurs on a Cell with the shift key */
-    public handleShiftCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleShiftCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleShiftCellMouseDown(prevState, target));
     }
 
     /** Handle the event when a mousedown occurs on a Cell with the ctrl key */
-    public handleControlCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleControlCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         return this._wrapCellHandler(() => super.handleControlCellMouseDown(prevState, target));
     }
 
@@ -310,8 +310,8 @@ export class MultipleRowStateManager extends MultipleCellStateManager {
      * @param prevState The previous state to execute the handler with
      * @param target The optional target to execute the handler with
      */
-    private _wrapCellHandler(handler: () => SelectionState): SelectionState {
-        const cellState: SelectionState = handler();
+    private _wrapCellHandler(handler: () => SelectionState | undefined): SelectionState | undefined {
+        const cellState = handler();
         if (cellState) {
             cellState.selections = _.map(cellState.selections, (selection: GridRegion) => {
                 const newSelection = this.expandToRowSelection(selection);

@@ -3,15 +3,15 @@ import * as _ from 'lodash';
 
 import { BaseComponent } from '../utilities/BaseComponent';
 import { Cell } from './Cell';
-import { css } from '@uifabric/utilities/lib-commongitjs/css';
-import { getNativeProps } from '@uifabric/utilities/lib-commonjs/properties';
+import { css } from '../../../../../utilities/lib-commonjs/css';
+import { getNativeProps } from '../../../../../utilities/lib-commonjs/properties';
 import { GridUtilities } from '../utilities/GridUtilities';
 import { PropUtils } from '../utilities/PropUtils';
 import { RowHeaderCell } from './RowHeaderCell';
 import { SelectionState } from '../managers/StateManager';
 import { SpacerCell } from './SpacerCell';
 
-import { CellRegionPosition, GridCoordinate, GridMode, GridTheme } from '../common/Common';
+import { GridCoordinate, GridMode, GridTheme } from '../common/Common';
 
 /** Position of any row being edited offscreen in virtualized mode */
 const EDITING_ROW_TOP = -10000;
@@ -25,16 +25,16 @@ export interface IRowProps {
     |                       |
     -----------------------*/
   /** The aria and data attributes for this row */
-  ariaAndDataAttributes: _.Dictionary<string>;
+  ariaAndDataAttributes?: _.Dictionary<string>;
 
   /** The aria and data attributes to apply to each cell container. It's important to note that this wraps the cell content */
-  cellAriaAndDataAttributes?: _.Dictionary<string> | ((cellCoordinate: GridCoordinate) => _.Dictionary<string>);
+  cellAriaAndDataAttributes?: _.Dictionary<string> | ((cellCoordinate: GridCoordinate) => _.Dictionary<string> | undefined);
 
   /** The class name to append to each cell container. It's important to note that this wraps the cell content */
   cellClassName?: string | ((cellCoordinate: GridCoordinate) => string);
 
   /** The class name for the row */
-  className: string;
+  className?: string;
 
   /**
    * Canary of the grid, gets updated when the grid receives new data,
@@ -108,13 +108,13 @@ export interface IRowProps {
    * @param columnWidth The width of the column that this cell is in
    * @returns Either a string or a JSX.Element to display in the cell
    */
-  onRenderCell: (cellCoordinate: GridCoordinate, columnWidth: number) => JSX.Element | string;
+  onRenderCell: (cellCoordinate: GridCoordinate, columnWidth: number) => React.ReactNode;
   /**
    * The row header renderer. Should return any information you want to display in the row header
    * @param rowIndex The row index for the header cell
    * @returns Either a string or a JSX.Element to display in the header
    */
-  onRenderRowHeaderCell: (rowIndex: number) => JSX.Element | string;
+  onRenderRowHeaderCell?: (rowIndex: number) => React.ReactNode;
 
   /*----------------
     |                |
@@ -228,7 +228,7 @@ export class Row extends BaseComponent<IRowProps, {}> {
 
     return (
       <div
-        {...getNativeProps(ariaAndDataAttributes, [])}
+        {...getNativeProps(ariaAndDataAttributes || {}, [])}
         aria-rowindex={rowIndex + 1}
         className={css('grid-row', className)}
         role="row"
@@ -309,11 +309,11 @@ export class Row extends BaseComponent<IRowProps, {}> {
 
       if (cellRowSpan > 0) {
         // If the cell is not in the mapping, render it
-        const fillPosition: CellRegionPosition =
+        const fillPosition =
           selectionState.fillSelection && selectionState.fillSelection.isCellInRegion(cellCoordinate)
             ? selectionState.fillSelection.getCellPosition(cellCoordinate, cellRowSpan)
             : null;
-        const selectionPosition: CellRegionPosition = GridUtilities.getCellRegionPositionIfSelected(
+        const selectionPosition = GridUtilities.getCellRegionPositionIfSelected(
           cellCoordinate,
           selectionState.selections,
           cellRowSpan

@@ -19,12 +19,11 @@ import { IResource } from '../../controls/resourcePicker/IResource';
 import { ResourceEditorData, IAssignedResourcesList, IUnassignedResourcesList } from './ResourceEditorData';
 
 // utilities
-import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
-import { css } from '@uifabric/utilities/lib-commonjs/css';
 import { BaseComponent } from '../../utilities/BaseComponent';
 import { KeyboardUtils } from '../../utilities/KeyboardUtils';
 
 import { GridAction, PickerOpenedAction } from '../../actions/GridActions';
+import {autobind, css} from "../../../../../../utilities/lib-commonjs";
 
 /**
  * The options needed for the the component.
@@ -38,7 +37,7 @@ export type IResourceEditorOptions = {
     /**
      * Callback for create
      */
-    onCreate: (rowId: string, searchText: string) => void;
+    onCreate: (rowId: string, searchText: string | null) => void;
 
     /**
      * Callback for resource search
@@ -78,17 +77,17 @@ export interface IResourceEditorProps {
     /**
      * Pending value for the cell to possibly render
      */
-    searchValue: string;
+    searchValue: string | null;
 
     /**
      * The value to display in the editor
      */
-    value: ResourceEditorData;
+    value: ResourceEditorData | null;
 
     /**
      * Options for editor
      */
-    options: IResourceEditorOptions;
+    options: IResourceEditorOptions | null;
 
     /**
      * The optional action performed by the user that the editor may react to
@@ -123,12 +122,12 @@ export interface IResourceEditorStates {
     /**
      * Search string to find users
      */
-    search: string;
+    search: string | null;
 
     /**
      * Target element to pin the people picker to
      */
-    peoplePickerTargetElement: HTMLElement;
+    peoplePickerTargetElement: HTMLElement | null;
 
     /**
      * Is the resource editor callout shown?
@@ -200,19 +199,19 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
         const { forceCalloutOpen } = this.props;
 
         if (nextProps.forceCalloutOpen !== forceCalloutOpen) {
-            this.setState({ calloutOpened: nextProps.forceCalloutOpen });
+            this.setState({ calloutOpened: !!nextProps.forceCalloutOpen });
         } else if (nextProps.action && nextProps.action.type === PickerOpenedAction.type && !calloutOpened) {
             this.setState({ calloutOpened: true });
         }
     }
 
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode {
         const { value } = this.props;
         const iconStyle: React.CSSProperties = this.props.theme ? {
             color: this.props.theme.selectionBorderColor,
             fontSize: this.props.theme.iconSize
         } : {};
-        return (
+        return value && (
             <div className="resource-editor-container" ref={ this.resolveRef(this, 'facepileWrapper') } onClick={ this.onCellClick }>
                 <div className="resource-editor-facepile">
                     <ResourcePile resources={ value.assignedResources } total={ value.total } width={ this.props.columnWidth } />
@@ -229,7 +228,7 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
      * @param {ResourceEditorData} cellData the cell data.
      * @returns {JSX.Element} the editor cell JSX.Element.
      */
-    private renderCallout(cellData: ResourceEditorData): JSX.Element {
+    private renderCallout(cellData: ResourceEditorData): React.ReactNode {
         const { forceCalloutOpen, searchValue } = this.props;
 
         const { calloutOpened = false, peoplePickerTargetElement } = this.state;
@@ -257,7 +256,7 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
                         searchValue={ searchValue }
                         onDismiss={ this.onDismiss }
                     />
-                    { this.props.options.onCreate && (
+                    { this.props.options && this.props.options.onCreate && (
                         <div
                             style={ {
                                 width: '100%',
@@ -281,32 +280,33 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
     }
 
     private createResource(): void {
-        this.props.options.onCreate(this.props.value.rowId, this.state.search);
+        if (this.props.options && this.props.value)
+            this.props.options.onCreate(this.props.value.rowId, this.state.search);
         this.onDismiss();
     }
 
     private get labels(): ILabels {
-        return this.props.options.labels;
+        return this.props.options!.labels;
     }
 
     private get assignedResourcesList(): IAssignedResourcesList {
-        return this.props.value.assignedResourcesSearchList;
+        return this.props.value!.assignedResourcesSearchList;
     }
 
     private get unassignedResourcesLists(): IUnassignedResourcesList[] {
-        return this.props.value.unassignedResourcesSearchLists;
+        return this.props.value!.unassignedResourcesSearchLists;
     }
 
     /** Callback to fetch filtered resources when a filter is typed */
     @autobind
     private fetchFilteredResources(searchString: string): void {
         const { value } = this.props;
-        this.props.options.onFetchSearchedResources(value.rowId, searchString);
+        this.props.options!.onFetchSearchedResources(value!.rowId, searchString);
     }
 
     /** Callback to update the searchString */
     @autobind
-    private updateSearchString(searchString): void {
+    private updateSearchString(searchString:string): void {
         this.setState({ search: searchString });
     }
 
@@ -335,25 +335,25 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
             compactMode: false,
             listHeaderText: this.assignedResourcesList.label,
             resourceList: this.getIdentifiable(this.assignedResourcesList.resources()), // List of personas
-            onItemRemoveClick: (resourceId: string) => this.assignedResourcesList.onRemove(value.rowId, resourceId), // Callback when remove is clicked
+            onItemRemoveClick: (resourceId: string) => this.assignedResourcesList.onRemove(value!.rowId, resourceId), // Callback when remove is clicked
             showHeaderIfNoData: false,
             maxSearchResults: this.assignedResourcesList.maxResult,
             onItemKeyUp: KeyboardUtils.executeWhenAllowedKeyPressed([KeyCode.DELETE], (resourceId: string) => {
-                this.assignedResourcesList.onRemove(value.rowId, resourceId);
+                this.assignedResourcesList.onRemove(value!.rowId, resourceId);
                 return true;
             })
         };
 
-        const unassignedLists = _(this.unassignedResourcesLists)
-            .filter((unassignedResourcesList: IUnassignedResourcesList) => unassignedResourcesList.isVisible(search))
+        const unassignedLists:IResourceListProps[] = _(this.unassignedResourcesLists)
+            .filter((unassignedResourcesList: IUnassignedResourcesList) => unassignedResourcesList.isVisible(search!))
             .map((unassignedResourceList: IUnassignedResourcesList) => {
                 return {
                     compactMode: false,
                     listHeaderText: unassignedResourceList.label,
                     resourceList: this.getIdentifiable(unassignedResourceList.resources()), // List of personas
-                    onItemClick: (resourceId: string) => unassignedResourceList.onClick(value.rowId, resourceId), // Callback when non team member is clicked
+                    onItemClick: (resourceId: string) => unassignedResourceList.onClick(value!.rowId, resourceId), // Callback when non team member is clicked
                     onItemKeyUp: KeyboardUtils.executeWhenAllowedKeyPressed([KeyCode.ENTER], (resourceId: string) => {
-                        unassignedResourceList.onClick(value.rowId, resourceId);
+                        unassignedResourceList.onClick(value!.rowId, resourceId);
                         return true;
                     }),
                     showHeaderIfNoData: false,
@@ -378,7 +378,7 @@ export class ResourceEditor extends BaseComponent<IResourceEditorProps, IResourc
         }
 
         filterStr = filterStr.toUpperCase();
-        return resource && (resource.text && resource.text.toUpperCase().indexOf(filterStr) !== -1);
+        return !!resource.text && resource.text.toUpperCase().indexOf(filterStr) !== -1;
     }
 
     /**

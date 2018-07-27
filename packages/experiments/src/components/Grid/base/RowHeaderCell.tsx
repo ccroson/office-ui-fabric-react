@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BaseComponent } from '../utilities/BaseComponent';
-import { css } from '@uifabric/utilities/lib-commonjs/css';
+import { css } from '../../../../../utilities/lib-commonjs/css';
 import { RtlUtils } from '../utilities/RtlUtils';
 import { GridTheme } from '../common/Common';
 
@@ -50,7 +50,7 @@ export class RowHeaderCell extends BaseComponent<IRowHeaderCellProps, {}> {
         return 'RowHeaderCell';
     }
 
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode {
         const {
             id,
             children,

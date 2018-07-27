@@ -24,8 +24,8 @@ import { GridThemes } from '../base/Themes';
 import { GridCoordinate, GridMode, GridRegion, GridTheme, SelectionMode, VirtualizationMode } from '../common/Common';
 
 // Utilities
-import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
-import { css, IDictionary } from '@uifabric/utilities/lib-commonjs/css';
+import { autobind } from '../../../../../utilities/lib-commonjs/autobind';
+import { css, IDictionary } from '../../../../../utilities/lib-commonjs/css';
 import { KeyCode } from '../constants/KeyboardConstants';
 import { PropUtils } from '../utilities/PropUtils';
 import { StateManager, SelectionState } from '../managers/StateManager';
@@ -191,7 +191,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
 
         // if the selection mode has changed, reset the selection state
         if (nextProps.selectionMode !== this.props.selectionMode) {
-            this.resetStateManager(selectionMode, hideColumnHeader);
+            this.resetStateManager(selectionMode, !!hideColumnHeader);
         }
 
         if (selectionMode !== ListSelectionMode.None) {
@@ -231,7 +231,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
      * @param extractedCellData The cell data extracted from the rowData using corresponding column definition
      * @param columnWidth The width of the column that this cell is in
      */
-    protected getRenderedElement(cellCoordinate: GridCoordinate, extractedCellData: any, columnWidth: number): JSX.Element | string {
+    protected getRenderedElement(cellCoordinate: GridCoordinate, extractedCellData: any, columnWidth: number): React.ReactNode {
         const {
             selectionState
         } = this.state;
@@ -239,10 +239,10 @@ export class List extends AbstractGrid<IListProps, IListState> {
         const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
 
         const cellDefinition: ICellDefinition = columnDefinition.cell;
-        let renderedElement: JSX.Element | string = null;
+        let renderedElement: React.ReactNode = null;
 
         const cellContext: CellContext = this.getCellContext(cellCoordinate, columnWidth);
-        if (selectionState.mode === GridMode.Select && selectionState.primaryCell.equals(cellCoordinate) && cellDefinition.type.renderSelected) {
+        if (selectionState.mode === GridMode.Select && selectionState.primaryCell && selectionState.primaryCell.equals(cellCoordinate) && cellDefinition.type.renderSelected) {
             renderedElement = cellDefinition.type.renderSelected(extractedCellData, null, cellContext);
         } else {
             renderedElement = cellDefinition.type.render(extractedCellData, cellContext);
@@ -300,7 +300,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
         } = this.state;
 
         super.onCellRightClick(cellCoordinate, event);
-        this.updateFromEvent(event, this.stateManager._handleCellRightClick(selectionState, cellCoordinate));
+        this.updateFromEvent(event, this.stateManager.handleCellRightClick(selectionState, cellCoordinate));
     }
 
     /*-------------------
@@ -322,7 +322,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
         // We could not use onFocus event here, since that would be called on click as well
         // (setting first row as focused before the setting the clicked row as focused, so listening for keyUp to avoid that)
         if (event.keyCode === KeyCode.TAB) {
-            const newState: SelectionState = this.stateManager.handleFocus(selectionState);
+            const newState = this.stateManager.handleFocus(selectionState);
             if (newState) {
                 this.onSelectionStateChanged(newState);
             }
@@ -447,7 +447,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
         };
 
         const row: Object = this.getRowDataAtIndex(rowIndex);
-        return css(cssMapping, PropUtils.getValueFromAccessorWithDefault(null, rowClassName, row));
+        return css(cssMapping, rowClassName ? PropUtils.getValueFromAccessorWithDefault(null, rowClassName, row) : row);
     }
 
     /**
@@ -508,7 +508,7 @@ export class List extends AbstractGrid<IListProps, IListState> {
      */
     private updateFromEvent(
         event: React.SyntheticEvent<HTMLElement>,
-        newState: SelectionState
+        newState: SelectionState | undefined
     ): void {
 
         if (newState) {

@@ -3,7 +3,7 @@ import './InlineAutoCompleteBox.scss';
 import * as React from 'react';
 
 // utilities
-import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
+import { autobind } from '../../../../../../utilities/lib-commonjs/autobind';
 
 /**
  * The props for __InlineAutoCompleteBox
@@ -52,7 +52,7 @@ export class __InlineAutoCompleteBox extends React.PureComponent<IInlineAutoComp
     /**
      * Render a text input with auto completed suggestions
      */
-    public render(): JSX.Element {
+    public render(): React.ReactNode {
         const {
             suggestedValue = '',
             value = ''

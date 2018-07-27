@@ -49,11 +49,11 @@ export class GridRegion {
      * Ex. 1 - 4 => 1 - 4
      */
     private static _absoluteRange(r1: number, r2?: number): RowRange {
-        if (r1 === null) {
+        if (r1 == null) {
             throw new ArgumentNullError('r1', 'Cannot compute absolute range with null arg r1');
         }
 
-        if (r2 === null) {
+        if (r2 == null) {
             r2 = r1;
         }
 
@@ -229,7 +229,7 @@ export class GridRegion {
      * From the current selection and a new cell, compute a fill region.
      * @param cellCoordinate The current moused over cell
      */
-    public getFillRegion(cellCoordinate: GridCoordinate): GridRegion {
+    public getFillRegion(cellCoordinate: GridCoordinate): GridRegion | null {
         if (cellCoordinate === null) {
             throw new ArgumentNullError('cellCoordinate', 'Cannot get fill region from null coordinate');
         }
@@ -296,7 +296,7 @@ export class GridRegion {
     /**
      * Checks to see if two regions are equivalent
      */
-    public equals(other: GridRegion): boolean {
+    public equals(other: GridRegion | null): boolean {
         return other !== null &&
             _.isEqual(other.rowRange, this.rowRange) &&
             _.isEqual(other.columnRange, this.columnRange);

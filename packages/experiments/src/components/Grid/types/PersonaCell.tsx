@@ -30,7 +30,7 @@ export type User = {
  */
 export class PersonaCell implements ICellType {
     /** Validators for use in validating updated data */
-    private validators: ((value: string) => string)[];
+    private validators?: ((value: string) => string)[];
 
     /**
      * Create a new type
@@ -38,9 +38,11 @@ export class PersonaCell implements ICellType {
      */
     constructor(validators?: ((value: string) => string)[]) {
         this.validators = validators;
+
+        this.validators; // fixes "value is never read" error
     }
 
-    public render(cellData: User, context: CellContext): JSX.Element {
+    public render(cellData: User, context: CellContext): React.ReactNode {
         if (cellData) {
             return (
                 <Persona

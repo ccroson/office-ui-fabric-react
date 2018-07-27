@@ -35,7 +35,7 @@ export class MultipleCellStateManager extends StateManager {
      * If column headers are hidden, the first grid cell should be selected
      * @param prevState The previous selection state to transition from
      */
-    public handleFocus(prevState: SelectionState): SelectionState {
+    public handleFocus(prevState: SelectionState): SelectionState | undefined {
         const {
             mode
         } = prevState;
@@ -62,13 +62,13 @@ export class MultipleCellStateManager extends StateManager {
      * If the cell was in Edit mode, exit Edit mode
      * @param prevState The previous selection state to transition from
      */
-    public handleEnter(prevState: SelectionState): SelectionState {
+    public handleEnter(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
-        if (mode === GridMode.Select || mode === GridMode.Edit) {
+        if ((mode === GridMode.Select || mode === GridMode.Edit) && primaryCell) {
             const rowSpan = this.getRowSpan(primaryCell);
             if (primaryCell.rowIndex + (rowSpan - 1) < this.getMaxRowIndex()) {
                 const newPrimaryCell: GridCoordinate = new GridCoordinate(primaryCell.rowIndex + rowSpan, primaryCell.columnIndex);
@@ -92,14 +92,14 @@ export class MultipleCellStateManager extends StateManager {
      * If the cell was in Edit mode, exit Edit mode.
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftEnter(prevState: SelectionState): SelectionState {
+    public handleShiftEnter(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
         if (mode === GridMode.Select || mode === GridMode.Edit) {
-            if (primaryCell.rowIndex > 0) {
+            if (primaryCell && primaryCell.rowIndex > 0) {
                 const newPrimaryCell: GridCoordinate = this.getMappedCell(
                     new GridCoordinate(primaryCell.rowIndex - 1, primaryCell.columnIndex)
                 );
@@ -124,14 +124,14 @@ export class MultipleCellStateManager extends StateManager {
      * If the cell was in Edit mode, exit Edit mode
      * @param prevState The previous selection state to transition from
      */
-    public handleTab(prevState: SelectionState): SelectionState {
+    public handleTab(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
-        if (mode === GridMode.Select || mode === GridMode.Edit) {
-            const newPrimaryCell = this.getNextTabCell(primaryCell);
+        if ((mode === GridMode.Select || mode === GridMode.Edit) && primaryCell) {
+            const newPrimaryCell = this.getNextTabCell(primaryCell)!;
             return this._handleTabHelper(prevState, newPrimaryCell);
         }
     }
@@ -141,14 +141,14 @@ export class MultipleCellStateManager extends StateManager {
      * If the cell was in Edit mode, exit Edit mode
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftTab(prevState: SelectionState): SelectionState {
+    public handleShiftTab(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
-        if (mode === GridMode.Select || mode === GridMode.Edit) {
-            const newPrimaryCell = this.getPreviousTabCell(primaryCell);
+        if ((mode === GridMode.Select || mode === GridMode.Edit) && primaryCell) {
+            const newPrimaryCell = this.getPreviousTabCell(primaryCell)!;
             return this._handleTabHelper(prevState, newPrimaryCell);
         }
     }
@@ -157,17 +157,17 @@ export class MultipleCellStateManager extends StateManager {
      * The Home key should select the first selectable cell in the row
      * @param prevState The previous selection state to transition from
      */
-    public handleHome(prevState: SelectionState): SelectionState {
+    public handleHome(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell,
             selections
         } = prevState;
 
-        if (mode === GridMode.Select && selections.length === 1) {
+        if (mode === GridMode.Select && selections.length === 1 && primaryCell) {
             const minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
             if (minSelectableColumnIndex !== -1) {
-                const selection: GridRegion = this._getPrimarySelection(prevState);
+                const selection: GridRegion = this._getPrimarySelection(prevState)!;
                 const alreadyHome: boolean = primaryCell.columnIndex === minSelectableColumnIndex;
                 if (!alreadyHome || !selection.isSingleCell()) {
                     const newPrimaryCell: GridCoordinate = this.getMappedCell(
@@ -188,17 +188,17 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Home shortcut should select the first selectable cell in the Grid
      * @param prevState The previous selection state to transition from
      */
-    public handleControlHome(prevState: SelectionState): SelectionState {
+    public handleControlHome(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell,
             selections
         } = prevState;
 
-        if (mode === GridMode.Select && selections.length === 1) {
+        if (mode === GridMode.Select && selections.length === 1 && primaryCell) {
             const minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
             if (minSelectableColumnIndex !== -1) {
-                const selection: GridRegion = this._getPrimarySelection(prevState);
+                const selection: GridRegion = this._getPrimarySelection(prevState)!;
                 const alreadyHome: boolean = primaryCell.rowIndex === 0 && primaryCell.columnIndex === minSelectableColumnIndex;
                 if (!alreadyHome || !selection.isSingleCell()) {
                     const newPrimaryCell: GridCoordinate = new GridCoordinate(0, minSelectableColumnIndex);
@@ -217,7 +217,7 @@ export class MultipleCellStateManager extends StateManager {
      * selectable cell in the row.
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftHome(prevState: SelectionState): SelectionState {
+    public handleShiftHome(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             selections
@@ -225,7 +225,7 @@ export class MultipleCellStateManager extends StateManager {
 
         if (mode === GridMode.Select && selections.length === 1) {
             const minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
-            const selection: GridRegion = this._getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState)!;
             if (minSelectableColumnIndex !== -1 && selection.secondaryCoordinate.columnIndex !== minSelectableColumnIndex) {
                 const newSecondaryCoordinate: GridCoordinate =
                     new GridCoordinate(selection.secondaryCoordinate.rowIndex, minSelectableColumnIndex);
@@ -246,7 +246,7 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Shift + Home should move the end of the selection to the first cell
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftHome(prevState: SelectionState): SelectionState {
+    public handleControlShiftHome(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             selections
@@ -254,7 +254,7 @@ export class MultipleCellStateManager extends StateManager {
 
         if (mode === GridMode.Select && selections.length === 1) {
             const minSelectableColumnIndex: number = this.getMinSelectableColumnIndex();
-            const selection: GridRegion = this._getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState)!;
             const secondaryCoordinate: GridCoordinate = selection.secondaryCoordinate;
             if (minSelectableColumnIndex !== -1 && (secondaryCoordinate.rowIndex !== 0 ||
                 secondaryCoordinate.columnIndex !== minSelectableColumnIndex)) {
@@ -275,18 +275,18 @@ export class MultipleCellStateManager extends StateManager {
      * The End key should select the last selectable cell in the row
      * @param prevState The previous selection state to transition from
      */
-    public handleEnd(prevState: SelectionState): SelectionState {
+    public handleEnd(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell,
             selections
         } = prevState;
 
-        if (mode === GridMode.Select && selections.length === 1) {
+        if (mode === GridMode.Select && selections.length === 1 && primaryCell) {
             const maxSelectableColumnIndex: number = this.getMaxSelectableColumnIndex();
             if (maxSelectableColumnIndex !== -1) {
                 const alreadyEnd: boolean = primaryCell.columnIndex === maxSelectableColumnIndex;
-                const selection: GridRegion = this._getPrimarySelection(prevState);
+                const selection: GridRegion = this._getPrimarySelection(prevState)!;
                 if (!alreadyEnd || !selection.isSingleCell()) {
                     const newPrimaryCell: GridCoordinate = this.getMappedCell(
                         new GridCoordinate(primaryCell.rowIndex, maxSelectableColumnIndex, primaryCell.isColumnHeaderCell)
@@ -306,19 +306,19 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + End shortcut should select the last selectable cell in the Grid
      * @param prevState The previous selection state to transition from
      */
-    public handleControlEnd(prevState: SelectionState): SelectionState {
+    public handleControlEnd(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell,
             selections
         } = prevState;
 
-        if (mode === GridMode.Select && selections.length === 1) {
+        if (mode === GridMode.Select && selections.length === 1 && primaryCell) {
             const maxSelectableColumnIndex: number = this.getMaxSelectableColumnIndex();
             if (maxSelectableColumnIndex !== -1) {
                 const maxRowIndex: number = this.getMaxRowIndex();
                 const alreadyEnd: boolean = primaryCell.rowIndex === maxRowIndex && primaryCell.columnIndex === maxSelectableColumnIndex;
-                const selection: GridRegion = this._getPrimarySelection(prevState);
+                const selection: GridRegion = this._getPrimarySelection(prevState)!;
 
                 if (!alreadyEnd || !selection.isSingleCell()) {
                     const newPrimaryCell: GridCoordinate = this.getMappedCell(
@@ -340,7 +340,7 @@ export class MultipleCellStateManager extends StateManager {
      * selectable cell in the row
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftEnd(prevState: SelectionState): SelectionState {
+    public handleShiftEnd(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             selections
@@ -348,7 +348,7 @@ export class MultipleCellStateManager extends StateManager {
 
         if (mode === GridMode.Select && selections.length === 1) {
             const maxSelectableColumnIndex: number = this.getMaxSelectableColumnIndex();
-            const selection: GridRegion = this._getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState)!;
             const secondaryCoordinate: GridCoordinate = selection.secondaryCoordinate;
 
             if (maxSelectableColumnIndex !== -1 && secondaryCoordinate.columnIndex !== maxSelectableColumnIndex) {
@@ -370,7 +370,7 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Shift + End should move the end of the selection to the last cell
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftEnd(prevState: SelectionState): SelectionState {
+    public handleControlShiftEnd(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             selections
@@ -379,7 +379,7 @@ export class MultipleCellStateManager extends StateManager {
         if (mode === GridMode.Select && selections.length === 1) {
             const maxRowIndex: number = this.getMaxRowIndex();
             const maxSelectableColumnIndex: number = this.getMaxSelectableColumnIndex();
-            const selection: GridRegion = this._getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState)!;
             const secondaryCoordinate: GridCoordinate = selection.secondaryCoordinate;
 
             if (maxSelectableColumnIndex !== -1 && (secondaryCoordinate.rowIndex !== maxRowIndex ||
@@ -401,13 +401,13 @@ export class MultipleCellStateManager extends StateManager {
      * The Left arrow key should select the previous cell in the row
      * @param prevState The previous selection state to transition from
      */
-    public handleLeft(prevState: SelectionState): SelectionState {
+    public handleLeft(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
-        if (mode === GridMode.Select) {
+        if (mode === GridMode.Select && primaryCell) {
             const newPrimaryCell = this.getPreviousTabCell(primaryCell);
 
             if (newPrimaryCell) {
@@ -425,7 +425,7 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Left shortcut should behave the same as the Home shortcut
      * @param prevState The previous selection state to transition from
      */
-    public handleControlLeft(prevState: SelectionState): SelectionState {
+    public handleControlLeft(prevState: SelectionState): SelectionState | undefined {
         return this.handleHome(prevState);
     }
 
@@ -433,14 +433,14 @@ export class MultipleCellStateManager extends StateManager {
      * The Shift + Left shortcut should expand (or collapse) the selection in the Left direction
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftLeft(prevState: SelectionState): SelectionState {
+    public handleShiftLeft(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             selections
         } = prevState;
 
         if (mode === GridMode.Select && selections.length === 1) {
-            const selection: GridRegion = this._getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState)!;
             if (selection.secondaryCoordinate.columnIndex > 0 &&
                 this.isColumnSelectable(selection.secondaryCoordinate.columnIndex - 1)) {
                 const newSecondaryCoordinate: GridCoordinate = new
@@ -461,7 +461,7 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Shift + Left shortcut should behave the same as the Shift + Home shortcut
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftLeft(prevState: SelectionState): SelectionState {
+    public handleControlShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return this.handleShiftHome(prevState);
     }
 
@@ -469,7 +469,7 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Shift + Left shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleAltShiftLeft(prevState: SelectionState): SelectionState {
+    public handleAltShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -477,18 +477,17 @@ export class MultipleCellStateManager extends StateManager {
      * The Right arrow key should select the next cell in the row
      * @param prevState The previous selection state to transition from
      */
-    public handleRight(prevState: SelectionState): SelectionState {
+    public handleRight(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
-        if (mode === GridMode.Select) {
-            const newSelection: GridRegion;
+        if (mode === GridMode.Select && primaryCell) {
             const newPrimaryCell = this.getNextTabCell(primaryCell);
 
             if (newPrimaryCell) {
-                newSelection = new GridRegion(newPrimaryCell);
+                const newSelection = new GridRegion(newPrimaryCell);
                 return {
                     ...prevState,
                     primaryCell: newPrimaryCell,
@@ -502,7 +501,7 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Right shortcut should behave the same as the End shortcut
      * @param prevState The previous selection state to transition from
      */
-    public handleControlRight(prevState: SelectionState): SelectionState {
+    public handleControlRight(prevState: SelectionState): SelectionState | undefined {
         return this.handleEnd(prevState);
     }
 
@@ -510,7 +509,7 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Shift + Right shortcut should behave the same as the Shift + End shortcut
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftRight(prevState: SelectionState): SelectionState {
+    public handleControlShiftRight(prevState: SelectionState): SelectionState | undefined {
         return this.handleShiftEnd(prevState);
     }
 
@@ -518,7 +517,7 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Shift + Right shortcut has no function
      * @param prevState The previous selection state to transition from
      */
-    public handleAltShiftRight(prevState: SelectionState): SelectionState {
+    public handleAltShiftRight(prevState: SelectionState): SelectionState | undefined {
         return;
     }
 
@@ -526,14 +525,14 @@ export class MultipleCellStateManager extends StateManager {
      * The Shift + Right shortcut should expand (or collapse) the selection in the Right direction
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftRight(prevState: SelectionState): SelectionState {
+    public handleShiftRight(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             selections
         } = prevState;
 
         if (mode === GridMode.Select && selections.length === 1) {
-            const selection: GridRegion = this._getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState)!;
             if (selection.secondaryCoordinate.columnIndex < this.getMaxColumnIndex() &&
                 this.isColumnSelectable(selection.secondaryCoordinate.columnIndex + 1)) {
                     const newSecondaryCoordinate: GridCoordinate = new
@@ -554,13 +553,13 @@ export class MultipleCellStateManager extends StateManager {
      * The Down key should select the next cell in the column
      * @param prevState The previous selection state to transition from
      */
-    public handleDown(prevState: SelectionState): SelectionState {
+    public handleDown(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
-        if (mode === GridMode.Select) {
+        if (mode === GridMode.Select && primaryCell) {
             const rowSpan = this.getRowSpan(primaryCell);
             if (primaryCell.rowIndex + (rowSpan - 1) < this.getMaxRowIndex()) {
                 const newPrimaryCell: GridCoordinate = new GridCoordinate(primaryCell.rowIndex + rowSpan, primaryCell.columnIndex);
@@ -579,13 +578,13 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Down shortcut should select the last cell in the column
      * @param prevState The previous selection state to transition from
      */
-    public handleControlDown(prevState: SelectionState): SelectionState {
+    public handleControlDown(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
-        if (mode === GridMode.Select) {
+        if (mode === GridMode.Select && primaryCell) {
             const maxRowIndex = this.getMaxRowIndex();
             const rowSpan = this.getRowSpan(primaryCell);
             if (primaryCell.rowIndex + (rowSpan - 1) !== maxRowIndex) {
@@ -607,14 +606,14 @@ export class MultipleCellStateManager extends StateManager {
      * The Shift + Down shortcut should expand (or collapse) the selection in the Down direction
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftDown(prevState: SelectionState): SelectionState {
+    public handleShiftDown(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             selections
         } = prevState;
 
-        if (mode === GridMode.Select && selections.length === 1 && !prevState.primaryCell.isColumnHeaderCell) {
-            const selection: GridRegion = this._getPrimarySelection(prevState);
+        if (mode === GridMode.Select && selections.length === 1 && prevState.primaryCell && !prevState.primaryCell.isColumnHeaderCell) {
+            const selection: GridRegion = this._getPrimarySelection(prevState)!;
             if (selection.secondaryCoordinate.rowIndex < this.getMaxRowIndex()) {
                 const newSecondaryCoordinate: GridCoordinate = new
                 GridCoordinate(selection.secondaryCoordinate.rowIndex + 1, selection.secondaryCoordinate.columnIndex);
@@ -636,7 +635,7 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Shift + Down shortcut should move the end of the selection to the last cell in the column
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftDown(prevState: SelectionState): SelectionState {
+    public handleControlShiftDown(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             selections
@@ -644,7 +643,7 @@ export class MultipleCellStateManager extends StateManager {
 
         if (mode === GridMode.Select && selections.length === 1) {
             const maxRowIndex = this.getMaxRowIndex();
-            const selection: GridRegion = this._getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState)!;
             const secondaryCoordinate: GridCoordinate = selection.secondaryCoordinate;
             const rowSpan = this.getRowSpan(secondaryCoordinate);
             if (secondaryCoordinate.rowIndex + (rowSpan - 1) !== maxRowIndex) {
@@ -662,13 +661,13 @@ export class MultipleCellStateManager extends StateManager {
      * The Up arrow key should select the previous cell in the column
      * @param prevState The previous selection state to transition from
      */
-    public handleUp(prevState: SelectionState): SelectionState {
+    public handleUp(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
-        if (mode === GridMode.Select) {
+        if (mode === GridMode.Select && primaryCell) {
             let newPrimaryCell: GridCoordinate = primaryCell;
             let newSelection: GridRegion;
 
@@ -697,13 +696,13 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Up shortcut should select the first cell in the current column
      * @param prevState The previous selection state to transition from
      */
-    public handleControlUp(prevState: SelectionState): SelectionState {
+    public handleControlUp(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
-        if (mode === GridMode.Select) {
+        if (mode === GridMode.Select && primaryCell) {
             if (primaryCell.rowIndex !== 0) {
                 const newPrimaryCell: GridCoordinate = new GridCoordinate(0, primaryCell.columnIndex);
                 const newSelection: GridRegion = new GridRegion(newPrimaryCell);
@@ -721,14 +720,14 @@ export class MultipleCellStateManager extends StateManager {
      * The Shift + Up shortcut should expand (or collapse) the selection in the Up direction
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftUp(prevState: SelectionState): SelectionState {
+    public handleShiftUp(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             selections
         } = prevState;
 
         if (mode === GridMode.Select && selections.length === 1) {
-            const selection: GridRegion = this._getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState)!;
             if (selection.secondaryCoordinate.rowIndex > 0) {
                 const newSecondaryCoordinate: GridCoordinate = new
                 GridCoordinate(selection.secondaryCoordinate.rowIndex - 1, selection.secondaryCoordinate.columnIndex);
@@ -750,14 +749,14 @@ export class MultipleCellStateManager extends StateManager {
      * The Control + Shift + Down shortcut should move the end of the selection to the last cell in the column
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftUp(prevState: SelectionState): SelectionState {
+    public handleControlShiftUp(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             selections
         } = prevState;
 
         if (mode === GridMode.Select && selections.length === 1) {
-            const selection: GridRegion = this._getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState)!;
             const secondaryCoordinate: GridCoordinate = selection.secondaryCoordinate;
             if (secondaryCoordinate.rowIndex !== 0) {
                 const newSecondaryCoordinate: GridCoordinate = new GridCoordinate(0, secondaryCoordinate.columnIndex);
@@ -779,7 +778,7 @@ export class MultipleCellStateManager extends StateManager {
      * @param prevState The previous selection state to transition from
      * @param target The pressed cell
      */
-    public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         let newPrimaryCell: GridCoordinate;
         let mode: GridMode;
 
@@ -818,13 +817,13 @@ export class MultipleCellStateManager extends StateManager {
      * @param prevState The previous selection state to transition from
      * @param target The pressed cell
      */
-    public handleShiftCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleShiftCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         const {
             mode
         } = prevState;
 
         if (this.isColumnSelectable(target.columnIndex) && mode !== GridMode.None) {
-            const updatedSelections: GridRegion[] = this._expandPrimarySelection(prevState, target);
+            const updatedSelections = this._expandPrimarySelection(prevState, target);
             if (updatedSelections) {
                 return {
                     ...prevState,
@@ -840,7 +839,7 @@ export class MultipleCellStateManager extends StateManager {
      * @param prevState The previous selection state to transition from
      * @param target The pressed cell
      */
-    public handleControlCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleControlCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         const {
             selections
         } = prevState;
@@ -868,7 +867,7 @@ export class MultipleCellStateManager extends StateManager {
      * @param prevState The previous selection state to transition from
      * @param target The moused enter cell
      */
-    public handleCellMouseEnter(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleCellMouseEnter(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         const {
             fillSelection,
             mode,
@@ -878,7 +877,7 @@ export class MultipleCellStateManager extends StateManager {
         if (mode === GridMode.Selecting) {
             if (this.isColumnSelectable(target.columnIndex)) {
 
-                const updatedSelections: GridRegion[] = this._expandPrimarySelection(prevState, target);
+                const updatedSelections = this._expandPrimarySelection(prevState, target);
                 if (updatedSelections) {
                     return {
                         ...prevState,
@@ -887,7 +886,7 @@ export class MultipleCellStateManager extends StateManager {
                 }
             }
         } else if (mode === GridMode.Filling && selections.length === 1) {
-            const selection: GridRegion = this._getPrimarySelection(prevState);
+            const selection: GridRegion = this._getPrimarySelection(prevState)!;
             const newFillSelection = selection.getFillRegion(target);
             // if newFillSelection is null and fillSelection is not, we need to set the fillSelection to null
             if (newFillSelection !== fillSelection || (newFillSelection && !newFillSelection.equals(fillSelection))) {
@@ -900,7 +899,7 @@ export class MultipleCellStateManager extends StateManager {
     }
 
     /** Handle the event when a Cell is right clicked */
-    public handleCellRightClick(prevState: SelectionState, target: GridCoordinate): SelectionState {
+    public handleCellRightClick(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
         const {
             mode,
             primaryCell
@@ -920,7 +919,7 @@ export class MultipleCellStateManager extends StateManager {
         }
     }
 
-    private _handleTabHelper(prevState: SelectionState, newPrimaryCell: GridCoordinate): SelectionState {
+    private _handleTabHelper(prevState: SelectionState, newPrimaryCell: GridCoordinate): SelectionState | undefined {
         if (newPrimaryCell) {
             return {
                 ...prevState,
@@ -942,7 +941,8 @@ export class MultipleCellStateManager extends StateManager {
             selections
         } = selectionState;
 
-        return _.find(selections, (selection: GridRegion) => selection.isCellInRegion(primaryCell));
+        if (primaryCell)
+            return _.find(selections, (selection: GridRegion) => selection.isCellInRegion(primaryCell));
     }
 
     /**
@@ -951,7 +951,7 @@ export class MultipleCellStateManager extends StateManager {
      * @param target The target cell
      * @returns an array of new selection, if there is no overlap, otherwise retuns null
      */
-    private _expandPrimarySelection(prevState: SelectionState, target: GridCoordinate): GridRegion[] {
+    private _expandPrimarySelection(prevState: SelectionState, target: GridCoordinate): GridRegion[] | null {
         const {
             primaryCell,
             selections
@@ -960,6 +960,8 @@ export class MultipleCellStateManager extends StateManager {
         // If this cell is mapped, get the mapped cell
         target = this.getMappedCell(target);
 
+        if (!primaryCell)
+            return null;
         const newSelection: GridRegion = this.getRectangularSelection(
             new GridRegion(primaryCell, target)
         );

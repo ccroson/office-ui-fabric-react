@@ -111,7 +111,7 @@ export namespace RtlUtils {
    */
   export function setRTLSafeBorderLeft(
     cssProperties: React.CSSProperties,
-    borderWidth: number,
+    borderWidth: number | null,
     borderStyle:
       | '-moz-initial'
       | 'inherit'
@@ -127,7 +127,8 @@ export namespace RtlUtils {
       | 'none'
       | 'outset'
       | 'ridge'
-      | 'solid',
+      | 'solid'
+      | null,
     borderColor: string
   ): void {
     'use strict';
@@ -148,7 +149,7 @@ export namespace RtlUtils {
    */
   export function setRTLSafeBorderRight(
     cssProperties: React.CSSProperties,
-    borderWidth: number,
+    borderWidth: number | null,
     borderStyle:
       | '-moz-initial'
       | 'inherit'
@@ -164,7 +165,8 @@ export namespace RtlUtils {
       | 'none'
       | 'outset'
       | 'ridge'
-      | 'solid',
+      | 'solid'
+      | null,
     borderColor: string
   ): void {
     'use strict';
@@ -177,7 +179,7 @@ export namespace RtlUtils {
 
   function setBorderLeft(
     cssProperties: React.CSSProperties,
-    borderWidth: number,
+    borderWidth: number | null,
     borderStyle:
       | '-moz-initial'
       | 'inherit'
@@ -193,7 +195,8 @@ export namespace RtlUtils {
       | 'none'
       | 'outset'
       | 'ridge'
-      | 'solid',
+      | 'solid'
+      | null,
     borderColor: string
   ): void {
     'use strict';
@@ -214,7 +217,7 @@ export namespace RtlUtils {
 
   function setBorderRight(
     cssProperties: React.CSSProperties,
-    borderWidth: number,
+    borderWidth: number | null,
     borderStyle:
       | '-moz-initial'
       | 'inherit'
@@ -230,7 +233,8 @@ export namespace RtlUtils {
       | 'none'
       | 'outset'
       | 'ridge'
-      | 'solid',
+      | 'solid'
+      | null,
     borderColor: string
   ): void {
     'use strict';

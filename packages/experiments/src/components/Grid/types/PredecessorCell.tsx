@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ICellType, CellContext } from '../grid/Grid';
 import { GridAction } from '../actions/GridActions';
 import { ITag } from '../editors/predecessorEditor/GridTagPicker';
-import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
+import { autobind } from '../../../../../utilities/lib-commonjs/autobind';
 import { PredecessorEditor } from '../editors/predecessorEditor/PredecessorEditor';
 
 /**
@@ -40,7 +40,7 @@ export class PredecessorCell implements ICellType {
     /**
      * Given the cell data, return a rendered JSX.Element. Use this for custom controls
      */
-    public render(cellData: PredecessorCellData, context: CellContext): string {
+    public render(cellData: PredecessorCellData, context: CellContext): React.ReactNode {
         if (context.inFooterRow) {
             return;
         }
@@ -65,7 +65,7 @@ export class PredecessorCell implements ICellType {
         onEditCancelled: () => void,
         onEditConfirmed: (finalValue: string) => void,
         context: CellContext
-    ): JSX.Element {
+    ): React.ReactNode {
         if (context.inFooterRow) {
             return;
         }
@@ -92,7 +92,7 @@ export class PredecessorCell implements ICellType {
      */
     @autobind
     public parseRawInput(originalValue: string, changedValue: any): string {
-        return null;
+        return null!;
     }
 
 }

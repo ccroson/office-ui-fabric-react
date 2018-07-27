@@ -12,8 +12,8 @@ export class DateStrings implements IDatePickerStrings {
     public days: string[];
     public shortDays: string[];
     public goToToday: string;
-    public prevMonthAriaLabel: string;
-    public nextMonthAriaLabel: string;
+    public prevMonthAriaLabel?: string;
+    public nextMonthAriaLabel?: string;
 
     constructor(todayLabel: string, prevMonthAriaLabel?: string, nextMonthAriaLabel?: string) {
         this.months = moment.months();

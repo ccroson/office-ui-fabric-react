@@ -4,22 +4,23 @@ import * as _ from 'lodash';
 import * as React from 'react';
 
 // Components
-import { BaseComponent } from '../../utilities/BaseComponent';
-import { ResourceList, IResourceListProps } from './ResourceList';
-import { SearchBox, ISearchBox } from 'office-ui-fabric-react/lib-commonjs/SearchBox';
+import {BaseComponent} from '../../utilities/BaseComponent';
+import {ResourceList, IResourceListProps} from './ResourceList';
+import {SearchBox, ISearchBox} from 'office-ui-fabric-react/lib-commonjs/SearchBox';
 
 // Constants
-import { KeyCode } from '../../constants/KeyboardConstants';
+import {KeyCode} from '../../constants/KeyboardConstants';
 
 // Models
-import { Identifiable } from './Identifiable';
-import { IPersonaProps } from 'office-ui-fabric-react/lib-commonjs/components/Persona/index';
+import {Identifiable} from './Identifiable';
+import {IPersonaProps} from 'office-ui-fabric-react/lib-commonjs/components/Persona/index';
 
-export interface IPeoplePickerProps {
+export interface IPeoplePickerProps
+{
     /** Resource lists to display */
     resourceLists: IResourceListProps[];
     /** Search value to pre-populate search box */
-    searchValue?: string;
+    searchValue?: string | null;
     /** Minimum search box entry length before calling search function */
     searchBoxMinimumSearchableLength?: number;
     /** Text to display when there are no results returned from search */
@@ -53,12 +54,14 @@ export interface IPeoplePickerProps {
     ) => Identifiable<IPersonaProps>;
 }
 
-export interface IPeoplePickerState {
+export interface IPeoplePickerState
+{
     /** Current value of the searchBox control */
     searchBoxText: string;
     /** SearchBoxText is ready for use as a search filter */
     isSearchFilterTextReady: boolean;
 }
+
 /**
  * The default minimum searchable length for search box.
  */
@@ -72,7 +75,8 @@ export const DEFAULT_SEARCH_DELAY = 500;
 /**
  * Component to allow searching and choosing people from various buckets.
  */
-export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePickerState> {
+export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePickerState>
+{
     public static defaultProps = {
         searchBoxMinimumSearchableLength: DEFAULT_MIN_SEARCHABLE_LENGTH,
         searchBoxResponseDelayTime: DEFAULT_SEARCH_DELAY,
@@ -92,7 +96,8 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
     // Number of resources found by filtered search
     private filteredResourceListCount: number;
 
-    constructor(props: IPeoplePickerProps, context?: any) {
+    constructor(props: IPeoplePickerProps, context?: any)
+    {
         super(props, context);
 
         // initialize state
@@ -105,15 +110,19 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
     /**
      * React lifecycle hook that runs once immediately prior to first render.
      */
-    public componentWillMount(): void {
-        this.onFilter(this.props.searchValue);
+    public componentWillMount(): void
+    {
+        const {searchValue} = this.props;
+        this.onFilter(searchValue === undefined ? null : searchValue);
     }
 
     /**
      * React lifecycle hook that runs once immediately after first render.
      */
-    public componentDidMount(): void {
-        if (this.props.shouldFocusOnMount && this.textInput != null) {
+    public componentDidMount(): void
+    {
+        if (this.props.shouldFocusOnMount && this.textInput != null)
+        {
             this.textInput.focus();
         }
     }
@@ -121,11 +130,13 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
     /**
      * Name of the component
      */
-    public name(): string {
+    public name(): string
+    {
         return 'PeoplePicker';
     }
 
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode
+    {
         const {
             filterBoxPlaceholderText = PeoplePicker.defaultProps.filterBoxPlaceholderText,
             resourceLists,
@@ -133,30 +144,30 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
             searchBoxNoResultsText,
             searchedResourcesFetched
         } = this.props;
-        const { searchBoxText } = this.state;
+        const {searchBoxText} = this.state;
 
         let resourceListKeys = 0;
         this.filteredResourceListCount = 0;
         return (
-            <div className="peoplePicker" ref={ this.resolveRef(this, 'root') } onKeyUp={ this.onKeyUp }>
+            <div className="peoplePicker" ref={this.resolveRef(this, 'root')} onKeyUp={this.onKeyUp}>
                 <SearchBox
-                    { ...{ autofocus: true } }
-                    componentRef={ this.resolveRef(this, 'textInput') }
-                    placeholder={ filterBoxPlaceholderText }
-                    onChange={ _.throttle(this.onFilter, searchBoxResponseDelayTime) }
-                    value={ searchBoxText }
-                    onFocus={ this.moveCursorEnd }
+                    {...{autofocus: true}}
+                    componentRef={this.resolveRef(this, 'textInput')}
+                    placeholder={filterBoxPlaceholderText}
+                    onChange={_.throttle(this.onFilter, searchBoxResponseDelayTime)}
+                    value={searchBoxText}
+                    onFocus={this.moveCursorEnd}
                 />
                 <div className="peoplePicker-results">
                     <div className="peoplePicker-resultGroups">
-                        { _.map(resourceLists, (resourceListGroup: IResourceListProps) =>
+                        {_.map(resourceLists, (resourceListGroup: IResourceListProps) =>
                             this.renderResourceGroup(resourceListGroup, resourceListKeys++)
-                        ) }
+                        )}
                     </div>
                 </div>
                 {
                     this.filteredResourceListCount === 0 && searchedResourcesFetched &&
-                    <div className="peoplePicker-noresults">{ searchBoxNoResultsText }</div>
+                    <div className="peoplePicker-noresults">{searchBoxNoResultsText}</div>
                 }
             </div>
         );
@@ -167,30 +178,33 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
      * @param resourceListGroup The group data
      * @param resourceIndex The index of the group
      */
-    private renderResourceGroup(resourceListGroup: IResourceListProps, resourceIndex: number): JSX.Element {
-        if (!resourceListGroup) {
+    private renderResourceGroup(resourceListGroup: IResourceListProps, resourceIndex: number): React.ReactNode
+    {
+        if (!resourceListGroup)
+        {
             return;
         }
 
         const filteredResourceList: Identifiable<IPersonaProps>[] = this.restrictGroupResults(resourceListGroup);
 
         // Check if search has results
-        if (filteredResourceList) {
+        if (filteredResourceList)
+        {
             this.filteredResourceListCount += filteredResourceList.length;
         }
 
         return (
             <ResourceList
-                key={ resourceIndex }
-                compactMode={ resourceListGroup.compactMode }
-                listHeaderText={ resourceListGroup.listHeaderText }
-                resourceList={ filteredResourceList }
-                maxSearchResults={ resourceListGroup.maxSearchResults }
-                resourceAriaLabel={ resourceListGroup.resourceAriaLabel }
-                showHeaderIfNoData={ resourceListGroup.showHeaderIfNoData }
-                onItemClick={ this.curriedOnItemClick(resourceListGroup) }
-                onItemRemoveClick={ this.curriedOnItemRemoveClick(resourceListGroup) }
-                onItemKeyUp={ this.curriedOnItemKeyUp(resourceListGroup) }
+                key={resourceIndex}
+                compactMode={resourceListGroup.compactMode}
+                listHeaderText={resourceListGroup.listHeaderText}
+                resourceList={filteredResourceList}
+                maxSearchResults={resourceListGroup.maxSearchResults}
+                resourceAriaLabel={resourceListGroup.resourceAriaLabel}
+                showHeaderIfNoData={resourceListGroup.showHeaderIfNoData}
+                onItemClick={this.curriedOnItemClick(resourceListGroup)}
+                onItemRemoveClick={this.curriedOnItemRemoveClick(resourceListGroup)}
+                onItemKeyUp={this.curriedOnItemKeyUp(resourceListGroup)}
             />
         );
     }
@@ -201,7 +215,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
      * @returns {(resourceId: string) => void} the event handler
      */
     private curriedOnItemClick = (resourceListGroup: IResourceListProps) =>
-        resourceListGroup.onItemClick && ((resourceId: string) => this.clearSearchAndExecute(resourceListGroup.onItemClick, resourceId));
+        resourceListGroup.onItemClick && ((resourceId: string) => this.clearSearchAndExecute(resourceListGroup.onItemClick!, resourceId));
 
     /**
      * Returns handler for resource remove click
@@ -210,7 +224,7 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
      */
     private curriedOnItemRemoveClick = (resourceListGroup: IResourceListProps) =>
         resourceListGroup.onItemRemoveClick &&
-        ((resourceId: string) => this.clearSearchAndExecute(resourceListGroup.onItemRemoveClick, resourceId));
+        ((resourceId: string) => this.clearSearchAndExecute(resourceListGroup.onItemRemoveClick!, resourceId));
 
     /**
      * Returns handler for resource text change.
@@ -220,7 +234,8 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
     private curriedOnItemKeyUp = (resourceListGroup: IResourceListProps) =>
         resourceListGroup.onItemKeyUp &&
         ((ev: React.KeyboardEvent<HTMLElement>, resourceId: string) =>
-            this.clearSearchOnExecute((ev, resourceId) => resourceListGroup.onItemKeyUp(ev, resourceId), ev, resourceId));
+            this.clearSearchOnExecute((ev, resourceId) => resourceListGroup.onItemKeyUp!(ev, resourceId), ev, resourceId));
+
     /**
      * Invokes action then, if action returns true, clears search filter and box text for next search
      * else leaves state and active element the same
@@ -232,13 +247,16 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
         action: (ev: React.KeyboardEvent<HTMLElement>, ...args: any[]) => boolean,
         ev: React.KeyboardEvent<HTMLElement>,
         resourceId: string
-    ): boolean {
+    ): boolean
+    {
         const success: boolean = action(ev, resourceId);
-        if (success) {
-            if (this.textInput != null) {
+        if (success)
+        {
+            if (this.textInput != null)
+            {
                 this.textInput.focus();
             }
-            this.setState({ searchBoxText: '', isSearchFilterTextReady: false });
+            this.setState({searchBoxText: '', isSearchFilterTextReady: false});
         }
         return success;
     }
@@ -249,11 +267,13 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
      * @param {(resourceId: string) => void} action Action to be called after filter is cleared
      * @param {string} resourceId Id of the resource to pass to the action function
      */
-    private clearSearchAndExecute(action: (resourceId: string) => void, resourceId: string) {
-        if (this.textInput != null) {
+    private clearSearchAndExecute(action: (resourceId: string) => void, resourceId: string)
+    {
+        if (this.textInput != null)
+        {
             this.textInput.focus();
         }
-        this.setState({ searchBoxText: '', isSearchFilterTextReady: false });
+        this.setState({searchBoxText: '', isSearchFilterTextReady: false});
         action(resourceId);
     }
 
@@ -261,9 +281,10 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
      * Restrict data for group based on group settings
      * @param resourceListGroup Resources in group
      */
-    private restrictGroupResults(resourceListGroup: IResourceListProps): Identifiable<IPersonaProps>[] {
-        const { onFilterMapResults } = this.props;
-        const { isSearchFilterTextReady, searchBoxText } = this.state;
+    private restrictGroupResults(resourceListGroup: IResourceListProps): Identifiable<IPersonaProps>[]
+    {
+        const {onFilterMapResults} = this.props;
+        const {isSearchFilterTextReady, searchBoxText} = this.state;
 
         // Don't show anything if this group should be suppressed until search is performed.
         let filteredResourceList: Identifiable<IPersonaProps>[] = !resourceListGroup.suppressDataDisplayUntilSearch
@@ -272,17 +293,21 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
 
         const onFilter = this.curriedOnFilter(searchBoxText);
 
-        if (isSearchFilterTextReady) {
-            if (searchBoxText.trim() !== '') {
+        if (isSearchFilterTextReady)
+        {
+            if (searchBoxText.trim() !== '')
+            {
                 filteredResourceList = onFilter ? _.filter(resourceListGroup.resourceList, onFilter) : resourceListGroup.resourceList;
 
-                if (resourceListGroup.maxSearchResults) {
+                if (resourceListGroup.maxSearchResults)
+                {
                     filteredResourceList = _.take(filteredResourceList, resourceListGroup.maxSearchResults);
                 }
             }
 
             // If a mapping function is received, it will be applied to all the elements.
-            if (onFilterMapResults) {
+            if (onFilterMapResults)
+            {
                 filteredResourceList = _.map(filteredResourceList, onFilterMapResults);
             }
         }
@@ -298,9 +323,11 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
      */
     private curriedOnFilter(
         searchText: string
-    ): (resource: Identifiable<IPersonaProps>, index: number, resourceList: Identifiable<IPersonaProps>[]) => boolean {
-        const { onFilter } = this.props;
-        if (onFilter) {
+    ): ((resource: Identifiable<IPersonaProps>, index: number, resourceList: Identifiable<IPersonaProps>[]) => boolean) | undefined
+    {
+        const {onFilter} = this.props;
+        if (onFilter)
+        {
             return (resource: Identifiable<IPersonaProps>, index: number, resourceList: Identifiable<IPersonaProps>[]): boolean => {
                 return onFilter(searchText, resource, index, resourceList);
             };
@@ -312,27 +339,30 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
      * Handles filter text updates
      * @param newValue The updated filter value
      */
-    private onFilter = (newValue: string): void => {
+    private onFilter = (newValue: string | null): void => {
         const {
             fetchFilteredResources,
             onSearchStringChanged,
             searchBoxMinimumSearchableLength = PeoplePicker.defaultProps.searchBoxMinimumSearchableLength
         } = this.props;
-        const { searchBoxText } = this.state;
+        const {searchBoxText} = this.state;
         let isSearchFilterTextReady = false;
 
-        if (searchBoxText !== newValue) {
+        if (searchBoxText !== newValue)
+        {
             // Do search if the search box has the minimum number of characters in it
-            if (newValue != null && newValue.trim().length >= searchBoxMinimumSearchableLength) {
+            if (newValue != null && newValue.trim().length >= searchBoxMinimumSearchableLength)
+            {
                 fetchFilteredResources(newValue);
                 isSearchFilterTextReady = true;
             }
 
             const newSearchString = newValue || '';
-            if (onSearchStringChanged) {
+            if (onSearchStringChanged)
+            {
                 onSearchStringChanged(newSearchString);
             }
-            this.setState({ searchBoxText: newSearchString, isSearchFilterTextReady: isSearchFilterTextReady });
+            this.setState({searchBoxText: newSearchString, isSearchFilterTextReady: isSearchFilterTextReady});
         }
     };
 
@@ -351,9 +381,11 @@ export class PeoplePicker extends BaseComponent<IPeoplePickerProps, IPeoplePicke
      * @param {React.KeyboardEvent<HTMLElement>} event The event that triggered this callback
      */
     private onKeyUp = (event: React.KeyboardEvent<HTMLElement>): void => {
-        if (event.keyCode === KeyCode.ESCAPE && this.state.searchBoxText.length === 0) {
-            const { onDismiss } = this.props;
-            if (onDismiss) {
+        if (event.keyCode === KeyCode.ESCAPE && this.state.searchBoxText.length === 0)
+        {
+            const {onDismiss} = this.props;
+            if (onDismiss)
+            {
                 onDismiss();
             }
         }

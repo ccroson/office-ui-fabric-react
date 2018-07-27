@@ -9,14 +9,14 @@ import { GridTheme } from '../../common/Types';
 
 // controls
 import { BaseComponent } from '../../utilities/BaseComponent';
-import { elementContains } from '@uifabric/utilities/lib-commonjs/dom';
+import { elementContains } from '../../../../../../utilities/lib-commonjs/dom';
 import { Calendar, DayOfWeek } from 'office-ui-fabric-react/lib-commonjs/Calendar';
 import { Callout, DirectionalHint } from 'office-ui-fabric-react/lib-commonjs/Callout';
 import { GridAction, PickerOpenedAction } from '../../actions/GridActions';
 
 // Utilities
-import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
-import { css } from '@uifabric/utilities/lib-commonjs/css';
+import { autobind } from '../../../../../../utilities/lib-commonjs/autobind';
+import { css } from '../../../../../../utilities/lib-commonjs/css';
 
 /**
  * The props for Date editor
@@ -31,13 +31,13 @@ export interface IDateEditorProps {
      * The delegate to be called when the value has been updated by the user
      * @param updatedValue - The updated value
      */
-    onValueUpdated: (updatedValue: string) => void;
+    onValueUpdated?: (updatedValue: string) => void;
 
     /**
      * The delegate to be called when the value is updated by the calendar, or the editor loses focus outside the cell
      * @param finalValue - The value sent by the calendar, or the pending value in the input box
      */
-    onEditConfirmed: (finalValue: moment.Moment | string) => void;
+    onEditConfirmed?: (finalValue: moment.Moment | string) => void;
 
     /**
      * The value to display in the editor
@@ -136,7 +136,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
     /**
      * Render a text input with a calendar callout
      */
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode {
         const {
             isTextEditing
         } = this.props;
@@ -181,7 +181,7 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
     /**
      * Render the calendar callout if visible
      */
-    private renderCalendarCallout(): JSX.Element {
+    private renderCalendarCallout(): React.ReactNode {
         const {
             value
         } = this.props;
@@ -273,7 +273,8 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
         const momentDate = moment(date.toISOString());
 
         // Send the pending update to the Grid
-        onEditConfirmed(momentDate);
+        if (onEditConfirmed)
+            onEditConfirmed(momentDate);
 
         // Dismiss the callout
         this.onCalendarDismissed();
@@ -303,7 +304,8 @@ export class DateEditor extends BaseComponent<IDateEditorProps, IDateEditorState
             onValueUpdated
         } = this.props;
 
-        onValueUpdated((event.target as HTMLInputElement).value);
+        if (onValueUpdated)
+            onValueUpdated((event.target as HTMLInputElement).value);
     }
 
     /**

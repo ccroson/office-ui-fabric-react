@@ -17,7 +17,7 @@ import { Icons } from '../../constants/IconConstants';
 import { Identifiable } from './Identifiable';
 
 // Utilities
-import { css } from '@uifabric/utilities/lib-commonjs/css';
+import { css } from '../../../../../../utilities/lib-commonjs/css';
 
 export interface IResourceListProps {
     /** Use smaller personas size for this group */
@@ -68,7 +68,7 @@ export class ResourceList extends BaseComponent<IResourceListProps, IResourceLis
         return 'ResourceList';
     }
 
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode {
         const { listHeaderText, resourceList } = this.props;
 
         return (

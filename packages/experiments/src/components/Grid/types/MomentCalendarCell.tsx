@@ -35,8 +35,8 @@ export class MomentCalendarCell implements ICellType {
     private calendarFormat: moment.CalendarSpec;
     private validationFailureErrorMessage: string;
     private todayLabel: string;
-    private prevMonthAriaLabel: string;
-    private nextMonthAriaLabel: string;
+    private prevMonthAriaLabel?: string;
+    private nextMonthAriaLabel?: string;
 
     /**
      * Create an instance of MomentCalendarCell
@@ -67,7 +67,7 @@ export class MomentCalendarCell implements ICellType {
     /**
      * Given the cell data, return a rendered JSX.Element.
      */
-    public render(cellData: moment.Moment, context: CellContext): JSX.Element | string {
+    public render(cellData: moment.Moment, context: CellContext): React.ReactNode {
         return this.toString(cellData);
     }
 
@@ -89,7 +89,7 @@ export class MomentCalendarCell implements ICellType {
         onEditCancelled: () => void,
         onEditConfirmed: (finalValue: moment.Moment) => void,
         context: CellContext
-    ): JSX.Element {
+    ): React.ReactNode {
         return (
             // sameElse is type string | moment.formatFunction so need to type check and use if a string otherwise undefined.
             <DateEditor
@@ -119,7 +119,7 @@ export class MomentCalendarCell implements ICellType {
         cellData: moment.Moment,
         transitionToEditMode: (action?: GridAction) => void,
         context: CellContext
-    ): JSX.Element | string {
+    ): React.ReactNode {
         if (context.isEditable(context.coordinate)) {
             const onCalendarClick =  () => transitionToEditMode(new PickerOpenedAction());
             return (
@@ -128,8 +128,8 @@ export class MomentCalendarCell implements ICellType {
                     dateFormat={ (this.calendarFormat && typeof this.calendarFormat.sameElse === 'string') ?
                     this.calendarFormat.sameElse : undefined }
                     value={ cellData }
-                    onValueUpdated={ null }
-                    onEditConfirmed={ null }
+                    onValueUpdated={ undefined }
+                    onEditConfirmed={ undefined }
                     todayLabel={ this.todayLabel }
                     prevMonthAriaLabel={ this.prevMonthAriaLabel }
                     nextMonthAriaLabel={ this.nextMonthAriaLabel }
@@ -164,7 +164,7 @@ export class MomentCalendarCell implements ICellType {
      * Default validator, ensure the value is a valid moment object
      * @param value The moment to validate
      */
-    public validate(value: moment.Moment): string {
+    public validate(value: moment.Moment): string | undefined {
         return Validators.validMoment(this.validationFailureErrorMessage)(value);
     }
 
@@ -175,7 +175,7 @@ export class MomentCalendarCell implements ICellType {
     public toString(cellData: moment.Moment): string {
         if (cellData && this.validate(cellData) === null) {
             // if validate returns no error, this is a valid moment
-            return cellData.calendar(null, this.calendarFormat ? this.calendarFormat : null);
+            return cellData.calendar(undefined, this.calendarFormat ? this.calendarFormat : undefined);
         }
         return '';
     }
@@ -186,7 +186,7 @@ export class MomentCalendarCell implements ICellType {
      * @param changedValue The raw input to parse to Object
      */
     // tslint:disable-next-line:no-any
-    public parseRawInput(originalValue: moment.Moment, changedValue: any): moment.Moment {
+    public parseRawInput(originalValue: moment.Moment, changedValue: any): moment.Moment | null {
         if (!changedValue) {
             return null;
         }

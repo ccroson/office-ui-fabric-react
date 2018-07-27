@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BaseComponent } from '../utilities/BaseComponent';
-import { css } from '@uifabric/utilities/lib-commonjs/css';
-import { getRTL } from '@uifabric/utilities/lib-commonjs/rtl';
+import { css } from '../../../../../utilities/lib-commonjs/css';
+import { getRTL } from '../../../../../utilities/lib-commonjs/rtl';
 import { GridTheme } from '../common/Common';
 import { GridConstants } from '../constants/GridConstants';
 
@@ -37,13 +37,13 @@ export interface IHeaderStickyContainerProps extends React.Props<HeaderStickyCon
     scrollableViewTop: number;
 
     /** The width of the scrollable parent */
-    scrollableViewWidth: number;
+    scrollableViewWidth?: number;
 
     /** Defines the background color for the container */
     theme: GridTheme;
 
     /** The width of the container */
-    width: number;
+    width?: number;
 }
 
 /**
@@ -79,7 +79,7 @@ export class HeaderStickyContainer extends BaseComponent<IHeaderStickyContainerP
         }
     }
 
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode {
         const {
             children,
             className,

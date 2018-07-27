@@ -5,7 +5,7 @@ import * as React from 'react';
 import { BaseComponent } from '../../utilities/BaseComponent';
 
 // Utilities
-import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
+import { autobind } from '../../../../../../utilities/lib-commonjs/autobind';
 
 /**
  * The props for String editor
@@ -54,7 +54,7 @@ export class StringEditor extends BaseComponent<IStringEditorProps, IStringEdito
     /**
      * Render a text input
      */
-    public renderComponent(): JSX.Element {
+    public renderComponent(): React.ReactNode {
         return (
             <input className="string-editor"
                 onChange={ (event: React.FormEvent<HTMLInputElement>) => this.props.onValueUpdated((event.target as HTMLInputElement).value) }

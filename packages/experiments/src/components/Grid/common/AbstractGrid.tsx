@@ -28,9 +28,9 @@ import {
 } from '../common/Common';
 
 // Utilities
-import { autobind } from '@uifabric/utilities/lib-commonjs/autobind';
-import { css, IDictionary } from '@uifabric/utilities/lib-commonjs/css';
-import { getRTL, getRTLSafeKeyCode } from '@uifabric/utilities/lib-commonjs/rtl';
+import { autobind } from '../../../../../utilities/lib-commonjs/autobind';
+import { css, IDictionary } from '../../../../../utilities/lib-commonjs/css';
+import { getRTL, getRTLSafeKeyCode } from '../../../../../utilities/lib-commonjs/rtl';
 import { GridAction } from '../actions/GridActions';
 import { GridUtilities } from '../utilities/GridUtilities';
 import { KeyCode } from '../constants/KeyboardConstants';
@@ -170,13 +170,13 @@ export interface IAbstractGridProps {
 
 export interface IAbstractGridState {
   /** The coordinate at which to show a cell context menu */
-  cellContextMenuCoordinate: GridCoordinate;
+  cellContextMenuCoordinate: GridCoordinate | null;
 
   /** The measured column widths in pixels */
-  columnWidths: number[];
+  columnWidths: number[] | null;
 
   /** The current context menu column */
-  headerContextMenuIndex: number;
+  headerContextMenuIndex: number | null;
 
   /** The current selection state of the grid */
   selectionState: SelectionState;
@@ -201,13 +201,13 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
   protected columnDefinitions: IColumnDefinition[];
 
   /** The current target of the cell context menu */
-  protected cellContextMenuTarget: HTMLElement;
+  protected cellContextMenuTarget: HTMLElement | null;
 
   /** Used to tell BaseGrid it should perform a full render */
   private baseGridDirtyCanary: any;
 
   /** The current target of the header context menu */
-  private headerContextMenuTarget: HTMLElement;
+  private headerContextMenuTarget: HTMLElement | null;
 
   /** Should we recompute column widths after update */
   private shouldRecomputeColumnSizesOnUpdate: boolean;
@@ -279,7 +279,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     cellCoordinate: GridCoordinate,
     extractedCellData: any,
     columnWidth: number
-  ): JSX.Element | string;
+  ): React.ReactNode;
 
   /**
    * Handler to decide if a cell is editable
@@ -302,7 +302,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
   /**
    * Render the BaseGrid component and pass through all required props
    */
-  protected renderComponent(): JSX.Element {
+  protected renderComponent(): React.ReactNode {
     const {
       ariaLabel,
       headerClassName,
@@ -316,7 +316,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
 
     const { cellContextMenuCoordinate, columnWidths, headerContextMenuIndex, selectionState } = this.state;
 
-    let baseGrid: JSX.Element;
+    let baseGrid;
     if (columnWidths) {
       if (this.sortedRows.length === 0) {
         baseGrid = (
@@ -332,7 +332,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
             columnWidths={ [columnWidths.reduce((a: number, b: number) => a + b, 0)] }
             numRows={ 1 }
             onRenderCell={ () => placeholderText }
-            onRenderRowHeaderCell={ this.showRowHeader && this.renderRowHeaderCell }
+            onRenderRowHeaderCell={ this.showRowHeader ? this.renderRowHeaderCell : undefined }
             rowHeaderWidth={ this.rowHeaderWidth }
             cellClassName="grid-empty"
             selectionState={ selectionState }
@@ -394,8 +394,8 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
               onKeyUp={ this.onKeyUp }
               onKeyPress={ this.onKeyPress }
               onRenderCell={ this.renderCell }
-              onRenderColumnHeaderCell={ !hideColumnHeader && this.renderColumnHeaderCell }
-              onRenderRowHeaderCell={ this.showRowHeader && this.renderRowHeaderCell }
+              onRenderColumnHeaderCell={ hideColumnHeader ? undefined : this.renderColumnHeaderCell }
+              onRenderRowHeaderCell={ this.showRowHeader ? this.renderRowHeaderCell : undefined }
             />
             { this.renderHeaderContextMenu(this.columnDefinitions, headerContextMenuIndex) }
             { this.renderCellContextMenu(cellContextMenuCoordinate) }
@@ -484,9 +484,9 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @param columnIndex The column to render the header for
    */
   @autobind
-  protected renderColumnHeaderCell(columnIndex: number): JSX.Element {
-    const column: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
-    const arrowClassMapping: IDictionary = this.getColumnSortIcon(column.id);
+  protected renderColumnHeaderCell(columnIndex: number): React.ReactNode {
+    const column = this.getColumnDefinitionAtIndex(columnIndex);
+    const arrowClassMapping = this.getColumnSortIcon(column.id);
 
     return (
       <div className="grid-column-header-cell-content-parts">
@@ -512,7 +512,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * Gets the css classes for the column sort icon
    * @param columnId The id of the column being sorted
    */
-  private getColumnSortIcon(columnId: string): IDictionary {
+  private getColumnSortIcon(columnId: string): IDictionary | null {
     const { sortState } = this.props;
 
     if (sortState && sortState.columnId === columnId) {
@@ -531,7 +531,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @param columnWidth The width of the column that this cell is in
    */
   @autobind
-  protected renderCell(cellCoordinate: GridCoordinate, columnWidth: number): JSX.Element | string {
+  protected renderCell(cellCoordinate: GridCoordinate, columnWidth: number): React.ReactNode {
     const rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
     const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
     const cellData: any = this.extractCellData(rowData, columnDefinition);
@@ -543,8 +543,8 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   protected renderHeaderContextMenu(
     columnDefinitions: IColumnDefinition[],
-    headerContextMenuIndex: number
-  ): JSX.Element {
+    headerContextMenuIndex: number | null
+  ): React.ReactNode {
     if (headerContextMenuIndex != null) {
       const columnDefinition = this.getColumnDefinitionAtIndex(headerContextMenuIndex);
       const contextMenuItems = this.getHeaderContextMenuItems(columnDefinition);
@@ -562,7 +562,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
   /**
    * Render the context menu for a cell if it is open
    */
-  protected renderCellContextMenu(cellContextMenuCoordinate: GridCoordinate): JSX.Element {
+  protected renderCellContextMenu(cellContextMenuCoordinate: GridCoordinate | null): React.ReactNode {
     if (cellContextMenuCoordinate) {
       const contextMenuItems = this.getCellContextMenuItemsFromCoordinate(cellContextMenuCoordinate);
       return (
@@ -580,7 +580,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * Render the current validation error in a callout above the cell
    */
   @autobind
-  protected renderValidationError(): JSX.Element {
+  protected renderValidationError(): React.ReactNode {
     return null;
   }
 
@@ -589,7 +589,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @param rowIndex The index of the row for which to render the header cell
    */
   @autobind
-  protected renderRowHeaderCell(rowIndex: number): JSX.Element | string {
+  protected renderRowHeaderCell(rowIndex: number): React.ReactNode {
     return null;
   }
 
@@ -605,7 +605,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     const contextMenuItems: IContextualMenuItem[] = PropUtils.getValueFromAccessor(
       columnDefinition.cell.contextMenuItems,
       row
-    );
+    ) || [];
     return contextMenuItems;
   }
 
@@ -719,9 +719,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected onCellClick(cellCoordinate: GridCoordinate, event: React.MouseEvent<HTMLElement>): void {
-    const { onCellClick } = this.props;
-
-    if (onCellClick) {
+    if (this.props.onCellClick) {
       const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
       const rowData: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
 
@@ -773,7 +771,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
       this.headerContextMenuTarget = event.currentTarget as HTMLElement;
 
       while (!this.headerContextMenuTarget.classList.contains('grid-column-header-cell')) {
-        this.headerContextMenuTarget = this.headerContextMenuTarget.parentElement;
+        this.headerContextMenuTarget = this.headerContextMenuTarget.parentElement as HTMLElement;
         // break out of loop if we hit the highest element the element we are looking for could be contained in
         if (this.headerContextMenuTarget === this.baseGrid.headerRowRef.innerDiv) {
           return;
@@ -839,7 +837,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     const { selectionState } = this.state;
 
     // Pass the event up to the consumer if a handler was provided.
-    if (onKeyDown) {
+    if (onKeyDown && selectionState.primaryCell) {
       onKeyDown(
         event,
         this.getRowDataAtIndex(selectionState.primaryCell.rowIndex),
@@ -971,7 +969,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
         this.headerContextMenuTarget &&
         !this.headerContextMenuTarget.classList.contains('grid-column-header-cell')
       ) {
-        this.headerContextMenuTarget = this.headerContextMenuTarget.parentElement;
+        this.headerContextMenuTarget = this.headerContextMenuTarget.parentElement as HTMLElement;
         // break out of loop if we hit the highest element the element we are looking for could be contained in
         if (this.headerContextMenuTarget === this.baseGrid.headerRowRef.innerDiv) {
           return;
@@ -1030,7 +1028,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @param ascending Should sort ascending
    */
   protected onSortClicked(columnDefinition: IColumnDefinition, ascending: boolean): void {
-    if (columnDefinition.sortable) {
+    if (columnDefinition.sortable && this.props.onSortByColumn) {
       this.props.onSortByColumn(columnDefinition.id, ascending);
     }
   }
@@ -1040,7 +1038,8 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * Resets the sort state of the Grid to unsorted
    */
   protected onClearSortClicked(): void {
-    this.props.onClearSort();
+    if (this.props.onClearSort)
+      this.props.onClearSort();
   }
 
   /**
@@ -1116,7 +1115,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @param cellCoordinate The cell to get the aria label for
    */
   @autobind
-  protected getCellAriaAndDataAttributes(cellCoordinate: GridCoordinate): _.Dictionary<string> {
+  protected getCellAriaAndDataAttributes(cellCoordinate: GridCoordinate): _.Dictionary<string> | undefined {
     const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(cellCoordinate.columnIndex);
     if (columnDefinition.cell.type.getAriaAndDataAttributes) {
       const row: Object = this.getRowDataAtIndex(cellCoordinate.rowIndex);
@@ -1144,7 +1143,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * Returns the class name to be used by the grid
    */
   @autobind
-  protected getGridClassName(): string {
+  protected getGridClassName(): string | undefined {
     const { className } = this.props;
 
     return className;
@@ -1213,7 +1212,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected getIsColumnDraggable(columnIndex: number): boolean {
-    return this.getColumnDefinitionAtIndex(columnIndex).draggable;
+    return !!this.getColumnDefinitionAtIndex(columnIndex).draggable;
   }
 
   /**
@@ -1224,8 +1223,8 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
   protected getIsColumnHeaderClickable(columnIndex: number): boolean {
     const columnDefinition: IColumnDefinition = this.getColumnDefinitionAtIndex(columnIndex);
     return (
-      columnDefinition.sortable ||
-      (columnDefinition.header.contextMenuItems && columnDefinition.header.contextMenuItems.length > 0)
+      !!columnDefinition.sortable ||
+      (!!columnDefinition.header.contextMenuItems && columnDefinition.header.contextMenuItems.length > 0)
     );
   }
 
@@ -1234,7 +1233,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected getIsColumnResizable(columnIndex: number): boolean {
-    return this.getColumnDefinitionAtIndex(columnIndex).resizable;
+    return !!this.getColumnDefinitionAtIndex(columnIndex).resizable;
   }
 
   /**
@@ -1242,7 +1241,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    */
   @autobind
   protected getIsColumnSelectable(columnIndex: number): boolean {
-    return this.getColumnDefinitionAtIndex(columnIndex).selectable;
+    return !!this.getColumnDefinitionAtIndex(columnIndex).selectable;
   }
 
   /**
@@ -1330,7 +1329,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @param rowIndex The row index
    */
   @autobind
-  protected getRowAriaAndDataAttributes(rowIndex: number): _.Dictionary<string> {
+  protected getRowAriaAndDataAttributes(rowIndex: number): _.Dictionary<string> | undefined {
     const { rowAriaAndDataAttributes } = this.props;
 
     if (rowAriaAndDataAttributes) {
@@ -1345,7 +1344,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @param rowIndex The row index
    */
   @autobind
-  protected getRowClassName(rowIndex: number): string {
+  protected getRowClassName(rowIndex: number): string | undefined {
     const { rowClassName } = this.props;
 
     if (rowClassName) {
@@ -1399,6 +1398,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
     } else if (!columnDefinition.rowSpan) {
       return 1;
     }
+    return 0;
   }
 
   /**
@@ -1502,7 +1502,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @param regionIndex Index of the current region in the selections array
    */
   private removeRegion(selectionState: SelectionState, regionIndex: number): SelectionState {
-    if (selectionState.selections[regionIndex].isCellInRegion(selectionState.primaryCell)) {
+    if (selectionState.primaryCell && selectionState.selections[regionIndex].isCellInRegion(selectionState.primaryCell)) {
       if (regionIndex > 0) {
         // Move primary cell to previous region's primary coordinate
         selectionState.primaryCell = selectionState.selections[regionIndex - 1].primaryCoordinate;
@@ -1525,7 +1525,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
    * @param finalRowIndex Index of the last row in the grid
    */
   private shrinkRegion(selectionState: SelectionState, region: GridRegion, finalRowIndex: number): SelectionState {
-    const isInRegion: boolean = region.isCellInRegion(selectionState.primaryCell);
+    const isInRegion: boolean = !!selectionState.primaryCell && region.isCellInRegion(selectionState.primaryCell);
 
     // shrink the selection so it remains within the grid
     if (region.primaryCoordinate.rowIndex > finalRowIndex) {
@@ -1655,7 +1655,7 @@ export abstract class AbstractGrid<P extends IAbstractGridProps, S extends IAbst
       const columnWidths: number[] = this.computeColumnWidths(
         _.map(this.columnDefinitions, (columnDefinition: IColumnDefinition) =>
           GridSize.parseSize(columnDefinition.width)
-        ),
+        ).filter((gridSize) => gridSize != null) as GridSize[],
         availableWidth
       );
 
@@ -1903,7 +1903,7 @@ export interface ICellType {
    * @param cellData The cell data extracted through property or accessor
    * @param context The cell context which provides additional properties, usable for rendering
    */
-  render: (cellData: Object, context: CellContext) => JSX.Element | string | null;
+  render: (cellData: Object, context: CellContext) => React.ReactNode;
 
   /**
    * Return a JSX element in the edit mode
@@ -1923,7 +1923,7 @@ export interface ICellType {
     onEditCancelled: () => void,
     onEditConfirmed: (finalValue: Object) => void,
     context: CellContext
-  ) => JSX.Element;
+  ) => React.ReactNode;
 
   /**
    * Return a JSX.Element or string in the selected mode, when this is the primary cell in the selection
@@ -1933,9 +1933,9 @@ export interface ICellType {
    */
   renderSelected?: (
     cellData: Object,
-    transitionToEditMode: (action?: GridAction) => void,
+    transitionToEditMode: ((action?: GridAction) => void) | null,
     context: CellContext
-  ) => JSX.Element | string;
+  ) => React.ReactNode;
 
   /**
    * Compare two extracted cell data and return the compare result
@@ -1955,7 +1955,7 @@ export interface ICellType {
    * @param originalValue The cell data extracted through property or accessor
    * @param changedValue The raw input to parse to Object
    */
-  parseRawInput?: (originalValue: Object, changedValue: Object) => Object;
+  parseRawInput?: (originalValue: Object, changedValue: Object) => any;
 
   /**
    * Validate a piece of data. Should provide some default validations for the type

@@ -14,7 +14,7 @@ export class StringCell implements ICellType {
     /**
      * Given the cell data, return a rendered JSX.Element. Use this for custom controls
      */
-    public render(cellData: any, context: CellContext): JSX.Element | string {
+    public render(cellData: any, context: CellContext): React.ReactNode {
         return this.toString(cellData);
     }
 
@@ -36,7 +36,7 @@ export class StringCell implements ICellType {
         onEditCancelled: () => void,
         onEditConfirmed: (finalValue: string) => void,
         context: CellContext
-    ): JSX.Element {
+    ): React.ReactNode {
         return (
             <StringEditor
                 value={ pendingUpdate !== null ? pendingUpdate : cellData }

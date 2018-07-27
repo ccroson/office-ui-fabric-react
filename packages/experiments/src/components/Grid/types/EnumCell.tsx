@@ -35,7 +35,7 @@ export class EnumCell implements ICellType {
    * @param {EnumCellData} data The value for the grid cell
    * @param {CellContext} context The cell context which provides additional properties, usable for rendering
    */
-  public render(cellData: EnumCellData, cellContext: CellContext): JSX.Element | string | null {
+  public render(cellData: EnumCellData, cellContext: CellContext): React.ReactNode {
     if (
       !cellData ||
       (this.enumOptions === null || this.enumOptions.length <= 0) ||
@@ -70,7 +70,7 @@ export class EnumCell implements ICellType {
     onEditCancelled: () => void,
     onEditConfirmed: (optionKey: string) => void,
     context: CellContext
-  ): JSX.Element {
+  ): React.ReactNode {
     return (
       <EnumEditor
         enumOptions={this.enumOptions}
@@ -98,7 +98,7 @@ export class EnumCell implements ICellType {
     cellData: EnumCellData,
     transitionToEditMode: (action?: GridAction) => void,
     context: CellContext
-  ): JSX.Element | string {
+  ): React.ReactNode {
     if (context.isEditable(context.coordinate)) {
       const onClick = () => transitionToEditMode(new PickerOpenedAction());
       return (

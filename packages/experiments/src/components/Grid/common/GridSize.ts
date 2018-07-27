@@ -25,7 +25,7 @@ export class GridSize {
      * Parse a width string ('200px') into a GridWidth
      * @param width The width string
      */
-    public static parseSize(width: number | string): GridSize {
+    public static parseSize(width: number | string): GridSize | null {
         if (_.isNumber(width)) {
             const widthValue = width as number;
             return new GridSize(widthValue, GridSizeUnit.Pixel);
@@ -58,7 +58,7 @@ export class GridSize {
         return GridSizeUnit.Pixel;
     }
 
-    private constructor(value: number, unit: GridSizeUnit) {
+    private constructor(value: number | null, unit: GridSizeUnit) {
         this.unit = unit;
         if (this.unit === GridSizeUnit.Pixel) {
             this.value = value !== null && value >= 0 ? value : 0;

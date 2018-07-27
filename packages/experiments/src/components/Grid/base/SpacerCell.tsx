@@ -30,7 +30,7 @@ export class SpacerCell extends BaseComponent<ISpacerCellProps, {}> {
         return !_.isEqual(this.props, nextProps);
     }
 
-    protected renderComponent(): JSX.Element {
+    protected renderComponent(): React.ReactNode {
         const {
             id,
             width

@@ -25,7 +25,7 @@ export type StateManagerParameters = {
     /** The accessor to determine if a cell is editable */
     isCellEditable: (cell: GridCoordinate) => boolean,
     /** The accessor to determine if a column is selectable */
-    isColumnSelectable: (columnIndex: number) => boolean
+    isColumnSelectable: (columnIndex: number) => boolean,
     /** The accessor to determine if column headers are hidden */
     isColumnHeaderHidden: boolean
 };
@@ -35,13 +35,13 @@ export type StateManagerParameters = {
  */
 export type SelectionState = {
     /** The current fill selection, or null if not present */
-    fillSelection: GridRegion;
+    fillSelection: GridRegion | null;
 
     /** The current selections, or empty if not present */
     selections: GridRegion[];
 
     /** The current primary cell, or (-1, -1) if not preset */
-    primaryCell: GridCoordinate;
+    primaryCell: GridCoordinate | null;
 
     /** The current GridMode */
     mode: GridMode;
@@ -103,7 +103,7 @@ export abstract class StateManager {
      * In all modes, cancel exits Edit mode
      * @param prevState The previous selection state to transition from
      */
-    public handleCancelKey(prevState: SelectionState): SelectionState {
+    public handleCancelKey(prevState: SelectionState): SelectionState | undefined {
         const {
             mode
         } = prevState;
@@ -121,13 +121,13 @@ export abstract class StateManager {
      * In all modes, the edit key enters Edit mode if the cell is editable
      * @param prevState The previous selection state to transition from
      */
-    public handleEditKey(prevState: SelectionState): SelectionState {
+    public handleEditKey(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
-        if (mode === GridMode.Select && this.isCellEditable(primaryCell)) {
+        if (mode === GridMode.Select && this.isCellEditable && primaryCell && this.isCellEditable(primaryCell)) {
             return {
                 ...prevState,
                 selections: [new GridRegion(primaryCell)],
@@ -141,13 +141,13 @@ export abstract class StateManager {
      * In all modes, this enters Edit mode if the cell is editable
      * @param prevState The previous selection state to transition from
      */
-    public handleKeyPress(prevState: SelectionState): SelectionState {
+    public handleKeyPress(prevState: SelectionState): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
-        if (mode === GridMode.Select && this.isCellEditable(primaryCell)) {
+        if (mode === GridMode.Select && this.isCellEditable && primaryCell && this.isCellEditable(primaryCell)) {
             return {
                 ...prevState,
                 mode: GridMode.Edit
@@ -161,14 +161,14 @@ export abstract class StateManager {
      * @param prevState The previous selection state to transition from
      * @param transitionToEditModeAfterSelecting Flag to set the grid to Edit mode after Selecting
      */
-    public handleCellMouseUp(prevState: SelectionState, transitionToEditModeAfterSelecting: boolean): SelectionState {
+    public handleCellMouseUp(prevState: SelectionState, transitionToEditModeAfterSelecting: boolean): SelectionState | undefined {
         const {
             mode,
             primaryCell
         } = prevState;
 
         if (mode === GridMode.Selecting) {
-            if (transitionToEditModeAfterSelecting && this.isCellEditable(primaryCell)) {
+            if (transitionToEditModeAfterSelecting && this.isCellEditable && primaryCell && this.isCellEditable(primaryCell)) {
                 return {
                     ...prevState,
                     mode: GridMode.Edit
@@ -186,7 +186,7 @@ export abstract class StateManager {
      * Handle the event when the fill handle is first pressed
      * Will always enter Filling mode
      */
-    public handleFillMouseDown(prevState: SelectionState): SelectionState {
+    public handleFillMouseDown(prevState: SelectionState): SelectionState | undefined {
         const {
             mode
         } = prevState;
@@ -203,7 +203,7 @@ export abstract class StateManager {
      * Handle the event when the fill handle is released
      * Will exit Filling mode and merge the selection and the fillSelection if applicable
      */
-    public handleFillMouseUp(prevState: SelectionState): SelectionState {
+    public handleFillMouseUp(prevState: SelectionState): SelectionState | undefined {
         const {
             fillSelection,
             mode,
@@ -228,112 +228,112 @@ export abstract class StateManager {
     }
 
     /** Handle when the grid is first focused */
-    public abstract handleFocus(prevState: SelectionState): SelectionState;
+    public abstract handleFocus(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Enter key */
-    public abstract handleEnter(prevState: SelectionState): SelectionState;
+    public abstract handleEnter(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Shift + Enter shortcut */
-    public abstract handleShiftEnter(prevState: SelectionState): SelectionState;
+    public abstract handleShiftEnter(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Tab key */
-    public abstract handleTab(prevState: SelectionState): SelectionState;
+    public abstract handleTab(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Shift + Tab shortcut */
-    public abstract handleShiftTab(prevState: SelectionState): SelectionState;
+    public abstract handleShiftTab(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Home key */
-    public abstract handleHome(prevState: SelectionState): SelectionState;
+    public abstract handleHome(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + Home shortcut */
-    public abstract handleControlHome(prevState: SelectionState): SelectionState;
+    public abstract handleControlHome(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Shift + Home shortcut */
-    public abstract handleShiftHome(prevState: SelectionState): SelectionState;
+    public abstract handleShiftHome(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + Shift + Home shortcut */
-    public abstract handleControlShiftHome(prevState: SelectionState): SelectionState;
+    public abstract handleControlShiftHome(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the End key */
-    public abstract handleEnd(prevState: SelectionState): SelectionState;
+    public abstract handleEnd(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + End shortcut */
-    public abstract handleControlEnd(prevState: SelectionState): SelectionState;
+    public abstract handleControlEnd(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Shift + End shortcut */
-    public abstract handleShiftEnd(prevState: SelectionState): SelectionState;
+    public abstract handleShiftEnd(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + Shift + Home shortcut */
-    public abstract handleControlShiftEnd(prevState: SelectionState): SelectionState;
+    public abstract handleControlShiftEnd(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Left arrow key */
-    public abstract handleLeft(prevState: SelectionState): SelectionState;
+    public abstract handleLeft(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + Left shortcut */
-    public abstract handleControlLeft(prevState: SelectionState): SelectionState;
+    public abstract handleControlLeft(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Alt + Shift + Left shortcut */
-    public abstract handleAltShiftLeft(prevState: SelectionState): SelectionState;
+    public abstract handleAltShiftLeft(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Shift + Left shortcut */
-    public abstract handleShiftLeft(prevState: SelectionState): SelectionState;
+    public abstract handleShiftLeft(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + Shift + Left shortcut */
-    public abstract handleControlShiftLeft(prevState: SelectionState): SelectionState;
+    public abstract handleControlShiftLeft(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Right arrow key */
-    public abstract handleRight(prevState: SelectionState): SelectionState;
+    public abstract handleRight(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + Right shortcut */
-    public abstract handleControlRight(prevState: SelectionState): SelectionState;
+    public abstract handleControlRight(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Shift + Right shortcut */
-    public abstract handleShiftRight(prevState: SelectionState): SelectionState;
+    public abstract handleShiftRight(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Alt + Shift + Right shortcut */
-    public abstract handleAltShiftRight(prevState: SelectionState): SelectionState;
+    public abstract handleAltShiftRight(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + Shift + Right shortcut */
-    public abstract handleControlShiftRight(prevState: SelectionState): SelectionState;
+    public abstract handleControlShiftRight(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Down arrow key */
-    public abstract handleDown(prevState: SelectionState): SelectionState;
+    public abstract handleDown(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + Down shortcut */
-    public abstract handleControlDown(prevState: SelectionState): SelectionState;
+    public abstract handleControlDown(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Shift + Down shortcut */
-    public abstract handleShiftDown(prevState: SelectionState): SelectionState;
+    public abstract handleShiftDown(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + Shift + Down shortcut */
-    public abstract handleControlShiftDown(prevState: SelectionState): SelectionState;
+    public abstract handleControlShiftDown(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Up arrow key */
-    public abstract handleUp(prevState: SelectionState): SelectionState;
+    public abstract handleUp(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + Up shortcut */
-    public abstract handleControlUp(prevState: SelectionState): SelectionState;
+    public abstract handleControlUp(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Shift + Up arrow key */
-    public abstract handleShiftUp(prevState: SelectionState): SelectionState;
+    public abstract handleShiftUp(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the Control + Shift + Up shortcut */
-    public abstract handleControlShiftUp(prevState: SelectionState): SelectionState;
+    public abstract handleControlShiftUp(prevState: SelectionState): SelectionState | undefined;
 
     /** Handle the event when a mousedown occurs on a Cell */
-    public abstract handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState;
+    public abstract handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined;
 
     /** Handle the event when a mousedown occurs on a Cell with the shift key */
-    public abstract handleShiftCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState;
+    public abstract handleShiftCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined;
 
     /** Handle the event when a mousedown occurs on a Cell with the ctrl key */
-    public abstract handleControlCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState;
+    public abstract handleControlCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined;
 
     /** Handle the event when a Cell is moused enter */
-    public abstract handleCellMouseEnter(prevState: SelectionState, target: GridCoordinate): SelectionState;
+    public abstract handleCellMouseEnter(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined;
 
     /** Handle the event when a Cell is right clicked */
-    public abstract handleCellRightClick(prevState: SelectionState, target: GridCoordinate): SelectionState;
+    public abstract handleCellRightClick(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined;
 
     /**
      * Given a selection, expand it to select entire rows
@@ -359,7 +359,8 @@ export abstract class StateManager {
      * @param expand Should we expand to get rectangular selection
      */
     protected getRectangularSelection(selection: GridRegion, expand: boolean = true): GridRegion {
-        selection.fillPartialCells(this.getRowSpan, this.getMappedCell, expand);
+        if (this.getRowSpan && this.getMappedCell)
+            selection.fillPartialCells(this.getRowSpan, this.getMappedCell, expand);
         return selection;
     }
 
@@ -367,12 +368,12 @@ export abstract class StateManager {
      * Get the next cell in the tab index. Returns the same cell if the cell is the last cell
      * @param cell The current cell
      */
-    protected getNextTabCell(cell: GridCoordinate): GridCoordinate {
+    protected getNextTabCell(cell: GridCoordinate): GridCoordinate | undefined {
         const minSelectableColumnIndex = this.getMinSelectableColumnIndex();
         const maxSelectableColumnIndex = this.getMaxSelectableColumnIndex();
         const maxRowIndex = this.getMaxRowIndex();
 
-        let newCell: GridCoordinate;
+        let newCell = undefined;
         if (cell.isColumnHeaderCell) {
             if (cell.columnIndex !== maxSelectableColumnIndex) {
                 newCell = new GridCoordinate(GridConstants.HEADER_ROW_INDEX, cell.columnIndex + 1, true);
@@ -395,12 +396,12 @@ export abstract class StateManager {
      * Get the previous cell in the tab index. Returns undefined if the cell is the first cell
      * @param cell The current cell
      */
-    protected getPreviousTabCell(cell: GridCoordinate): GridCoordinate {
+    protected getPreviousTabCell(cell: GridCoordinate): GridCoordinate | undefined {
         const minSelectableColumnIndex = this.getMinSelectableColumnIndex();
         const maxSelectableColumnIndex = this.getMaxSelectableColumnIndex();
         const minRowIndex = 0;
 
-        let newCell: GridCoordinate;
+        let newCell = undefined;
 
         if (cell.isColumnHeaderCell) {
             if (cell.columnIndex > minSelectableColumnIndex) {

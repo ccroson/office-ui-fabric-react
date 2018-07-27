@@ -19,7 +19,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Shift + Home shortcut should behave the same as Home
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftHome(prevState: SelectionState): SelectionState {
+    public handleShiftHome(prevState: SelectionState): SelectionState | undefined {
         return super.handleHome(prevState);
     }
 
@@ -27,7 +27,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Control + Shift + Home shortcut should behave the same as Control + Home
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftHome(prevState: SelectionState): SelectionState {
+    public handleControlShiftHome(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlHome(prevState);
     }
 
@@ -35,7 +35,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Shift + End shortcut should behave the same as End
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftEnd(prevState: SelectionState): SelectionState {
+    public handleShiftEnd(prevState: SelectionState): SelectionState | undefined {
         return super.handleEnd(prevState);
     }
 
@@ -43,7 +43,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Control + Shift + End shortcut should behave the same as Control + End
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftEnd(prevState: SelectionState): SelectionState {
+    public handleControlShiftEnd(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlEnd(prevState);
     }
 
@@ -51,7 +51,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Shift + Left shortcut should behave the same as Left
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftLeft(prevState: SelectionState): SelectionState {
+    public handleShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return super.handleLeft(prevState);
     }
 
@@ -59,7 +59,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Control + Shift + Left shortcut should behave the same as Control + Left
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftLeft(prevState: SelectionState): SelectionState {
+    public handleControlShiftLeft(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlLeft(prevState);
     }
 
@@ -67,7 +67,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Shift + right shortcut should behave the same as Right
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftRight(prevState: SelectionState): SelectionState {
+    public handleShiftRight(prevState: SelectionState): SelectionState | undefined {
         return super.handleRight(prevState);
     }
 
@@ -75,7 +75,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Control + Shift + Right shortcut should behave the same as Control + Right
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftRight(prevState: SelectionState): SelectionState {
+    public handleControlShiftRight(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlRight(prevState);
     }
 
@@ -83,7 +83,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Shift + Up shortcut should select the previous row
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftUp(prevState: SelectionState): SelectionState {
+    public handleShiftUp(prevState: SelectionState): SelectionState | undefined {
         return super.handleUp(prevState);
     }
 
@@ -91,7 +91,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Control + Shift + Up shortcut should select the first row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftUp(prevState: SelectionState): SelectionState {
+    public handleControlShiftUp(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlUp(prevState);
     }
 
@@ -99,7 +99,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Shift + Down shortcut should select the next row
      * @param prevState The previous selection state to transition from
      */
-    public handleShiftDown(prevState: SelectionState): SelectionState {
+    public handleShiftDown(prevState: SelectionState): SelectionState | undefined {
         return super.handleDown(prevState);
     }
 
@@ -107,7 +107,7 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * The Control + Shift + Down shortcut should select the last row
      * @param prevState The previous selection state to transition from
      */
-    public handleControlShiftDown(prevState: SelectionState): SelectionState {
+    public handleControlShiftDown(prevState: SelectionState): SelectionState | undefined {
         return super.handleControlDown(prevState);
     }
 
@@ -116,8 +116,8 @@ export class SingleRowStateManager extends MultipleRowStateManager {
      * @param prevState The previous selection state to transition from
      * @param target The moused down cell
      */
-    public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState {
-        const newState: SelectionState = super.handleCellMouseDown(prevState, target);
+    public handleCellMouseDown(prevState: SelectionState, target: GridCoordinate): SelectionState | undefined {
+        const newState = super.handleCellMouseDown(prevState, target);
         if (newState) {
             newState.mode = GridMode.Select;
             return newState;
